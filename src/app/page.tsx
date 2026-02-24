@@ -2,6 +2,7 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import Link from "next/link";
+import CookieConsent from "./components/CookieConsent";
 
 /* ─── Scroll-to-top button ─── */
 function ScrollTop() {
@@ -36,11 +37,92 @@ function Faq({ q, a }: { q: string; a: string }) {
   );
 }
 
+/* ─── Leadmagnet Download Funnel ─── */
+function LeadmagnetForm({ product, onClose }: { product: string; onClose: () => void }) {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [consent, setConsent] = useState(false);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!email || !consent) return;
+    localStorage.setItem("leadmagnet-lead", JSON.stringify({ email, name, product, date: new Date().toISOString() }));
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <div className="leadmagnet-overlay" onClick={onClose}>
+        <div className="leadmagnet-modal" onClick={e => e.stopPropagation()}>
+          <button className="leadmagnet-close" onClick={onClose}>x</button>
+          <div style={{ textAlign: "center", padding: "1rem 0" }}>
+            <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>✅</div>
+            <h3 style={{ marginBottom: "0.5rem" }}>Fast geschafft!</h3>
+            <p style={{ color: "var(--text-sub)", fontSize: "0.88rem", lineHeight: 1.6 }}>
+              Wir haben dir eine E-Mail an <strong>{email}</strong> gesendet.
+              Bitte bestätige deine E-Mail-Adresse (Double-Opt-In), um den Download-Link zu erhalten.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="leadmagnet-overlay" onClick={onClose}>
+      <div className="leadmagnet-modal" onClick={e => e.stopPropagation()}>
+        <button className="leadmagnet-close" onClick={onClose}>x</button>
+        <h3 style={{ marginBottom: "0.25rem" }}>{product}</h3>
+        <p style={{ color: "var(--text-sub)", fontSize: "0.85rem", marginBottom: "1rem" }}>
+          Trag deine E-Mail ein und erhalte den kostenlosen Download.
+        </p>
+        <form onSubmit={handleSubmit} style={{ display: "grid", gap: "0.6rem" }}>
+          <input
+            type="text"
+            placeholder="Dein Vorname (optional)"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            className="tool-input"
+            style={{ borderRadius: "var(--r-lg)" }}
+          />
+          <input
+            type="email"
+            required
+            placeholder="Deine E-Mail-Adresse *"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className="tool-input"
+            style={{ borderRadius: "var(--r-lg)" }}
+          />
+          <label style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start", fontSize: "0.72rem", color: "var(--muted)", cursor: "pointer" }}>
+            <input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} style={{ marginTop: "0.15rem" }} />
+            Ich stimme zu, gelegentlich E-Mails mit Travel-Hacks zu erhalten. Abmeldung jederzeit möglich. <a href="/datenschutz" style={{ color: "var(--accent)" }}>Datenschutz</a>
+          </label>
+          <button type="submit" className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }}>
+            Kostenlos herunterladen
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Travel Hack Finder ─── */
 function HackFinder() {
   const [q, setQ] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const hacks: Record<string, string> = {
+    business: "Open-Jaw-Trick: Buche Hin- und Rueckflug ueber verschiedene Staedte. So bekommst du Business Class oft 40-60% guenstiger. Beispiel: Frankfurt nach Bangkok via Istanbul mit Turkish Airlines fuer nur 800 EUR in Business!",
+    dubai: "Fifth Freedom Flights: Singapore Airlines fliegt Dubai-Manchester in Business Class – oft guenstiger als Emirates Direktflug. Oder nutze Emirates Meilen fuer die Strecke: nur 62.500 Meilen one-way in Business!",
+    lounge: "Lounge-Zugang ohne Status: (1) Priority Pass ueber Amex Platinum (1.400+ Lounges weltweit), (2) Day Passes direkt kaufen (ab 25 EUR), (3) LoungeBuddy App fuer Einzelzugang. Mein Favorit: Die Turkish Airlines CIP Lounge Istanbul – die beste der Welt!",
+    hotel: "Hotel-Status-Match: Viele Ketten bieten Status-Matching an. Mit Amex Platinum bekommst du Marriott Gold und Hilton Gold automatisch. Das bedeutet: Zimmer-Upgrades, spaetes Checkout und Fruehstueck inklusive!",
+    meilen: "Kreditkarten-Combo fuer maximale Meilen: Amex Platinum (3x Punkte auf Reisen) + Payback Amex (kostenlos, Punkte bei jedem Einkauf) + Barclays (kostenlos im Ausland). So sammelst du bei JEDER Ausgabe Punkte.",
+    malediven: "Malediven in Business Class fuer 0 EUR: Sammle 90.000 Miles and More Meilen (ca. 12 Monate mit Amex), buche Lufthansa/Swiss Business Frankfurt-Male. Meilenpreis: 0 EUR + ca. 200 EUR Steuern!",
+    upgrade: "Upgrade-Hack: Buche Economy, checke 24h vor Abflug die Airline-App. Viele Airlines bieten dann Bid-Upgrades (ab 150 EUR fuer Business) an. Oder nutze Meilen fuer Last-Minute Operational Upgrades direkt am Gate.",
+  };
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -48,13 +130,19 @@ function HackFinder() {
     setLoading(true);
     setResult("");
     setTimeout(() => {
-      setResult(
-        `Für „${q}" empfehle ich: Nutze Meilen-Transfers über Payback → Miles & More. ` +
-          `Buche über den Open-Jaw-Trick, um Business Class zum halben Preis zu fliegen. ` +
-          `Mehr Details gibt's in meinem Crashkurs oder als Reel auf Instagram!`
-      );
+      const lower = q.toLowerCase();
+      const matched = Object.entries(hacks).find(([key]) => lower.includes(key));
+      if (matched) {
+        setResult(matched[1] + " – Mehr Details im Meilen-Crashkurs oder als Reel auf @traveling.prof!");
+      } else {
+        setResult(
+          `Fuer "${q}" empfehle ich: Starte mit dem Meilen-Sammeln ueber Payback und Amex. ` +
+            `Nutze den Open-Jaw-Trick fuer guenstigere Fluege und schaue dir meine kostenlosen Guides an. ` +
+            `Folge @traveling.prof auf Instagram fuer taegliche Travel-Hacks!`
+        );
+      }
       setLoading(false);
-    }, 1500);
+    }, 1200);
   };
 
   return (
@@ -65,11 +153,11 @@ function HackFinder() {
       <form onSubmit={submit}>
         <div className="tool-form">
           <input className="tool-input" type="text" placeholder="z.B. 'Business Class Dubai' oder 'Lounge ohne Status'" value={q} onChange={e => setQ(e.target.value)} />
-          <button type="submit" className="btn btn-primary btn-sm">🔍 Finden</button>
+          <button type="submit" className="btn btn-primary btn-sm">Finden</button>
         </div>
       </form>
       <div className={`tool-result ${loading ? "loading" : ""}`}>
-        {loading ? "⏳ Suche den besten Hack für dich..." : result || "💡 Dein persönlicher Travel-Hack erscheint hier..."}
+        {loading ? "Suche den besten Hack fuer dich..." : result || "Dein persoenlicher Travel-Hack erscheint hier..."}
       </div>
     </div>
   );
@@ -136,11 +224,14 @@ function Header() {
 /* ═══ PAGE ═══ */
 export default function Home() {
   const year = new Date().getFullYear();
+  const [leadmagnet, setLeadmagnet] = useState<string | null>(null);
 
   return (
     <div className="page">
       <ScrollTop />
+      <CookieConsent />
       <Header />
+      {leadmagnet && <LeadmagnetForm product={leadmagnet} onClose={() => setLeadmagnet(null)} />}
 
       <main>
         {/* ═══ Hero ═══ */}
@@ -347,7 +438,7 @@ export default function Home() {
                   <div className="freebie-tag">Gratis</div>
                   <h3>{f.h}</h3>
                   <p>{f.p}</p>
-                  <a href="#kontakt" className="btn btn-secondary btn-sm">Jetzt herunterladen →</a>
+                  <button onClick={() => setLeadmagnet(f.h)} className="btn btn-secondary btn-sm">Jetzt herunterladen →</button>
                 </article>
               ))}
             </div>
@@ -434,12 +525,17 @@ export default function Home() {
             <h2 className="section-title">Persönliches Gespräch <em>vereinbaren</em></h2>
             <p className="section-sub" style={{ margin: "0.5rem auto 1.5rem" }}>Fragen zu Strategien, Kooperationen oder individuelle Beratung? Buche direkt einen Slot.</p>
             <div className="calendly-box">
-              <div className="icon">📅</div>
-              <strong>Calendly-Integration</strong>
-              <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginTop: "0.25rem" }}>Binde deinen Calendly-Link hier ein – ersetze diesen Block mit dem Widget.</p>
-              <a href="https://calendly.com" target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm" style={{ marginTop: "0.75rem" }}>
-                Zu Calendly →
-              </a>
+              <iframe
+                src="https://calendar.app.google/QFoADWcRwwuYUoky8"
+                style={{ border: "none", width: "100%", minHeight: "500px", borderRadius: "var(--r-xl)" }}
+                title="Termin buchen"
+              />
+              <p style={{ color: "var(--muted)", fontSize: "0.72rem", marginTop: "0.75rem" }}>
+                Kein passender Termin? Schreib mir direkt per{" "}
+                <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>Instagram DM</a>{" "}
+                oder an{" "}
+                <a href="mailto:traveling.prof@outlook.de" style={{ color: "var(--accent)" }}>traveling.prof@outlook.de</a>.
+              </p>
             </div>
           </div>
         </section>
@@ -523,6 +619,8 @@ export default function Home() {
               <a href="#kontakt">Kontakt</a>
               <Link href="/impressum">Impressum</Link>
               <Link href="/datenschutz">Datenschutz</Link>
+              <Link href="/agb">AGB</Link>
+              <Link href="/widerruf">Widerruf</Link>
             </div>
           </div>
         </div>

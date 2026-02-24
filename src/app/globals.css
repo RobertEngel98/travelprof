@@ -506,6 +506,32 @@ footer {
 .footer-links a { color: var(--muted); transition: color 0.15s; }
 .footer-links a:hover { color: var(--accent); }
 
+/* ── Leadmagnet Modal ── */
+.leadmagnet-overlay {
+  position: fixed; inset: 0; z-index: 9998;
+  background: rgba(28,25,23,0.6); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem; animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.leadmagnet-modal {
+  background: var(--bg-white); border-radius: var(--r-2xl);
+  padding: 2rem 1.5rem; max-width: 420px; width: 100%;
+  box-shadow: var(--shadow-lg); position: relative;
+  animation: modalPop 0.3s ease;
+}
+@keyframes modalPop { from { transform: scale(0.95) translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+.leadmagnet-modal h3 { font-size: 1.1rem; font-weight: 700; }
+.leadmagnet-close {
+  position: absolute; top: 0.75rem; right: 0.75rem;
+  width: 28px; height: 28px; border-radius: var(--r-full);
+  border: 1px solid var(--border); background: var(--bg);
+  cursor: pointer; display: grid; place-items: center;
+  font-size: 0.8rem; color: var(--muted); font-family: var(--font-body);
+  transition: border-color 0.15s;
+}
+.leadmagnet-close:hover { border-color: var(--accent); color: var(--accent); }
+
 /* ═══ Responsive ═══ */
 @media (min-width: 768px) {
   .nav-links { display: flex; }

@@ -28,14 +28,14 @@ export default function Impressum() {
             <h1 className="section-title" style={{ marginBottom: "1.5rem" }}>Impressum</h1>
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>Angaben gemäß § 5 TMG</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>
-              [Dein Vor- und Nachname]<br />[Straße und Hausnummer]<br />[PLZ Ort]<br />[Land]
+              Robert Engel<br />Iserlohn<br />Nordrhein-Westfalen, Deutschland
             </p>
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>Kontakt</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>
-              E-Mail: traveling.prof@outlook.de<br />Instagram: @traveling.prof
+              E-Mail: traveling.prof@outlook.de<br />Instagram: <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>@traveling.prof</a>
             </p>
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
-            <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>[Dein Vor- und Nachname]<br />[Adresse wie oben]</p>
+            <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>Robert Engel<br />Iserlohn, Deutschland</p>
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>Haftungsausschluss</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>
               Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden.

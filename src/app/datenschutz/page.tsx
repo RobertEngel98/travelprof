@@ -34,7 +34,7 @@ export default function Datenschutz() {
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>2. Verantwortliche Stelle</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>
-              [Dein Vor- und Nachname]<br />[Straße]<br />[PLZ Ort]<br />E-Mail: traveling.prof@outlook.de
+              Robert Engel<br />Iserlohn, Nordrhein-Westfalen<br />Deutschland<br />E-Mail: traveling.prof@outlook.de
             </p>
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>3. Hosting</h2>
