@@ -264,12 +264,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="hero-visual">
-                <div className="hero-placeholder">
-                  <span className="icon">✈️</span>
-                  <strong>Dein Foto hier</strong>
-                  Ersetze mit einem Bild von dir im Urlaub oder im Flieger
-                  <span className="hint">→ /public/hero.jpg</span>
-                </div>
+                <img src="/hero.jpg" alt="Business Class Reisen mit traveling.prof" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
             </div>
           </div>
@@ -279,11 +274,7 @@ export default function Home() {
         <section style={{ paddingTop: 0, paddingBottom: "2rem" }} aria-label="Video">
           <div className="container">
             <div className="video-banner">
-              <div className="hero-placeholder" style={{ aspectRatio: "21/8" }}>
-                <span className="icon">🎬</span>
-                <strong>Urlaubsvideo hier einbetten</strong>
-                <span className="hint">→ /public/hero-video.mp4</span>
-              </div>
+              <img src="/banner.jpg" alt="Traumstrand – smarter reisen mit traveling.prof" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               <div className="video-overlay"><span>📍 Nächstes Abenteuer lädt...</span></div>
             </div>
           </div>
@@ -306,13 +297,13 @@ export default function Home() {
             <p className="section-sub">Konkrete, umsetzbare Travel Hacks statt leerer Versprechen. Jeder Hack basiert auf echten Buchungen und eigenen Erfahrungen.</p>
             <div className="cards-row">
               {[
-                { e: "✈️", h: "Meilen & Punkte", p: "Lerne, wie du mit Amex, Payback & Miles and More bei jedem Einkauf Meilen sammelst – ohne mehr auszugeben." },
-                { e: "🥂", h: "Lounges & Upgrades", p: "Strategien für Lounge-Zugang und Upgrades in Business/First – auch ohne Vielfliegerstatus." },
-                { e: "🏨", h: "Hotels & Hidden Deals", p: "Hotels smarter buchen, Status nutzen und kostenlose Upgrades herausholen." },
-                { e: "📲", h: "Praxis-Reels", p: "Echte Buchungen, echte Routen, echte Preise – Schritt für Schritt zum Nachmachen." },
+                { img: "/card-meilen.jpg", h: "Meilen & Punkte", p: "Lerne, wie du mit Amex, Payback & Miles and More bei jedem Einkauf Meilen sammelst – ohne mehr auszugeben." },
+                { img: "/card-lounge.jpg", h: "Lounges & Upgrades", p: "Strategien für Lounge-Zugang und Upgrades in Business/First – auch ohne Vielfliegerstatus." },
+                { img: "/card-hotel.jpg", h: "Hotels & Hidden Deals", p: "Hotels smarter buchen, Status nutzen und kostenlose Upgrades herausholen." },
+                { img: "/card-content.jpg", h: "Praxis-Reels", p: "Echte Buchungen, echte Routen, echte Preise – Schritt für Schritt zum Nachmachen." },
               ].map((c, i) => (
                 <article className="card" key={i}>
-                  <div className="card-emoji">{c.e}</div>
+                  <div className="card-img"><img src={c.img} alt={c.h} /></div>
                   <h3>{c.h}</h3>
                   <p>{c.p}</p>
                 </article>
@@ -342,8 +333,8 @@ export default function Home() {
                 </ul>
               </div>
               <div>
-                <article className="card">
-                  <div className="card-emoji">📍</div>
+                <div className="about-img-wrap"><img src="/about.jpg" alt="Reisen mit traveling.prof" className="about-img" /></div>
+                <article className="card" style={{ marginTop: "1rem" }}>
                   <h3>Meine Mission</h3>
                   <p style={{ marginBottom: "0.6rem" }}>Luxusreisen sind kein &quot;nur für die anderen&quot;-Ding. Mit den richtigen Strategien kannst du:</p>
                   <ul className="check-list">
@@ -504,14 +495,15 @@ export default function Home() {
             <p className="section-sub">In meinen Reels und Stories nehme ich dich live mit: in Lounges, Business Cabins und an Traumziele.</p>
             <div className="gallery">
               {[
-                { l: "Reel", t: "\"Eco-Preis, Business fliegen\" – Beispiel-Route mit Ersparnis" },
-                { l: "Story", t: "Live-Einblicke in Airport-Lounges und Check-in-Tricks" },
-                { l: "DM", t: "Community-Fragen fließen direkt in neuen Content ein" },
-                { l: "Hack", t: "Konkrete Buchungsschritte für bessere Seats und mehr Benefits" },
+                { l: "Reel", t: "\"Eco-Preis, Business fliegen\" – Beispiel-Route mit Ersparnis", img: "/gallery-1.jpg" },
+                { l: "Story", t: "Live-Einblicke in Airport-Lounges und Check-in-Tricks", img: "/gallery-2.jpg" },
+                { l: "DM", t: "Community-Fragen fließen direkt in neuen Content ein", img: "/gallery-3.jpg" },
+                { l: "Hack", t: "Konkrete Buchungsschritte für bessere Seats und mehr Benefits", img: "/gallery-4.jpg" },
               ].map((g, i) => (
-                <div className="gallery-card" key={i}>
+                <div className="gallery-card" key={i} style={{ backgroundImage: `url(${g.img})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+                  <div className="gallery-overlay" />
                   <span className="gallery-label">{g.l}</span>
-                  <span>{g.t}</span>
+                  <span className="gallery-text">{g.t}</span>
                 </div>
               ))}
             </div>

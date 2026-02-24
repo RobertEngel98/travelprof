@@ -273,8 +273,24 @@ section { padding: 4.5rem 0; }
   background: var(--accent-light); display: grid; place-items: center;
   font-size: 1.15rem; margin-bottom: 0.85rem;
 }
+.card-img {
+  width: 100%; height: 140px; border-radius: var(--r-lg);
+  overflow: hidden; margin-bottom: 0.85rem;
+}
+.card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.3s;
+}
+.card:hover .card-img img { transform: scale(1.05); }
 .card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--text); }
 .card p { font-size: 0.85rem; color: var(--text-sub); line-height: 1.6; }
+
+/* ── About image ── */
+.about-img-wrap {
+  border-radius: var(--r-2xl); overflow: hidden;
+  box-shadow: var(--shadow-md); aspect-ratio: 4/3;
+}
+.about-img { width: 100%; height: 100%; object-fit: cover; }
 
 /* ── Split (About) ── */
 .split { display: grid; gap: 2.5rem; }
@@ -450,15 +466,24 @@ section { padding: 4.5rem 0; }
 .gallery-card {
   position: relative; border-radius: var(--r-xl); overflow: hidden;
   background: var(--bg-warm); border: 1px solid var(--border-soft);
-  aspect-ratio: 9/16; display: flex; align-items: center; justify-content: center;
-  font-size: 0.8rem; color: var(--text-sub); text-align: center; padding: 1rem;
+  aspect-ratio: 9/16; display: flex; align-items: flex-end; justify-content: center;
+  font-size: 0.8rem; color: #fff; text-align: center; padding: 1rem;
   transition: transform 0.2s;
 }
 .gallery-card:hover { transform: scale(1.02); }
+.gallery-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+  pointer-events: none;
+}
+.gallery-text {
+  position: relative; z-index: 1; font-size: 0.78rem; line-height: 1.4;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
 .gallery-label {
-  position: absolute; top: 0.5rem; left: 0.5rem;
+  position: absolute; top: 0.5rem; left: 0.5rem; z-index: 2;
   padding: 0.2rem 0.5rem; border-radius: var(--r-full);
-  background: var(--bg-white); border: 1px solid var(--border);
+  background: rgba(255,255,255,0.95); border: none;
   font-size: 0.62rem; font-weight: 700; color: var(--accent);
   text-transform: uppercase; letter-spacing: 0.04em;
 }
