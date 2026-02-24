@@ -175,23 +175,84 @@ function ResultsView({result,lead}:{result:SetupResult;lead:LeadData}) {
   </div>;
 }
 
+// Stripe Payment Link - Redirect-URL im Stripe Dashboard auf:
+// https://travelprof.vercel.app/analyse?success=true
+const STRIPE_LINK = "https://buy.stripe.com/28EcN431x9Ur9nR7X46c00g";
+
+function PaywallScreen({onAlreadyPaid}:{onAlreadyPaid:()=>void}) {
+  return <div className="a-step a-fadein">
+    <div className="a-step-emoji">🔓</div>
+    <h2 className="a-step-title">Deine Analyse ist fertig!</h2>
+    <p className="a-step-sub">Schalte jetzt deinen personalisierten Meilen-Plan frei.</p>
+    <div style={{maxWidth:420,margin:"0 auto"}}>
+      <div style={{background:"#1c1917",border:"1px solid #292524",borderRadius:16,padding:"1.5rem",marginBottom:"1.25rem"}}>
+        <div style={{textAlign:"center",marginBottom:"1rem"}}>
+          <span style={{fontFamily:"Playfair Display,serif",fontSize:"2.5rem",fontWeight:800,color:"#e8720c"}}>7 €</span>
+          <span style={{fontSize:"0.85rem",color:"#78716c",marginLeft:"0.5rem"}}>einmalig</span>
+        </div>
+        <div style={{display:"grid",gap:"0.5rem"}}>
+          {[
+            "Personalisiertes Karten-Setup mit Reihenfolge",
+            "Meilenpotenzial-Berechnung (monatlich + jaehrlich)",
+            "Individuelle Sammeltipps mit Affiliate-Boni",
+            "Buchungsstrategien fuer dein Reiseziel",
+            "Hotel- und Lounge-Empfehlungen",
+            "Naechste Schritte mit konkreten Links",
+          ].map((item,i)=><div key={i} style={{display:"flex",gap:"0.5rem",alignItems:"flex-start",fontSize:"0.85rem",color:"#d6d3d1"}}>
+            <span style={{color:"#22c55e",fontWeight:700,flexShrink:0}}>✓</span>{item}
+          </div>)}
+        </div>
+      </div>
+      <a href={STRIPE_LINK} className="a-submit" style={{display:"block",textAlign:"center",textDecoration:"none",marginBottom:"0.75rem"}}>
+        Jetzt fuer 7 € freischalten
+      </a>
+      <div style={{display:"flex",justifyContent:"center",gap:"1rem",marginBottom:"0.75rem"}}>
+        {["🔒 SSL-verschluesselt","💳 Stripe","↩️ Geld-zurueck-Garantie"].map((t,i)=><span key={i} style={{fontSize:"0.7rem",color:"#57534e"}}>{t}</span>)}
+      </div>
+      <p style={{textAlign:"center",fontSize:"0.72rem",color:"#44403c"}}>
+        Bereits bezahlt?{" "}
+        <button onClick={onAlreadyPaid} style={{background:"none",border:"none",color:"#e8720c",cursor:"pointer",fontFamily:"inherit",fontSize:"0.72rem",textDecoration:"underline"}}>
+          Ergebnis anzeigen
+        </button>
+      </p>
+    </div>
+  </div>;
+}
+
 export default function AnalysePage() {
   const [step,setStep]=useState(0);
   const [answers,setAnswers]=useState<Answers>({});
   const [lead,setLead]=useState<LeadData|null>(null);
   const [result,setResult]=useState<SetupResult|null>(null);
   const [loading,setLoading]=useState(false);
-  const total=questions.length+2;
+  const [paid,setPaid]=useState(false);
+
+  useEffect(()=>{
+    const params=new URLSearchParams(window.location.search);
+    if(params.get("success")==="true"||localStorage.getItem("analyse-paid")==="true"){
+      setPaid(true);
+      localStorage.setItem("analyse-paid","true");
+      if(params.get("success")==="true") window.history.replaceState({},"","/analyse");
+    }
+  },[]);
+
+  const total=questions.length+3;
   const handleAnswer=(qId:string,v:string)=>{setAnswers(p=>({...p,[qId]:v}));setTimeout(()=>setStep(s=>s+1),300);};
-  const handleLead=(d:LeadData)=>{setLoading(true);setLead(d);setTimeout(()=>{setResult(generateResult(answers));setLoading(false);setStep(questions.length+1);},2200);};
+  const handlePaid=()=>{setPaid(true);localStorage.setItem("analyse-paid","true");setStep(questions.length+1);};
+  const handleLead=(d:LeadData)=>{setLoading(true);setLead(d);setTimeout(()=>{setResult(generateResult(answers));setLoading(false);setStep(questions.length+2);},2200);};
   useEffect(()=>{window.scrollTo({top:0,behavior:"smooth"});},[step]);
-  const isQuiz=step<questions.length,isLead=step===questions.length,isResult=step===questions.length+1;
+
+  const isQuiz=step<questions.length;
+  const isPaywall=step===questions.length&&!paid;
+  const isLead=step===questions.length+1||(step===questions.length&&paid);
+  const isResult=step===questions.length+2;
 
   return <div className="a-page">
-    <div className="a-header"><Link href="/" className="a-header-brand"><div className="a-header-mark">TP</div><div><div className="a-header-name">traveling.prof</div><div className="a-header-tag">Travel Hacking Analyse</div></div></Link>{step>0&&!isResult&&<button onClick={()=>setStep(s=>s-1)} style={{background:"none",border:"1px solid #292524",borderRadius:8,padding:"0.35rem 0.75rem",color:"#78716c",cursor:"pointer",fontSize:"0.78rem",fontFamily:"inherit"}}>← Zurück</button>}</div>
+    <div className="a-header"><Link href="/" className="a-header-brand"><div className="a-header-mark">TP</div><div><div className="a-header-name">traveling.prof</div><div className="a-header-tag">Travel Hacking Analyse</div></div></Link>{step>0&&!isResult&&<button onClick={()=>setStep(s=>s-1)} style={{background:"none",border:"1px solid #292524",borderRadius:8,padding:"0.35rem 0.75rem",color:"#78716c",cursor:"pointer",fontSize:"0.78rem",fontFamily:"inherit"}}>← Zurueck</button>}</div>
     <div className="a-container">
       {!isResult&&<div className="a-progress"><div className="a-progress-bar" style={{width:`${Math.round(((step+1)/total)*100)}%`}}/><span className="a-progress-label">Schritt {step+1} von {total}</span></div>}
       {isQuiz&&<QuizStep q={questions[step]} onSelect={v=>handleAnswer(questions[step].id,v)} selected={answers[questions[step].id]}/>}
+      {isPaywall&&<PaywallScreen onAlreadyPaid={handlePaid}/>}
       {isLead&&!loading&&<LeadForm onSubmit={handleLead} loading={loading}/>}
       {isLead&&loading&&<LoadingScreen/>}
       {isResult&&result&&lead&&<ResultsView result={result} lead={lead}/>}
