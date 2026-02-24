@@ -1,421 +1,380 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import Link from "next/link";
 
-/* ─── FAQ Component ─── */
-function FaqItem({ q, a }: { q: string; a: string }) {
+/* ─── Scroll-to-top button ─── */
+function ScrollTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <button
+      className={`scroll-top ${show ? "visible" : ""}`}
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      aria-label="Nach oben scrollen"
+    >
+      ↑
+    </button>
+  );
+}
+
+/* ─── FAQ Accordion ─── */
+function Faq({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="faq-item" onClick={() => setOpen(!open)}>
+    <div className={`faq-item ${open ? "open" : ""}`} onClick={() => setOpen(!open)}>
       <div className="faq-q">
         {q}
-        <span className="toggle">{open ? "−" : "+"}</span>
+        <span className="faq-toggle">+</span>
       </div>
       {open && <div className="faq-a">{a}</div>}
     </div>
   );
 }
 
-/* ─── Travel-Hack Finder (Custom GPT Placeholder) ─── */
-function TravelHackFinder() {
-  const [query, setQuery] = useState("");
+/* ─── Travel Hack Finder ─── */
+function HackFinder() {
+  const [q, setQ] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const submit = (e: FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    if (!q.trim()) return;
     setLoading(true);
     setResult("");
-    // Simulate GPT response – replace with actual API call to your Custom GPT
     setTimeout(() => {
       setResult(
-        `Für "${query}" empfehle ich: Nutze Meilen-Transfers über Payback → Miles & More. Buche über den Umweg-Trick (z.B. Open-Jaw), um Business Class zum halben Preis zu fliegen. Schau dir meinen Reel dazu auf Instagram an!`
+        `Für „${q}" empfehle ich: Nutze Meilen-Transfers über Payback → Miles & More. ` +
+          `Buche über den Open-Jaw-Trick, um Business Class zum halben Preis zu fliegen. ` +
+          `Mehr Details gibt's in meinem Crashkurs oder als Reel auf Instagram!`
       );
       setLoading(false);
     }, 1500);
   };
 
   return (
-    <div className="tool-section">
-      <p className="section-label">Smart Travel Tool</p>
+    <div className="tool-box">
+      <div className="section-eyebrow"><div className="section-eyebrow-dot" />Smart Travel Tool</div>
       <h2>Finde deinen Travel Hack in 10 Sekunden</h2>
       <p>Gib dein Reiseziel oder deine Frage ein – und ich zeige dir den passenden Hack.</p>
-      <form onSubmit={handleSubmit}>
-        <div className="tool-input-group">
-          <input
-            className="tool-input"
-            type="text"
-            placeholder="z.B. 'Business Class nach Dubai' oder 'Lounge-Zugang ohne Status'"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <button type="submit" className="btn btn-primary btn-sm">
-            🔍 Finden
-          </button>
+      <form onSubmit={submit}>
+        <div className="tool-form">
+          <input className="tool-input" type="text" placeholder="z.B. 'Business Class Dubai' oder 'Lounge ohne Status'" value={q} onChange={e => setQ(e.target.value)} />
+          <button type="submit" className="btn btn-primary btn-sm">🔍 Finden</button>
         </div>
       </form>
       <div className={`tool-result ${loading ? "loading" : ""}`}>
-        {loading
-          ? "⏳ Suche den besten Hack für dich..."
-          : result
-          ? result
-          : "💡 Dein persönlicher Travel-Hack erscheint hier..."}
+        {loading ? "⏳ Suche den besten Hack für dich..." : result || "💡 Dein persönlicher Travel-Hack erscheint hier..."}
       </div>
     </div>
   );
 }
 
-/* ─── Main Page ─── */
-export default function Home() {
+/* ─── Header with scroll detection ─── */
+function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const links = [
+    { href: "#hacks", label: "Travel Hacks" },
+    { href: "#about", label: "Über mich" },
+    { href: "#erfolge", label: "Erfolge" },
+    { href: "#produkte", label: "Produkte" },
+    { href: "#freebies", label: "Freebies" },
+    { href: "#kreditkarten", label: "Kreditkarten" },
+    { href: "#community", label: "Community" },
+    { href: "#kontakt", label: "Kontakt" },
+  ];
+
+  return (
+    <header className={scrolled ? "scrolled" : ""}>
+      <div className="container">
+        <nav className="nav">
+          <Link href="/" className="nav-brand" style={{ textDecoration: "none" }}>
+            <div className="nav-brand-mark">TP</div>
+            <div className="nav-brand-text">
+              <div className="nav-brand-name">traveling.prof</div>
+              <div className="nav-brand-tag">Travel Hacks · Meilen · Luxusreisen</div>
+            </div>
+          </Link>
+          <div className="nav-links">
+            {links.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
+          </div>
+          <div className="nav-actions">
+            <div className="nav-cta-desktop">
+              <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
+                Instagram folgen →
+              </a>
+            </div>
+            <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menü">
+              {menuOpen ? "✕" : "☰"}
+            </button>
+          </div>
+        </nav>
+      </div>
+      <div className={`mobile-nav ${menuOpen ? "open" : ""}`}>
+        {links.map(l => <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>{l.label}</a>)}
+        <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ marginTop: "0.75rem", justifyContent: "center" }}>
+          Instagram folgen →
+        </a>
+      </div>
+    </header>
+  );
+}
+
+/* ═══ PAGE ═══ */
+export default function Home() {
   const year = new Date().getFullYear();
 
   return (
     <div className="page">
-      {/* ═══ Header ═══ */}
-      <header>
-        <div className="container">
-          <nav className="nav">
-            <div className="nav-left">
-              <div className="logo-mark">TP</div>
-              <div className="logo-text">
-                <span className="logo-title">traveling.prof</span>
-                <span className="logo-sub">Travel Hacks • Meilen • Luxusreisen</span>
-              </div>
-            </div>
-            <div className="nav-links">
-              <a href="#hacks">Travel Hacks</a>
-              <a href="#about">Über mich</a>
-              <a href="#erfolge">Erfolgsgeschichten</a>
-              <a href="#freebies">Freebies</a>
-              <a href="#kreditkarten">Kreditkarten</a>
-              <a href="#community">Community</a>
-              <a href="#contact">Kontakt</a>
-            </div>
-            <div className="nav-cta">
-              <a
-                href="https://www.instagram.com/traveling.prof"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary btn-sm"
-              >
-                Instagram →
-              </a>
-            </div>
-            <button
-              className="nav-toggle"
-              type="button"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              Menü <span>{menuOpen ? "✕" : "☰"}</span>
-            </button>
-          </nav>
-        </div>
-        <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-          {["#hacks", "#about", "#erfolge", "#freebies", "#kreditkarten", "#community", "#contact"].map(
-            (href) => (
-              <a key={href} href={href} onClick={() => setMenuOpen(false)}>
-                {href.replace("#", "").charAt(0).toUpperCase() + href.replace("#", "").slice(1)}
-              </a>
-            )
-          )}
-        </div>
-      </header>
+      <ScrollTop />
+      <Header />
 
       <main>
         {/* ═══ Hero ═══ */}
-        <section className="hero">
+        <section className="hero" aria-label="Hero">
           <div className="container">
             <div className="hero-grid">
               <div>
-                <div className="eyebrow">
-                  <div className="eyebrow-dot" />
-                  Mehr Reisen, weniger zahlen – mit echten Praxis-Hacks
+                <div className="hero-badge">
+                  <div className="hero-badge-pulse" />
+                  Jetzt starten – mehr Reise, weniger zahlen
                 </div>
-                <h1 className="hero-title">
-                  Lerne, wie du{" "}
-                  <span className="hero-highlight">smarter reist</span>: Business
-                  Class, Lounges &amp; Traumhotels zum schlauen Preis.
-                </h1>
-                <p className="hero-text">
-                  Auf <strong>@traveling.prof</strong> zeige ich dir konkrete
-                  Strategien, wie du mit Buchungstricks, Meilen, Punkten &amp;
-                  cleveren Travel Hacks mehr aus deinem Reisebudget herausholst –
-                  ohne auf Komfort zu verzichten.
+                <h1>Fliege <em>Business Class</em> zum Economy-Preis. Lerne wie.</h1>
+                <p className="hero-desc">
+                  Auf <strong>@traveling.prof</strong> zeige ich dir Schritt für Schritt, wie du mit Meilen, Punkten &amp; cleveren Buchungstricks smarter reist – Business Class, Lounges &amp; Traumhotels, ohne dein Budget zu sprengen.
                 </p>
-                <div className="hero-cta">
-                  <a
-                    href="https://www.instagram.com/traveling.prof"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary"
-                  >
-                    Zu meinem Instagram-Profil
+                <div className="hero-buttons">
+                  <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg">
+                    Kostenlos auf Instagram folgen
                   </a>
-                  <a href="#freebies" className="btn btn-outline">
-                    Gratis Travel-Hack-Update sichern
-                  </a>
+                  <a href="#produkte" className="btn btn-secondary">Produkte ansehen</a>
                 </div>
-                <div className="hero-meta">
-                  <span>
-                    🌍 <strong>Fast 30 Länder</strong> bereist
-                  </span>
-                  <span>✈️ Fokus: Hacks, Lounges, Upgrades</span>
-                  <span>📲 Tägliche Reels &amp; Stories</span>
+                <div className="hero-stats">
+                  <div className="hero-stat">🌍 <strong>30 Länder</strong> bereist</div>
+                  <div className="hero-stat">✈️ Fokus <strong>Business Class</strong></div>
+                  <div className="hero-stat">📲 Tägliche <strong>Reels &amp; Stories</strong></div>
                 </div>
-
-                {/* ProvenExpert Badge */}
-                <div style={{ marginTop: "1.25rem" }}>
-                  <div className="proven-expert-badge">
-                    <div>
-                      <div className="proven-stars">★★★★★</div>
-                      <div className="proven-text">
-                        <span className="proven-score">5.0/5</span> –{" "}
-                        ProvenExpert
-                      </div>
-                    </div>
-                    <span style={{ fontSize: "0.72rem", color: "var(--muted)" }}>
-                      Verifizierte Bewertungen
-                    </span>
-                  </div>
+                <div className="proven-mini">
+                  <div><div className="proven-stars">★★★★★</div></div>
+                  <div className="proven-info"><strong>5.0 / 5</strong><br />ProvenExpert · Verifiziert</div>
                 </div>
               </div>
-
-              {/* Hero Image (Screenshot 2 – Bild von dir) */}
-              <div className="hero-image">
-                <div className="hero-image-placeholder">
+              <div className="hero-visual">
+                <div className="hero-placeholder">
                   <span className="icon">✈️</span>
-                  <strong>Dein Bild hier</strong>
-                  <span>
-                    Ersetze diesen Platzhalter mit einem Bild von dir im Urlaub oder
-                    im Flieger.
-                  </span>
-                  <span style={{ fontSize: "0.75rem", marginTop: "0.5rem", color: "var(--accent)" }}>
-                    → Datei: /public/hero.jpg
-                  </span>
+                  <strong>Dein Foto hier</strong>
+                  Ersetze mit einem Bild von dir im Urlaub oder im Flieger
+                  <span className="hint">→ /public/hero.jpg</span>
                 </div>
-                {/* Wenn Bild vorhanden: <img src="/hero.jpg" alt="traveling.prof im Flieger" /> */}
               </div>
             </div>
           </div>
         </section>
 
-        {/* ═══ Header Video ═══ */}
-        <section style={{ paddingTop: 0 }}>
+        {/* ═══ Video ═══ */}
+        <section style={{ paddingTop: 0, paddingBottom: "2rem" }} aria-label="Video">
           <div className="container">
-            <div className="hero-video-section">
-              {/* Ersetze mit deinem Video: <video src="/hero-video.mp4" autoPlay muted loop playsInline /> */}
-              <div
-                className="hero-image-placeholder"
-                style={{ aspectRatio: "16/7" }}
-              >
+            <div className="video-banner">
+              <div className="hero-placeholder" style={{ aspectRatio: "21/8" }}>
                 <span className="icon">🎬</span>
                 <strong>Urlaubsvideo hier einbetten</strong>
-                <span>Lege dein Video als /public/hero-video.mp4 ab</span>
+                <span className="hint">→ /public/hero-video.mp4</span>
               </div>
-              <div className="hero-video-overlay">
-                <p>📍 Nächstes Abenteuer lädt...</p>
-              </div>
+              <div className="video-overlay"><span>📍 Nächstes Abenteuer lädt...</span></div>
             </div>
           </div>
         </section>
 
-        <hr className="section-divider" />
+        <hr className="divider" />
 
-        {/* ═══ Travel Hack Finder Tool ═══ */}
-        <section id="tool">
-          <div className="container">
-            <TravelHackFinder />
-          </div>
+        {/* ═══ Hack Finder ═══ */}
+        <section id="tool" aria-label="Travel Hack Finder">
+          <div className="container"><HackFinder /></div>
         </section>
 
-        <hr className="section-divider" />
+        <hr className="divider" />
 
-        {/* ═══ Was dich erwartet ═══ */}
-        <section id="hacks">
+        {/* ═══ Travel Hacks ═══ */}
+        <section id="hacks" aria-label="Travel Hacks">
           <div className="container">
-            <p className="section-label">Inhalte auf meinem Kanal</p>
-            <h2 className="section-title">
-              Was du bei{" "}
-              <span className="hero-highlight">@traveling.prof</span> lernst
-            </h2>
-            <p className="section-sub">
-              Statt nur schöne Bilder zu posten, bekommst du bei mir vor allem
-              eines: <strong>konkrete, umsetzbare Travel Hacks</strong>, mit denen
-              du günstiger buchst, besser fliegst und mehr aus jedem Trip
-              herausholst.
-            </p>
-            <div className="cards-grid">
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />Inhalte</div>
+            <h2 className="section-title">Was du bei <em>@traveling.prof</em> lernst</h2>
+            <p className="section-sub">Konkrete, umsetzbare Travel Hacks statt leerer Versprechen. Jeder Hack basiert auf echten Buchungen und eigenen Erfahrungen.</p>
+            <div className="cards-row">
               {[
-                { icon: "✈️", title: "Meilen & Punkte verstehen", text: "Wie du mit Kreditkarten, Buchungsportalen & Alltagsausgaben Meilen und Punkte sammelst – ohne dafür mehr Geld auszugeben als vorher." },
-                { icon: "🥂", title: "Lounges & Upgrades", text: "Konkrete Strategien für Lounge-Zugang, Upgrades in Business/First und bessere Flug-Deals – auch ohne Vielfliegerstatus." },
-                { icon: "🏨", title: "Hotels & Hidden Deals", text: "Wie du Hotels smarter buchst, Status-Vorteile nutzt und Upgrades herausholst – plus Tricks für Late Check-out & bessere Zimmer." },
-                { icon: "📲", title: "Reels voller Praxis-Beispiele", text: "Reale Buchungen, echte Routen, echte Preise: Schritt für Schritt zum Nachmachen im Reel-Format." },
+                { e: "✈️", h: "Meilen & Punkte", p: "Lerne, wie du mit Amex, Payback & Miles and More bei jedem Einkauf Meilen sammelst – ohne mehr auszugeben." },
+                { e: "🥂", h: "Lounges & Upgrades", p: "Strategien für Lounge-Zugang und Upgrades in Business/First – auch ohne Vielfliegerstatus." },
+                { e: "🏨", h: "Hotels & Hidden Deals", p: "Hotels smarter buchen, Status nutzen und kostenlose Upgrades herausholen." },
+                { e: "📲", h: "Praxis-Reels", p: "Echte Buchungen, echte Routen, echte Preise – Schritt für Schritt zum Nachmachen." },
               ].map((c, i) => (
-                <div className="card" key={i}>
-                  <div className="card-icon">{c.icon}</div>
-                  <h3 className="card-title">{c.title}</h3>
-                  <p className="card-text">{c.text}</p>
-                </div>
+                <article className="card" key={i}>
+                  <div className="card-emoji">{c.e}</div>
+                  <h3>{c.h}</h3>
+                  <p>{c.p}</p>
+                </article>
               ))}
             </div>
           </div>
         </section>
 
-        <hr className="section-divider" />
+        <hr className="divider" />
 
         {/* ═══ Über mich ═══ */}
-        <section id="about">
+        <section id="about" aria-label="Über mich">
           <div className="container">
             <div className="split">
               <div>
-                <p className="section-label">Über mich</p>
-                <h2 className="section-title">
-                  Vom &quot;normalen&quot; Urlauber zum smarten Traveller.
-                </h2>
-                <p className="section-sub">
-                  Ich war in fast 30 Ländern unterwegs – von Europa über die USA
-                  bis Südafrika, Costa Rica, Panama und die VAE. Irgendwann habe
-                  ich gemerkt: Es macht keinen Sinn, immer nur &quot;normal&quot; zu
-                  buchen, wenn es clevere Wege gibt, deutlich mehr rauszuholen.
-                </p>
-                <ul className="list">
+                <div className="section-eyebrow"><div className="section-eyebrow-dot" />Über mich</div>
+                <h2 className="section-title">Vom normalen Urlauber zum <em>smarten Traveller</em></h2>
+                <p className="section-sub">Fast 30 Länder – von Europa über die USA bis Südafrika, Costa Rica, Panama und die VAE. Irgendwann habe ich gemerkt: Es gibt clevere Wege, deutlich mehr rauszuholen.</p>
+                <ul className="check-list">
                   {[
-                    ["✓", "Praxis statt Theorie:", "Alles, was du bei mir lernst, setze ich selbst ein."],
-                    ["✓", "Fokus auf Lifestyle & Effizienz:", "Nicht nur billiger reisen, sondern smarter."],
-                    ["✓", "Humor inklusive:", "Lustige Stories aus der Flugzeugkabine & dem Flughafenalltag."],
-                  ].map(([bullet, bold, text], i) => (
-                    <li key={i}>
-                      <div className="list-bullet">{bullet}</div>
-                      <div>
-                        <strong>{bold}</strong> {text}
-                      </div>
-                    </li>
+                    ["Praxis statt Theorie:", "Alles, was du lernst, setze ich selbst ein."],
+                    ["Fokus auf Effizienz:", "Nicht nur billiger, sondern smarter reisen."],
+                    ["Echte Zahlen:", "Meine Amex Platinum spart mir über 6.000€ pro Jahr."],
+                  ].map(([b, t], i) => (
+                    <li key={i}><div className="check-mark">✓</div><div><strong>{b}</strong> {t}</div></li>
                   ))}
                 </ul>
               </div>
               <div>
-                <div className="card">
-                  <div className="card-icon">📍</div>
-                  <h3 className="card-title">Meine Mission mit diesem Account</h3>
-                  <p className="card-text" style={{ marginBottom: "0.6rem" }}>
-                    Ich will dir zeigen, dass Luxusreisen kein &quot;nur für die
-                    anderen&quot;-Ding sind. Mit den richtigen Strategien kannst du:
-                  </p>
-                  <ul className="list">
-                    {["Mehrmals im Jahr reisen – ohne dein Konto zu sprengen.", "Flüge & Hotels schlau auswählen.", "Einen Travel-Lifestyle aufbauen, der zu deinem Alltag passt."].map(
-                      (t, i) => (
-                        <li key={i}>
-                          <div className="list-bullet">★</div>
-                          <div>{t}</div>
-                        </li>
-                      )
-                    )}
+                <article className="card">
+                  <div className="card-emoji">📍</div>
+                  <h3>Meine Mission</h3>
+                  <p style={{ marginBottom: "0.6rem" }}>Luxusreisen sind kein &quot;nur für die anderen&quot;-Ding. Mit den richtigen Strategien kannst du:</p>
+                  <ul className="check-list">
+                    {["Mehrmals im Jahr reisen – ohne dein Konto zu sprengen.", "Business Class zum Economy-Preis fliegen.", "Einen Travel-Lifestyle aufbauen, der zu deinem Alltag passt."].map((t, i) => (
+                      <li key={i}><div className="check-mark">★</div><div>{t}</div></li>
+                    ))}
                   </ul>
-                </div>
+                </article>
               </div>
             </div>
           </div>
         </section>
 
-        <hr className="section-divider" />
+        <hr className="divider" />
 
         {/* ═══ Erfolgsgeschichten ═══ */}
-        <section id="erfolge">
+        <section id="erfolge" aria-label="Erfolgsgeschichten">
           <div className="container">
-            <p className="section-label">Proof of Strategy</p>
-            <h2 className="section-title">Erfolgsgeschichten aus der Community</h2>
-            <p className="section-sub">
-              Echte Ergebnisse von echten Menschen – so setzen Follower meine
-              Strategien um.
-            </p>
-            <div className="testimonials-grid">
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />Proof of Strategy</div>
+            <h2 className="section-title">Erfolgsgeschichten aus der <em>Community</em></h2>
+            <p className="section-sub">Echte Ergebnisse von echten Menschen.</p>
+            <div className="testimonials-row">
               {[
-                { quote: "Dank der Meilen-Strategie von @traveling.prof habe ich Business Class nach Dubai für nur 340€ gebucht. Normalerweise hätte ich über 3.000€ bezahlt!", name: "Marco S.", detail: "Business Class nach Dubai", initials: "MS" },
-                { quote: "Ich hatte null Ahnung von Meilen. Nach 3 Monaten hatte ich genug Punkte für einen Lounge-Zugang und einen Freiflug nach Mallorca für die ganze Familie.", name: "Lisa K.", detail: "Family-Trip nach Mallorca", initials: "LK" },
-                { quote: "Die Hotel-Hacks sind Gold wert. Suite-Upgrade in Abu Dhabi – kostenlos. Hätte ich ohne die Tipps nie bekommen.", name: "Thomas R.", detail: "Suite-Upgrade Abu Dhabi", initials: "TR" },
+                { q: "Dank der Meilen-Strategie habe ich Business Class nach Dubai für nur 340€ gebucht. Normalerweise über 3.000€!", n: "Marco S.", d: "Business Class Dubai", i: "MS" },
+                { q: "Ich hatte null Ahnung von Meilen. Nach 3 Monaten: Lounge-Zugang und ein Freiflug nach Mallorca für die ganze Familie.", n: "Lisa K.", d: "Family-Trip Mallorca", i: "LK" },
+                { q: "Die Hotel-Hacks sind Gold wert. Suite-Upgrade in Abu Dhabi – kostenlos. Hätte ich ohne die Tipps nie bekommen.", n: "Thomas R.", d: "Suite-Upgrade Abu Dhabi", i: "TR" },
               ].map((t, i) => (
-                <div className="testimonial-card" key={i}>
-                  <p className="testimonial-quote">&ldquo;{t.quote}&rdquo;</p>
+                <article className="testimonial" key={i}>
+                  <blockquote>&ldquo;{t.q}&rdquo;</blockquote>
                   <div className="testimonial-author">
-                    <div className="testimonial-avatar">{t.initials}</div>
-                    <div>
-                      <div className="testimonial-name">{t.name}</div>
-                      <div className="testimonial-detail">{t.detail}</div>
-                    </div>
+                    <div className="testimonial-avatar">{t.i}</div>
+                    <div className="testimonial-meta"><div className="name">{t.n}</div><div className="detail">{t.d}</div></div>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
           </div>
         </section>
 
-        <hr className="section-divider" />
+        <hr className="divider" />
+
+        {/* ═══ Produkte (Alfima / Stripe) ═══ */}
+        <section id="produkte" aria-label="Produkte">
+          <div className="container">
+            <div className="products-section">
+              <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+                <div className="section-eyebrow"><div className="section-eyebrow-dot" />Produkte &amp; Kurse</div>
+                <h2 className="section-title">Dein Weg zum <em>smarten Traveller</em></h2>
+                <p className="section-sub" style={{ margin: "0.5rem auto 0", maxWidth: "32rem" }}>Von kostenlos bis Premium – für jedes Level das passende Angebot.</p>
+              </div>
+              <div className="products-grid">
+                {[
+                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Starter-Checkliste", desc: "10 Schritte zum sofortigen Start mit dem Meilensammeln. PDF zum Download.", cta: "Gratis herunterladen" },
+                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Quick-Check Kalkulator", desc: "Finde in 60 Sekunden heraus, wie viele Meilen du pro Jahr sammeln kannst.", cta: "Gratis herunterladen" },
+                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Kreditkarten-Vergleich 2025", desc: "Ehrlicher Vergleich der besten Reise-Kreditkarten im DACH-Raum.", cta: "Gratis herunterladen" },
+                  { tag: "Starter", cls: "starter", price: "14 €", name: "Amex Platinum Lohnt-sich-Rechner", desc: "Interaktiver Excel-Rechner: Trage deine Werte ein und sieh, ob sich die Amex Platinum für dich lohnt.", cta: "Jetzt kaufen" },
+                  { tag: "Starter", cls: "starter", price: "19 €", name: "Top 10 Buchungs-Hacks E-Book", desc: "Die 10 besten Buchungsstrategien für günstigere Flüge und bessere Hotels – mit Screenshots.", cta: "Jetzt kaufen" },
+                  { tag: "Kurs", cls: "core", price: "39 €", name: "Meilen-Crashkurs (Video)", desc: "5-Modul Videokurs: Sammeln, Optimieren, Einlösen. Inkl. Kalkulator und Templates.", cta: "Zum Kurs" },
+                  { tag: "Kurs", cls: "core", price: "119 €", name: "Meilen-Masterclass", desc: "12 Module, 40+ Videos, Workbooks, Community-Zugang (3 Monate) und ein 1:1 Setup-Call.", cta: "Zum Kurs" },
+                  { tag: "Premium", cls: "premium", price: "99 €", name: "1:1 Strategie-Call (60 Min)", desc: "Persönliche Beratung zu deiner individuellen Meilen- und Reisestrategie.", cta: "Termin buchen" },
+                  { tag: "Premium", cls: "premium", price: "249 €/Jahr", name: "VIP Community Mitgliedschaft", desc: "Exklusiver Zugang, wöchentliche Deals, monatliche Live-Calls, Bonuspunkte-System.", cta: "Mitglied werden" },
+                ].map((p, i) => (
+                  <article className="product-card" key={i}>
+                    <div className={`product-tag ${p.cls}`}>{p.tag}</div>
+                    <div className="product-price">{p.price}</div>
+                    <h3>{p.name}</h3>
+                    <p>{p.desc}</p>
+                    <a href="#kontakt" className={`btn btn-sm ${p.cls === "free" ? "btn-secondary" : "btn-primary"}`}>{p.cta}</a>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <hr className="divider" />
 
         {/* ═══ Freebies ═══ */}
-        <section id="freebies">
+        <section id="freebies" aria-label="Freebies">
           <div className="container">
-            <p className="section-label">Kostenlos für dich</p>
-            <h2 className="section-title">Freebies &amp; kostenlose Ressourcen</h2>
-            <p className="section-sub">
-              Starte sofort – mit meinen besten kostenlosen Guides, Checklisten und
-              Tools.
-            </p>
-            <div className="freebies-grid">
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />Kostenlos</div>
+            <h2 className="section-title">Freebies &amp; kostenlose <em>Ressourcen</em></h2>
+            <p className="section-sub">Starte sofort – mit meinen besten kostenlosen Guides, Checklisten und Tools.</p>
+            <div className="freebies-row">
               {[
-                { icon: "📋", badge: "Gratis", title: "Meilen-Starter-Checkliste", text: "Die wichtigsten Schritte, um sofort mit dem Meilensammeln zu starten – kompakt auf einer Seite." },
-                { icon: "🗺️", badge: "Gratis", title: "Top 10 Buchungs-Hacks PDF", text: "Meine 10 besten Buchungstricks für günstigere Flüge und bessere Hotels – sofort umsetzbar." },
-                { icon: "💳", badge: "Gratis", title: "Kreditkarten-Vergleich 2025", text: "Welche Karte lohnt sich wirklich für Meilen & Punkte? Mein ehrlicher Vergleich der besten Optionen." },
+                { e: "📋", h: "Meilen-Starter-Checkliste", p: "Die wichtigsten 10 Schritte, um sofort mit dem Meilensammeln zu starten." },
+                { e: "🗺️", h: "Top 10 Buchungs-Hacks PDF", p: "Meine 10 besten Buchungstricks für günstigere Flüge und bessere Hotels." },
+                { e: "💳", h: "Kreditkarten-Vergleich 2025", p: "Welche Karte lohnt sich wirklich? Mein ehrlicher Vergleich der besten Optionen." },
               ].map((f, i) => (
-                <div className="freebie-card" key={i}>
-                  <div className="card-icon">{f.icon}</div>
-                  <span className="freebie-badge">{f.badge}</span>
-                  <h3 className="card-title">{f.title}</h3>
-                  <p className="card-text">{f.text}</p>
-                  <a href="#contact" className="btn btn-outline btn-sm" style={{ marginTop: "0.5rem", alignSelf: "flex-start" }}>
-                    Jetzt herunterladen →
-                  </a>
-                </div>
+                <article className="freebie" key={i}>
+                  <div className="card-emoji">{f.e}</div>
+                  <div className="freebie-tag">Gratis</div>
+                  <h3>{f.h}</h3>
+                  <p>{f.p}</p>
+                  <a href="#kontakt" className="btn btn-secondary btn-sm">Jetzt herunterladen →</a>
+                </article>
               ))}
             </div>
           </div>
         </section>
 
-        <hr className="section-divider" />
+        <hr className="divider" />
 
         {/* ═══ Kreditkarten Referral ═══ */}
-        <section id="kreditkarten">
+        <section id="kreditkarten" aria-label="Kreditkarten Empfehlungen">
           <div className="container">
-            <p className="section-label">Empfehlungen</p>
-            <h2 className="section-title">
-              Die besten Kreditkarten &amp; Konten für Reisende
-            </h2>
-            <p className="section-sub">
-              Diese Karten nutze ich selbst – und sie sind der Grundstein für
-              smartes Meilensammeln. Über die Links erhältst du die besten
-              aktuellen Angebote.
-            </p>
-            <div className="referral-grid">
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />Empfehlungen</div>
+            <h2 className="section-title">Die besten Kreditkarten für <em>Reisende</em></h2>
+            <p className="section-sub">Diese Karten nutze ich selbst – und sie sind der Grundstein für smartes Meilensammeln.</p>
+            <div className="referral-row">
               {[
-                { icon: "💳", name: "Amex Gold Card", desc: "Perfekt zum Einstieg: Membership Rewards Punkte bei jedem Einkauf sammeln.", bonus: "Bis zu 40.000 Punkte Willkommensbonus", link: "#" },
-                { icon: "💎", name: "Amex Platinum Card", desc: "Premium-Karte mit Lounge-Zugang, Reiseguthaben und Status-Vorteilen.", bonus: "Bis zu 75.000 Punkte Willkommensbonus", link: "#" },
-                { icon: "🏦", name: "Miles & More Kreditkarte", desc: "Direkt Meilen sammeln bei jeder Zahlung – ideal für Lufthansa-Fans.", bonus: "Bis zu 20.000 Meilen Startbonus", link: "#" },
-                { icon: "🔄", name: "Payback Amex", desc: "Kostenlose Karte zum Punkte sammeln – bei jedem Einkauf Payback-Punkte.", bonus: "Kostenlos + Startbonus", link: "#" },
-              ].map((card, i) => (
-                <a
-                  href={card.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="referral-card"
-                  key={i}
-                >
-                  <div className="referral-icon">{card.icon}</div>
-                  <div className="referral-info">
-                    <div className="referral-name">{card.name}</div>
-                    <div className="referral-desc">{card.desc}</div>
-                    <span className="referral-bonus">{card.bonus}</span>
+                { e: "💳", n: "Amex Gold Card", d: "Membership Rewards bei jedem Einkauf.", b: "Bis zu 40.000 Punkte Bonus" },
+                { e: "💎", n: "Amex Platinum Card", d: "Premium mit Lounge-Zugang & Reiseguthaben.", b: "Bis zu 75.000 Punkte Bonus" },
+                { e: "🏦", n: "Miles & More Kreditkarte", d: "Direkt Meilen bei jeder Zahlung.", b: "Bis zu 20.000 Meilen Bonus" },
+                { e: "🔄", n: "Payback Amex", d: "Kostenlos Punkte sammeln bei jedem Einkauf.", b: "Kostenlos + Startbonus" },
+              ].map((c, i) => (
+                <a href="#" className="referral" key={i} target="_blank" rel="noopener noreferrer">
+                  <div className="referral-icon">{c.e}</div>
+                  <div className="referral-body">
+                    <h3>{c.n}</h3>
+                    <p>{c.d}</p>
+                    <span className="referral-bonus">{c.b}</span>
                   </div>
                 </a>
               ))}
@@ -423,81 +382,45 @@ export default function Home() {
           </div>
         </section>
 
-        <hr className="section-divider" />
+        <hr className="divider" />
 
-        {/* ═══ Community Login ═══ */}
-        <section id="community">
+        {/* ═══ Community ═══ */}
+        <section id="community" aria-label="Community">
           <div className="container">
-            <div className="community-section">
-              <p
-                className="section-label"
-                style={{ color: "rgba(249,115,22,0.8)" }}
-              >
-                Exklusive Community
-              </p>
+            <div className="community-dark">
+              <div className="section-eyebrow">Community</div>
               <h2>Werde Teil der traveling.prof Community</h2>
-              <p>
-                Erhalte Zugang zu exklusiven Hacks, Bonus-Content und einem
-                Punktesystem mit echten Rewards. Kein Redirect – alles direkt
-                hier.
-              </p>
+              <p>Exklusive Hacks, Bonus-Content und ein Punktesystem mit echten Rewards. Alles direkt hier – kein Redirect.</p>
               <div className="community-features">
-                {["🎯 Bonuspunkte-System", "🔒 Exklusive Deals", "💬 Direkte Hilfe", "🏆 Rewards & Challenges"].map(
-                  (f, i) => (
-                    <div className="community-feature" key={i}>
-                      {f}
-                    </div>
-                  )
-                )}
+                {["🎯 Bonuspunkte", "🔒 Exklusive Deals", "💬 Direkter Support", "🏆 Challenges"].map((f, i) => (
+                  <div className="community-chip" key={i}>{f}</div>
+                ))}
               </div>
-              <div className="community-login-form">
-                <input
-                  className="community-input"
-                  type="email"
-                  placeholder="Deine E-Mail-Adresse"
-                />
-                <button className="btn btn-primary btn-sm">
-                  Kostenlos beitreten →
-                </button>
+              <div className="community-form">
+                <input className="community-input" type="email" placeholder="Deine E-Mail-Adresse" />
+                <button className="btn btn-primary btn-sm">Kostenlos beitreten →</button>
               </div>
-              <p
-                style={{
-                  fontSize: "0.72rem",
-                  marginTop: "0.75rem",
-                  color: "rgba(255,255,255,0.4)",
-                }}
-              >
-                Community-Login wird in Kürze aktiviert – trag dich jetzt auf die
-                Warteliste ein.
-              </p>
+              <p className="community-hint">Community-Login wird in Kürze aktiviert – trag dich auf die Warteliste ein.</p>
             </div>
           </div>
         </section>
 
-        <hr className="section-divider" />
-
-        {/* ═══ Community / Reels ═══ */}
-        <section>
+        {/* ═══ Reels ═══ */}
+        <section aria-label="Reels und Content">
           <div className="container">
-            <p className="section-label">Community &amp; Reels</p>
-            <h2 className="section-title">
-              Reisen ist besser, wenn wir Hacks teilen.
-            </h2>
-            <p className="section-sub">
-              In meinen Reels und Stories nehme ich dich live mit: in Lounges, in
-              Business Cabins, in verrückte Hotelzimmer und an Orte, die du
-              vielleicht schon lange auf deiner Liste hast.
-            </p>
-            <div className="gallery-grid">
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />Content</div>
+            <h2 className="section-title">Reisen ist besser, wenn wir <em>Hacks teilen</em></h2>
+            <p className="section-sub">In meinen Reels und Stories nehme ich dich live mit: in Lounges, Business Cabins und an Traumziele.</p>
+            <div className="gallery">
               {[
-                { tag: "Reel", text: '"Eco-Preis, Business fliegen" – Beispiel-Route mit Ersparnis' },
-                { tag: "Story", text: "Live-Einblicke in Airport-Lounges & Check-in-Tricks" },
-                { tag: "DM", text: "Feedback & Fragen aus der Community – deine Fragen fließen in neuen Content ein." },
-                { tag: "Hack", text: "Konkrete Buchungsschritte für bessere Seats & mehr Benefits." },
+                { l: "Reel", t: "\"Eco-Preis, Business fliegen\" – Beispiel-Route mit Ersparnis" },
+                { l: "Story", t: "Live-Einblicke in Airport-Lounges und Check-in-Tricks" },
+                { l: "DM", t: "Community-Fragen fließen direkt in neuen Content ein" },
+                { l: "Hack", t: "Konkrete Buchungsschritte für bessere Seats und mehr Benefits" },
               ].map((g, i) => (
-                <div className="gallery-item" key={i}>
-                  <span className="gallery-tag">{g.tag}</span>
-                  <span>{g.text}</span>
+                <div className="gallery-card" key={i}>
+                  <span className="gallery-label">{g.l}</span>
+                  <span>{g.t}</span>
                 </div>
               ))}
             </div>
@@ -505,160 +428,86 @@ export default function Home() {
         </section>
 
         {/* ═══ Calendly ═══ */}
-        <section>
-          <div className="container calendly-section">
-            <p className="section-label">Termin buchen</p>
-            <h2 className="section-title">Persönliches Gespräch vereinbaren</h2>
-            <p className="section-sub" style={{ margin: "0 auto 1.5rem" }}>
-              Du hast Fragen zu Strategien, Kooperationen oder möchtest eine
-              individuelle Beratung? Buche einen Slot direkt in meinem Kalender.
-            </p>
-            <div className="calendly-embed">
-              <span className="icon">📅</span>
+        <section aria-label="Termin buchen">
+          <div className="container" style={{ textAlign: "center" }}>
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />Termin</div>
+            <h2 className="section-title">Persönliches Gespräch <em>vereinbaren</em></h2>
+            <p className="section-sub" style={{ margin: "0.5rem auto 1.5rem" }}>Fragen zu Strategien, Kooperationen oder individuelle Beratung? Buche direkt einen Slot.</p>
+            <div className="calendly-box">
+              <div className="icon">📅</div>
               <strong>Calendly-Integration</strong>
-              <span>
-                Binde deinen Calendly-Link hier ein.
-                <br />
-                Ersetze diesen Block mit dem Calendly-Widget.
-              </span>
-              <a
-                href="https://calendly.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-outline btn-sm"
-              >
+              <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginTop: "0.25rem" }}>Binde deinen Calendly-Link hier ein – ersetze diesen Block mit dem Widget.</p>
+              <a href="https://calendly.com" target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm" style={{ marginTop: "0.75rem" }}>
                 Zu Calendly →
               </a>
             </div>
           </div>
         </section>
 
-        {/* ═══ Integrations / Zahlungen ═══ */}
-        <section>
+        {/* ═══ Zahlungen ═══ */}
+        <section aria-label="Integrationen" style={{ paddingTop: "1rem" }}>
           <div className="container" style={{ textAlign: "center" }}>
-            <p className="section-label">Zahlungen &amp; Integrationen</p>
-            <h2 className="section-title">Sicher bezahlen &amp; verwalten</h2>
-            <p className="section-sub" style={{ margin: "0 auto 1.5rem" }}>
-              Für zukünftige Premium-Angebote, Coachings und digitale Produkte.
-            </p>
-            <div className="integrations-row">
-              {["💳 Stripe", "🅿️ PayPal", "🛒 Stan Store", "📅 Calendly"].map(
-                (label, i) => (
-                  <div className="integration-badge" key={i}>
-                    {label}
-                  </div>
-                )
-              )}
+            <div className="section-eyebrow">Zahlungen</div>
+            <h2 className="section-title" style={{ fontSize: "1.3rem", marginBottom: "0.75rem" }}>Sicher bezahlen &amp; verwalten</h2>
+            <div className="integrations">
+              {["💳 Stripe", "🅿️ PayPal", "🛒 Stan Store", "📅 Calendly", "🎓 Alfima"].map((b, i) => (
+                <div className="int-badge" key={i}>{b}</div>
+              ))}
             </div>
-            <p
-              style={{
-                fontSize: "0.75rem",
-                color: "var(--muted)",
-                marginTop: "1rem",
-              }}
-            >
-              Integrationen werden bei Bedarf aktiviert – Stripe &amp; PayPal
-              Checkout, Stan Store Shop und Calendly Booking.
-            </p>
+            <p style={{ fontSize: "0.72rem", color: "var(--muted)", marginTop: "0.75rem" }}>Integrationen werden bei Bedarf aktiviert.</p>
           </div>
         </section>
 
-        {/* ═══ CTA Block ═══ */}
-        <section>
+        {/* ═══ CTA ═══ */}
+        <section aria-label="Call to Action">
           <div className="container">
-            <div className="cta-block">
-              <h2>Bereit, deine nächste Reise smarter zu planen?</h2>
-              <p>
-                Folge <strong>@traveling.prof</strong> auf Instagram und hol dir
-                regelmäßig neue Hacks rund um Flüge, Hotels, Lounges &amp; Co.
-              </p>
-              <div className="hero-cta" style={{ justifyContent: "center" }}>
-                <a
-                  href="https://www.instagram.com/traveling.prof"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-primary"
-                >
+            <div className="cta-banner">
+              <h2>Bereit, smarter zu reisen?</h2>
+              <p>Folge <strong>@traveling.prof</strong> auf Instagram und hol dir regelmäßig neue Hacks.</p>
+              <div className="hero-buttons" style={{ justifyContent: "center" }}>
+                <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                   Jetzt auf Instagram folgen
                 </a>
-                <a href="#contact" className="btn btn-outline">
-                  Fragen stellen
-                </a>
+                <a href="#kontakt" className="btn btn-secondary">Fragen stellen</a>
               </div>
             </div>
           </div>
         </section>
 
         {/* ═══ FAQ ═══ */}
-        <section>
+        <section aria-label="FAQ">
           <div className="container">
-            <p className="section-label">FAQ</p>
-            <h2 className="section-title">
-              Häufige Fragen zur Seite &amp; zum Account
-            </h2>
-            <div className="faq">
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />FAQ</div>
+            <h2 className="section-title">Häufig gestellte <em>Fragen</em></h2>
+            <div className="faq-list">
               {[
-                { q: "Brauche ich viel Geld, um deine Travel Hacks umzusetzen?", a: "Nein. Viele Strategien basieren darauf, Ausgaben, die du ohnehin hast (Miete, Einkäufe, Versicherungen etc.), einfach smarter zu nutzen – z. B. für Meilen & Punkte." },
+                { q: "Brauche ich viel Geld, um deine Travel Hacks umzusetzen?", a: "Nein. Viele Strategien basieren darauf, Ausgaben, die du ohnehin hast, einfach smarter zu nutzen – z.B. für Meilen & Punkte bei jedem Einkauf." },
                 { q: "Für wen ist dein Content gedacht?", a: "Für alle, die mehr reisen wollen – mit besserem Preis-Leistungs-Verhältnis. Egal ob du einmal im Jahr in den Urlaub fliegst oder regelmäßig unterwegs bist." },
-                { q: "Kostet mich das Folgen auf Instagram etwas?", a: "Natürlich nicht. Mein Content auf Instagram ist kostenlos. Wenn du später tiefer einsteigen willst, kannst du irgendwann Zusatzangebote nutzen – aber musst du nicht." },
-                { q: "Teilst du nur Luxus-Content?", a: "Luxus ja – aber smart. Mir geht es nicht darum, nur teure Dinge zu zeigen, sondern Wege, wie du das alles möglichst effizient und clever erreichst." },
-                { q: "Wie funktioniert die Community?", a: "Die Community wird demnächst mit Login-Bereich, Bonuspunkte-System und exklusiven Inhalten direkt auf dieser Seite verfügbar sein – ohne Weiterleitung." },
-              ].map((item, i) => (
-                <FaqItem key={i} q={item.q} a={item.a} />
-              ))}
+                { q: "Kostet mich das Folgen auf Instagram etwas?", a: "Natürlich nicht. Mein Content auf Instagram ist komplett kostenlos. Premium-Angebote sind optional." },
+                { q: "Welche Produkte kann ich bei dir kaufen?", a: "Von kostenlosen Checklisten über Excel-Kalkulatoren (ab 14€) bis hin zu Video-Kursen und 1:1 Beratung. Alles auf der Produkte-Sektion oben." },
+                { q: "Wie funktioniert die Community?", a: "Die Community wird mit Login-Bereich, Bonuspunkte-System und exklusiven Inhalten direkt auf dieser Seite verfügbar – ohne Weiterleitung zu externen Plattformen." },
+              ].map((f, i) => <Faq key={i} q={f.q} a={f.a} />)}
             </div>
           </div>
         </section>
 
         {/* ═══ Kontakt ═══ */}
-        <section id="contact">
+        <section id="kontakt" aria-label="Kontakt">
           <div className="container">
-            <p className="section-label">Kontakt</p>
-            <h2 className="section-title">Lass uns connecten.</h2>
-            <p className="section-sub">
-              Du hast eine Frage zu einem Reel, einer Booking-Strategie oder einer
-              konkreten Route? Schreib mir gern auf Instagram oder per E-Mail.
-            </p>
-            <div className="split">
-              <div>
-                <div className="card">
-                  <h3 className="card-title" style={{ marginBottom: "0.4rem" }}>
-                    Direkt via Instagram
-                  </h3>
-                  <p className="card-text" style={{ marginBottom: "0.75rem" }}>
-                    Der schnellste Weg: Schreib mir einfach eine DM auf Instagram.
-                  </p>
-                  <a
-                    href="https://www.instagram.com/traveling.prof"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary btn-sm"
-                  >
-                    DM auf Instagram
-                  </a>
-                </div>
-              </div>
-              <div>
-                <div className="card">
-                  <h3 className="card-title" style={{ marginBottom: "0.4rem" }}>
-                    Oder per E-Mail
-                  </h3>
-                  <p className="card-text" style={{ marginBottom: "0.5rem" }}>
-                    Du planst eine größere Reise, Kooperation oder hast eine
-                    Business-Anfrage?
-                  </p>
-                  <p className="card-text">
-                    <strong>
-                      <a
-                        href="mailto:traveling.prof@outlook.de"
-                        style={{ color: "var(--accent)" }}
-                      >
-                        traveling.prof@outlook.de
-                      </a>
-                    </strong>
-                  </p>
-                </div>
-              </div>
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />Kontakt</div>
+            <h2 className="section-title">Lass uns <em>connecten</em></h2>
+            <p className="section-sub">Fragen zu Reels, Buchungsstrategien oder Kooperationen? Schreib mir.</p>
+            <div className="contact-grid">
+              <article className="contact-card">
+                <h3>Via Instagram</h3>
+                <p>Der schnellste Weg – schreib mir einfach eine DM.</p>
+                <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">DM auf Instagram →</a>
+              </article>
+              <article className="contact-card">
+                <h3>Per E-Mail</h3>
+                <p>Kooperationen, Business-Anfragen oder größere Reiseplanung?</p>
+                <a href="mailto:traveling.prof@outlook.de" style={{ color: "var(--accent)", fontWeight: 600, fontSize: "0.9rem" }}>traveling.prof@outlook.de</a>
+              </article>
             </div>
           </div>
         </section>
@@ -667,19 +516,11 @@ export default function Home() {
       {/* ═══ Footer ═══ */}
       <footer>
         <div className="container">
-          <div className="footer-inner">
-            <span>
-              © {year} traveling.prof – Travel Hacks &amp; Luxusreisen.
-            </span>
+          <div className="footer-row">
+            <span>© {year} traveling.prof – Travel Hacks &amp; Luxusreisen</span>
             <div className="footer-links">
-              <a
-                href="https://www.instagram.com/traveling.prof"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Instagram
-              </a>
-              <a href="#contact">Kontakt</a>
+              <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer">Instagram</a>
+              <a href="#kontakt">Kontakt</a>
               <Link href="/impressum">Impressum</Link>
               <Link href="/datenschutz">Datenschutz</Link>
             </div>
