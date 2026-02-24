@@ -115,13 +115,13 @@ function HackFinder() {
   const [loading, setLoading] = useState(false);
 
   const hacks: Record<string, string> = {
-    business: "Open-Jaw-Trick: Buche Hin- und Rueckflug ueber verschiedene Staedte. So bekommst du Business Class oft 40-60% guenstiger. Beispiel: Frankfurt nach Bangkok via Istanbul mit Turkish Airlines fuer nur 800 EUR in Business!",
-    dubai: "Fifth Freedom Flights: Singapore Airlines fliegt Dubai-Manchester in Business Class – oft guenstiger als Emirates Direktflug. Oder nutze Emirates Meilen fuer die Strecke: nur 62.500 Meilen one-way in Business!",
-    lounge: "Lounge-Zugang ohne Status: (1) Priority Pass ueber Amex Platinum (1.400+ Lounges weltweit), (2) Day Passes direkt kaufen (ab 25 EUR), (3) LoungeBuddy App fuer Einzelzugang. Mein Favorit: Die Turkish Airlines CIP Lounge Istanbul – die beste der Welt!",
+    business: "Open-Jaw-Trick: Buche Hin- und Rückflug über verschiedene Städte. So bekommst du Business Class oft 40-60% günstiger. Beispiel: Frankfurt nach Bangkok via Istanbul mit Turkish Airlines für nur 800 EUR in Business!",
+    dubai: "Fifth Freedom Flights: Singapore Airlines fliegt Dubai-Manchester in Business Class – oft günstiger als Emirates Direktflug. Oder nutze Emirates Meilen für die Strecke: nur 62.500 Meilen one-way in Business!",
+    lounge: "Lounge-Zugang ohne Status: (1) Priority Pass über Amex Platinum (1.400+ Lounges weltweit), (2) Day Passes direkt kaufen (ab 25 EUR), (3) LoungeBuddy App für Einzelzugang. Mein Favorit: Die Turkish Airlines CIP Lounge Istanbul – die beste der Welt!",
     hotel: "Hotel-Status-Match: Viele Ketten bieten Status-Matching an. Mit Amex Platinum bekommst du Marriott Gold und Hilton Gold automatisch. Das bedeutet: Zimmer-Upgrades, spaetes Checkout und Fruehstueck inklusive!",
-    meilen: "Kreditkarten-Combo fuer maximale Meilen: Amex Platinum (3x Punkte auf Reisen) + Payback Amex (kostenlos, Punkte bei jedem Einkauf) + Barclays (kostenlos im Ausland). So sammelst du bei JEDER Ausgabe Punkte.",
-    malediven: "Malediven in Business Class fuer 0 EUR: Sammle 90.000 Miles and More Meilen (ca. 12 Monate mit Amex), buche Lufthansa/Swiss Business Frankfurt-Male. Meilenpreis: 0 EUR + ca. 200 EUR Steuern!",
-    upgrade: "Upgrade-Hack: Buche Economy, checke 24h vor Abflug die Airline-App. Viele Airlines bieten dann Bid-Upgrades (ab 150 EUR fuer Business) an. Oder nutze Meilen fuer Last-Minute Operational Upgrades direkt am Gate.",
+    meilen: "Kreditkarten-Combo für maximale Meilen: Amex Platinum (3x Punkte auf Reisen) + Payback Amex (kostenlos, Punkte bei jedem Einkauf) + Barclays (kostenlos im Ausland). So sammelst du bei JEDER Ausgabe Punkte.",
+    malediven: "Malediven in Business Class für 0 EUR: Sammle 90.000 Miles and More Meilen (ca. 12 Monate mit Amex), buche Lufthansa/Swiss Business Frankfurt-Male. Meilenpreis: 0 EUR + ca. 200 EUR Steuern!",
+    upgrade: "Upgrade-Hack: Buche Economy, checke 24h vor Abflug die Airline-App. Viele Airlines bieten dann Bid-Upgrades (ab 150 EUR für Business) an. Oder nutze Meilen für Last-Minute Operational Upgrades direkt am Gate.",
   };
 
   const submit = (e: FormEvent) => {
@@ -136,9 +136,9 @@ function HackFinder() {
         setResult(matched[1] + " – Mehr Details im Meilen-Crashkurs oder als Reel auf @traveling.prof!");
       } else {
         setResult(
-          `Fuer "${q}" empfehle ich: Starte mit dem Meilen-Sammeln ueber Payback und Amex. ` +
-            `Nutze den Open-Jaw-Trick fuer guenstigere Fluege und schaue dir meine kostenlosen Guides an. ` +
-            `Folge @traveling.prof auf Instagram fuer taegliche Travel-Hacks!`
+          `Für "${q}" empfehle ich: Starte mit dem Meilen-Sammeln über Payback und Amex. ` +
+            `Nutze den Open-Jaw-Trick für günstigere Flüge und schaue dir meine kostenlosen Guides an. ` +
+            `Folge @traveling.prof auf Instagram für tägliche Travel-Hacks!`
         );
       }
       setLoading(false);
@@ -157,7 +157,7 @@ function HackFinder() {
         </div>
       </form>
       <div className={`tool-result ${loading ? "loading" : ""}`}>
-        {loading ? "Suche den besten Hack fuer dich..." : result || "Dein persoenlicher Travel-Hack erscheint hier..."}
+        {loading ? "Suche den besten Hack für dich..." : result || "Dein persönlicher Travel-Hack erscheint hier..."}
       </div>
     </div>
   );

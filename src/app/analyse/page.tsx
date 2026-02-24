@@ -193,21 +193,21 @@ function PaywallScreen({onAlreadyPaid}:{onAlreadyPaid:()=>void}) {
         <div style={{display:"grid",gap:"0.5rem"}}>
           {[
             "Personalisiertes Karten-Setup mit Reihenfolge",
-            "Meilenpotenzial-Berechnung (monatlich + jaehrlich)",
+            "Meilenpotenzial-Berechnung (monatlich + jährlich)",
             "Individuelle Sammeltipps mit Affiliate-Boni",
-            "Buchungsstrategien fuer dein Reiseziel",
+            "Buchungsstrategien für dein Reiseziel",
             "Hotel- und Lounge-Empfehlungen",
-            "Naechste Schritte mit konkreten Links",
+            "Nächste Schritte mit konkreten Links",
           ].map((item,i)=><div key={i} style={{display:"flex",gap:"0.5rem",alignItems:"flex-start",fontSize:"0.85rem",color:"#d6d3d1"}}>
             <span style={{color:"#22c55e",fontWeight:700,flexShrink:0}}>✓</span>{item}
           </div>)}
         </div>
       </div>
       <a href={STRIPE_LINK} className="a-submit" style={{display:"block",textAlign:"center",textDecoration:"none",marginBottom:"0.75rem"}}>
-        Jetzt fuer 7 € freischalten
+        Jetzt für 7 € freischalten
       </a>
       <div style={{display:"flex",justifyContent:"center",gap:"1rem",marginBottom:"0.75rem"}}>
-        {["🔒 SSL-verschluesselt","💳 Stripe","↩️ Geld-zurueck-Garantie"].map((t,i)=><span key={i} style={{fontSize:"0.7rem",color:"#57534e"}}>{t}</span>)}
+        {["🔒 SSL-verschlüsselt","💳 Stripe","↩️ Geld-zurück-Garantie"].map((t,i)=><span key={i} style={{fontSize:"0.7rem",color:"#57534e"}}>{t}</span>)}
       </div>
       <p style={{textAlign:"center",fontSize:"0.72rem",color:"#44403c"}}>
         Bereits bezahlt?{" "}
@@ -248,7 +248,7 @@ export default function AnalysePage() {
   const isResult=step===questions.length+2;
 
   return <div className="a-page">
-    <div className="a-header"><Link href="/" className="a-header-brand"><div className="a-header-mark">TP</div><div><div className="a-header-name">traveling.prof</div><div className="a-header-tag">Travel Hacking Analyse</div></div></Link>{step>0&&!isResult&&<button onClick={()=>setStep(s=>s-1)} style={{background:"none",border:"1px solid #292524",borderRadius:8,padding:"0.35rem 0.75rem",color:"#78716c",cursor:"pointer",fontSize:"0.78rem",fontFamily:"inherit"}}>← Zurueck</button>}</div>
+    <div className="a-header"><Link href="/" className="a-header-brand"><div className="a-header-mark">TP</div><div><div className="a-header-name">traveling.prof</div><div className="a-header-tag">Travel Hacking Analyse</div></div></Link>{step>0&&!isResult&&<button onClick={()=>setStep(s=>s-1)} style={{background:"none",border:"1px solid #292524",borderRadius:8,padding:"0.35rem 0.75rem",color:"#78716c",cursor:"pointer",fontSize:"0.78rem",fontFamily:"inherit"}}>← Zurück</button>}</div>
     <div className="a-container">
       {!isResult&&<div className="a-progress"><div className="a-progress-bar" style={{width:`${Math.round(((step+1)/total)*100)}%`}}/><span className="a-progress-label">Schritt {step+1} von {total}</span></div>}
       {isQuiz&&<QuizStep q={questions[step]} onSelect={v=>handleAnswer(questions[step].id,v)} selected={answers[questions[step].id]}/>}
