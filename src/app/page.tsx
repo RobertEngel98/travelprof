@@ -258,6 +258,8 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    window.history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
     const supabase = createClient();
     supabase.auth.getUser().then(({ data: { user } }) => {
       setIsLoggedIn(!!user);
@@ -325,7 +327,7 @@ export default function Home() {
                 </div>
                 <div className="proven-mini">
                   <div><div className="proven-stars">★★★★★</div></div>
-                  <div className="proven-info"><strong>5.0 / 5</strong><br />ProvenExpert · Verifiziert</div>
+                  <div className="proven-info"><strong>4.9 / 5</strong><br />ProvenExpert · Verifiziert</div>
                 </div>
               </div>
               <div className="hero-visual">
@@ -515,8 +517,8 @@ export default function Home() {
         <section id="kreditkarten" aria-label="Kreditkarten Empfehlungen">
           <div className="container">
             <div className="section-eyebrow"><div className="section-eyebrow-dot" />Empfehlungen</div>
-            <h2 className="section-title">Die besten Kreditkarten für <em>Reisende</em></h2>
-            <p className="section-sub">Diese Karten nutze ich selbst – und sie sind der Grundstein für smartes Meilensammeln.</p>
+            <h2 className="section-title">Die besten Kreditkarten für <em>Reisende in Deutschland</em></h2>
+            <p className="section-sub">Diese Karten nutze ich selbst – und sie sind der Grundstein für smartes Meilensammeln. Alle Karten in Deutschland beantragbar.</p>
             <div className="referral-row">
               {[
                 { e: "💳", n: "Amex Gold Card", d: "Membership Rewards bei jedem Einkauf.", b: "Bis zu 40.000 Punkte Bonus" },

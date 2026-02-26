@@ -90,9 +90,9 @@ function generateResult(a:Answers):SetupResult {
   else if(!isBeginner||highBudget){level="Strategic Collector";levelEmoji="📊";}
 
   const cards:CardRec[]=[];
-  if(!hasPayback&&!hasAmexMid&&!hasAmexPlat) cards.push({name:"Payback American Express",link:AFF.paybackAmex,bonus:"Bis zu 4.000 Punkte Willkommensbonus",reason:"Kostenlos, sofort Punkte bei jedem Einkauf (dm, REWE, Aral, etc.)",priority:1,tag:"PFLICHT – KOSTENLOS"});
-  if(premiumBudget&&!hasAmexPlat) cards.push({name:"Amex Platinum Card",link:AFF.amexPlat,bonus:"Bis zu 75.000 MR Punkte Bonus",reason:`${wantsLounge?"Unbegrenzter Lounge-Zugang weltweit. ":""}640€+ Guthaben/Jahr. Versicherungspaket.${isSelfEmp?" Ideal für Geschäftsausgaben.":""}`,priority:2,tag:"TOP-EMPFEHLUNG"});
-  else if(highBudget&&!hasAmexPlat&&!hasAmexMid) cards.push({name:"Amex Gold Card",link:AFF.amexGold,bonus:"Bis zu 40.000 MR Punkte Bonus",reason:`Starke Punkte-Ausbeute (1,5 MR/€ mit Turbo). ${fernreise?"Perfekt für Fernreisen.":"Solide Basis."}`,priority:2,tag:"EMPFEHLUNG"});
+  if(!hasPayback&&!hasAmexMid&&!hasAmexPlat) cards.push({name:"Payback American Express",link:AFF.paybackAmex,bonus:"1.000 Punkte Willkommensbonus",reason:"Kostenlos, sofort Punkte bei jedem Einkauf (dm, REWE, Aral, etc.)",priority:1,tag:"PFLICHT – KOSTENLOS"});
+  if(highBudget&&!hasAmexPlat) cards.push({name:"Amex Platinum Card",link:AFF.amexPlat,bonus:"Bis zu 75.000 MR Punkte Bonus",reason:`${wantsLounge?"Unbegrenzter Lounge-Zugang weltweit. ":""}640€+ Guthaben/Jahr. Versicherungspaket.${isSelfEmp?" Ideal für Geschäftsausgaben.":""}${premiumBudget?"":" Lohnt sich ab ca. 3.000€ monatlichen Ausgaben."}`,priority:2,tag:"TOP-EMPFEHLUNG"});
+  else if(!hasAmexPlat&&!hasAmexMid&&!isStudent) cards.push({name:"Amex Gold Card",link:AFF.amexGold,bonus:"Bis zu 40.000 MR Punkte Bonus",reason:`Starke Punkte-Ausbeute (1,5 MR/€ mit Turbo). ${fernreise?"Perfekt für Fernreisen.":"Solide Basis."}`,priority:2,tag:"EMPFEHLUNG"});
   else if(!hasAmexMid&&!hasAmexPlat&&!isStudent) cards.push({name:"Amex Gold Card",link:AFF.amexGold,bonus:"Bis zu 40.000 MR Punkte Bonus",reason:"Bestes Preis-Leistungs-Verhältnis. 1,5 MR/€ mit Turbo.",priority:2,tag:"EMPFEHLUNG"});
   if(isStudent&&hasNoCard) cards.push({name:"Amex Green Card",link:AFF.amexGreen,bonus:"Bis zu 15.000 MR Punkte Bonus",reason:"Günstiger Einstieg. Versicherungsschutz inklusive.",priority:2,tag:"FÜR STUDENTEN"});
   if(isSelfEmp) cards.push({name:"Amex Business Gold",link:AFF.amexBiz,bonus:"Bis zu 75.000 MR Punkte Bonus",reason:"Geschäftsausgaben → Meilen. Separate Abrechnung.",priority:3,tag:"BUSINESS-TIPP"});
@@ -116,7 +116,7 @@ function generateResult(a:Answers):SetupResult {
   if(isSelfEmp) sammeltipps.push({tip:"Alle Geschäftsausgaben mit Amex Business Gold zahlen – 1,5 MR/€.",link:AFF.amexBiz,linkLabel:"Amex Business Gold"});
   if(isFamily) sammeltipps.push({tip:"Kostenlose Zusatzkarten für Partner:in – doppelt Punkte sammeln.",link:AFF.amexGold,linkLabel:"Zusatzkarte beantragen"});
 
-  const buchungstipps=["Sweet Spot: Frankfurt → Kapstadt Business Class ab 62.000 M&M Meilen.","Amex MR → Airlines mit 1:1 (Singapore, ANA, Etihad).","Prämienflüge 330 Tage voraus buchen für beste Verfügbarkeit.","Open-Jaw + Stopover: 2 Ziele zum Preis von einem."];
+  const buchungstipps=["Sweet Spot: Frankfurt → Kapstadt Business Class ab 62.000 M&M Meilen.","Amex MR → Airlines transferieren (Ratio variiert je nach Partner, z.B. 5:4 bei British Airways).","Prämienflüge 330 Tage voraus buchen für beste Verfügbarkeit.","Open-Jaw + Stopover: 2 Ziele zum Preis von einem."];
   if(wantsBiz) buchungstipps.push("Business Class: München → Bangkok via Singapore Airlines ab 85.000 KrisFlyer Meilen.");
   if(wantsLounge) buchungstipps.push("Amex Platinum = unbegrenzter Priority Pass Zugang an 1.400+ Lounges weltweit.");
 
