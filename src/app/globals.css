@@ -557,6 +557,56 @@ footer {
 }
 .leadmagnet-close:hover { border-color: var(--accent); color: var(--accent); }
 
+/* ── Dashboard Layout ── */
+.dash-layout {
+  display: flex;
+  gap: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+.dash-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+}
+.dash-mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-soft);
+  padding: 0.4rem 0.5rem 0.6rem;
+  justify-content: space-around;
+}
+.dash-mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.dash-mobile-nav-item.active {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Mobile: hide sidebar, show bottom nav */
+@media (max-width: 767px) {
+  .dash-sidebar { display: none; }
+  .dash-mobile-nav { display: flex; }
+  .dash-layout { padding-bottom: 5rem; }
+}
+
 /* ═══ Responsive ═══ */
 @media (min-width: 768px) {
   .nav-links { display: flex; }

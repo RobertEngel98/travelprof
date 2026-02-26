@@ -44,10 +44,15 @@ function LeadmagnetForm({ product, onClose }: { product: string; onClose: () => 
   const [submitted, setSubmitted] = useState(false);
   const [consent, setConsent] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!email || !consent) return;
     localStorage.setItem("leadmagnet-lead", JSON.stringify({ email, name, product, date: new Date().toISOString() }));
+    fetch("/api/waitlist", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, source: `leadmagnet:${product}` }),
+    }).catch(() => {});
     setSubmitted(true);
   };
 
@@ -225,6 +230,29 @@ function Header() {
 export default function Home() {
   const year = new Date().getFullYear();
   const [leadmagnet, setLeadmagnet] = useState<string | null>(null);
+  const [waitlistEmail, setWaitlistEmail] = useState("");
+  const [waitlistStatus, setWaitlistStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleWaitlist = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!waitlistEmail.trim()) return;
+    setWaitlistStatus("loading");
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: waitlistEmail }),
+      });
+      if (res.ok) {
+        setWaitlistStatus("success");
+        setWaitlistEmail("");
+      } else {
+        setWaitlistStatus("error");
+      }
+    } catch {
+      setWaitlistStatus("error");
+    }
+  };
 
   return (
     <div className="page">
@@ -387,22 +415,30 @@ export default function Home() {
               </div>
               <div className="products-grid">
                 {[
-                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Starter-Checkliste", desc: "10 Schritte zum sofortigen Start mit dem Meilensammeln. PDF zum Download.", cta: "Gratis herunterladen" },
-                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Quick-Check Kalkulator", desc: "Finde in 60 Sekunden heraus, wie viele Meilen du pro Jahr sammeln kannst.", cta: "Gratis herunterladen" },
-                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Kreditkarten-Vergleich 2025", desc: "Ehrlicher Vergleich der besten Reise-Kreditkarten im DACH-Raum.", cta: "Gratis herunterladen" },
-                  { tag: "Starter", cls: "starter", price: "14 €", name: "Amex Platinum Lohnt-sich-Rechner", desc: "Interaktiver Excel-Rechner: Trage deine Werte ein und sieh, ob sich die Amex Platinum für dich lohnt.", cta: "Jetzt kaufen" },
-                  { tag: "Starter", cls: "starter", price: "19 €", name: "Top 10 Buchungs-Hacks E-Book", desc: "Die 10 besten Buchungsstrategien für günstigere Flüge und bessere Hotels – mit Screenshots.", cta: "Jetzt kaufen" },
-                  { tag: "Kurs", cls: "core", price: "39 €", name: "Meilen-Crashkurs (Video)", desc: "5-Modul Videokurs: Sammeln, Optimieren, Einlösen. Inkl. Kalkulator und Templates.", cta: "Zum Kurs" },
-                  { tag: "Kurs", cls: "core", price: "119 €", name: "Meilen-Masterclass", desc: "12 Module, 40+ Videos, Workbooks, Community-Zugang (3 Monate) und ein 1:1 Setup-Call.", cta: "Zum Kurs" },
-                  { tag: "Premium", cls: "premium", price: "99 €", name: "1:1 Strategie-Call (60 Min)", desc: "Persönliche Beratung zu deiner individuellen Meilen- und Reisestrategie.", cta: "Termin buchen" },
-                  { tag: "Premium", cls: "premium", price: "249 €/Jahr", name: "VIP Community Mitgliedschaft", desc: "Exklusiver Zugang, wöchentliche Deals, monatliche Live-Calls, Bonuspunkte-System.", cta: "Mitglied werden" },
+                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Starter-Checkliste", desc: "10 Schritte zum sofortigen Start mit dem Meilensammeln. PDF zum Download.", cta: "Gratis herunterladen", action: "leadmagnet" },
+                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Quick-Check Kalkulator", desc: "Finde in 60 Sekunden heraus, wie viele Meilen du pro Jahr sammeln kannst.", cta: "Gratis herunterladen", action: "leadmagnet" },
+                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Kreditkarten-Vergleich 2025", desc: "Ehrlicher Vergleich der besten Reise-Kreditkarten im DACH-Raum.", cta: "Gratis herunterladen", action: "leadmagnet" },
+                  { tag: "Starter", cls: "starter", price: "14 €", name: "Amex Platinum Lohnt-sich-Rechner", desc: "Interaktiver Excel-Rechner: Trage deine Werte ein und sieh, ob sich die Amex Platinum für dich lohnt.", cta: "Jetzt kaufen", action: "buy" },
+                  { tag: "Starter", cls: "starter", price: "19 €", name: "Top 10 Buchungs-Hacks E-Book", desc: "Die 10 besten Buchungsstrategien für günstigere Flüge und bessere Hotels – mit Screenshots.", cta: "Jetzt kaufen", action: "buy" },
+                  { tag: "Kurs", cls: "core", price: "39 €", name: "Meilen-Crashkurs (Video)", desc: "5-Modul Videokurs: Sammeln, Optimieren, Einlösen. Inkl. Kalkulator und Templates.", cta: "Zum Kurs", action: "buy" },
+                  { tag: "Kurs", cls: "core", price: "119 €", name: "Meilen-Masterclass", desc: "12 Module, 40+ Videos, Workbooks, Community-Zugang (3 Monate) und ein 1:1 Setup-Call.", cta: "Zum Kurs", action: "buy" },
+                  { tag: "Premium", cls: "premium", price: "99 €", name: "1:1 Strategie-Call (60 Min)", desc: "Persönliche Beratung zu deiner individuellen Meilen- und Reisestrategie.", cta: "Termin buchen", action: "termin" },
+                  { tag: "Premium", cls: "premium", price: "249 €/Jahr", name: "VIP Community Mitgliedschaft", desc: "Exklusiver Zugang, wöchentliche Deals, monatliche Live-Calls, Bonuspunkte-System.", cta: "Mitglied werden", action: "vip" },
                 ].map((p, i) => (
                   <article className="product-card" key={i}>
                     <div className={`product-tag ${p.cls}`}>{p.tag}</div>
                     <div className="product-price">{p.price}</div>
                     <h3>{p.name}</h3>
                     <p>{p.desc}</p>
-                    <a href="#kontakt" className={`btn btn-sm ${p.cls === "free" ? "btn-secondary" : "btn-primary"}`}>{p.cta}</a>
+                    {p.action === "leadmagnet" ? (
+                      <button onClick={() => setLeadmagnet(p.name)} className="btn btn-sm btn-secondary">{p.cta}</button>
+                    ) : p.action === "termin" ? (
+                      <a href="#termin" className="btn btn-sm btn-primary">{p.cta}</a>
+                    ) : p.action === "vip" ? (
+                      <Link href="/register" className="btn btn-sm btn-primary">{p.cta}</Link>
+                    ) : (
+                      <Link href="/login?redirect=/dashboard/produkte" className="btn btn-sm btn-primary">{p.cta}</Link>
+                    )}
                   </article>
                 ))}
               </div>
@@ -478,10 +514,19 @@ export default function Home() {
                   <div className="community-chip" key={i}>{f}</div>
                 ))}
               </div>
-              <div className="community-form">
-                <input className="community-input" type="email" placeholder="Deine E-Mail-Adresse" />
-                <button className="btn btn-primary btn-sm">Kostenlos beitreten →</button>
-              </div>
+              {waitlistStatus === "success" ? (
+                <div style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: "0.75rem", padding: "1rem 1.5rem", marginTop: "0.5rem" }}>
+                  <p style={{ color: "#22c55e", fontWeight: 600, fontSize: "0.9rem" }}>Du bist auf der Warteliste! Wir melden uns bei dir.</p>
+                </div>
+              ) : (
+                <form className="community-form" onSubmit={handleWaitlist}>
+                  <input className="community-input" type="email" placeholder="Deine E-Mail-Adresse" value={waitlistEmail} onChange={e => setWaitlistEmail(e.target.value)} required />
+                  <button type="submit" className="btn btn-primary btn-sm" disabled={waitlistStatus === "loading"}>
+                    {waitlistStatus === "loading" ? "Wird eingetragen..." : "Kostenlos beitreten →"}
+                  </button>
+                </form>
+              )}
+              {waitlistStatus === "error" && <p style={{ color: "#dc2626", fontSize: "0.82rem", marginTop: "0.5rem" }}>Etwas ist schiefgelaufen. Versuche es erneut.</p>}
               <p className="community-hint">Community-Login wird in Kürze aktiviert – trag dich auf die Warteliste ein.</p>
             </div>
           </div>
@@ -511,7 +556,7 @@ export default function Home() {
         </section>
 
         {/* ═══ Calendly ═══ */}
-        <section aria-label="Termin buchen">
+        <section id="termin" aria-label="Termin buchen">
           <div className="container" style={{ textAlign: "center" }}>
             <div className="section-eyebrow"><div className="section-eyebrow-dot" />Termin</div>
             <h2 className="section-title">Persönliches Gespräch <em>vereinbaren</em></h2>
