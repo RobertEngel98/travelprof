@@ -3,6 +3,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import Link from "next/link";
 import CookieConsent from "./components/CookieConsent";
+import { createClient } from "@/lib/supabase/client";
 
 /* ─── Scroll-to-top button ─── */
 function ScrollTop() {
@@ -169,7 +170,7 @@ function HackFinder() {
 }
 
 /* ─── Header with scroll detection ─── */
-function Header() {
+function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -205,10 +206,21 @@ function Header() {
             {links.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
           </div>
           <div className="nav-actions">
-            <div className="nav-cta-desktop">
-              <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
-                Instagram folgen →
-              </a>
+            <div className="nav-cta-desktop" style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+              {isLoggedIn ? (
+                <Link href="/dashboard" className="btn btn-primary btn-sm">
+                  Mein Bereich →
+                </Link>
+              ) : (
+                <>
+                  <Link href="/login" className="btn btn-secondary btn-sm">
+                    Anmelden
+                  </Link>
+                  <Link href="/register" className="btn btn-primary btn-sm">
+                    Kostenlos starten
+                  </Link>
+                </>
+              )}
             </div>
             <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menü">
               {menuOpen ? "✕" : "☰"}
@@ -218,9 +230,20 @@ function Header() {
       </div>
       <div className={`mobile-nav ${menuOpen ? "open" : ""}`}>
         {links.map(l => <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>{l.label}</a>)}
-        <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ marginTop: "0.75rem", justifyContent: "center" }}>
-          Instagram folgen →
-        </a>
+        {isLoggedIn ? (
+          <Link href="/dashboard" className="btn btn-primary" style={{ marginTop: "0.75rem", justifyContent: "center" }} onClick={() => setMenuOpen(false)}>
+            Mein Bereich →
+          </Link>
+        ) : (
+          <>
+            <Link href="/login" className="btn btn-secondary" style={{ marginTop: "0.75rem", justifyContent: "center" }} onClick={() => setMenuOpen(false)}>
+              Anmelden
+            </Link>
+            <Link href="/register" className="btn btn-primary" style={{ marginTop: "0.5rem", justifyContent: "center" }} onClick={() => setMenuOpen(false)}>
+              Kostenlos starten
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
@@ -232,6 +255,14 @@ export default function Home() {
   const [leadmagnet, setLeadmagnet] = useState<string | null>(null);
   const [waitlistEmail, setWaitlistEmail] = useState("");
   const [waitlistStatus, setWaitlistStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setIsLoggedIn(!!user);
+    });
+  }, []);
 
   const handleWaitlist = async (e: FormEvent) => {
     e.preventDefault();
@@ -258,7 +289,7 @@ export default function Home() {
     <div className="page">
       <ScrollTop />
       <CookieConsent />
-      <Header />
+      <Header isLoggedIn={isLoggedIn} />
       {leadmagnet && <LeadmagnetForm product={leadmagnet} onClose={() => setLeadmagnet(null)} />}
 
       <main>
@@ -276,9 +307,15 @@ export default function Home() {
                   Auf <strong>@traveling.prof</strong> zeige ich dir Schritt für Schritt, wie du mit Meilen, Punkten &amp; cleveren Buchungstricks smarter reist – Business Class, Lounges &amp; Traumhotels, ohne dein Budget zu sprengen.
                 </p>
                 <div className="hero-buttons">
-                  <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg">
-                    Kostenlos auf Instagram folgen
-                  </a>
+                  {isLoggedIn ? (
+                    <Link href="/dashboard" className="btn btn-primary btn-lg">
+                      Zum Dashboard →
+                    </Link>
+                  ) : (
+                    <Link href="/register" className="btn btn-primary btn-lg">
+                      Kostenlos starten
+                    </Link>
+                  )}
                   <a href="#produkte" className="btn btn-secondary">Produkte ansehen</a>
                 </div>
                 <div className="hero-stats">
@@ -514,7 +551,13 @@ export default function Home() {
                   <div className="community-chip" key={i}>{f}</div>
                 ))}
               </div>
-              {waitlistStatus === "success" ? (
+              {isLoggedIn ? (
+                <div style={{ marginTop: "0.5rem" }}>
+                  <Link href="/dashboard" className="btn btn-primary" style={{ justifyContent: "center" }}>
+                    Zum Community-Bereich →
+                  </Link>
+                </div>
+              ) : waitlistStatus === "success" ? (
                 <div style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: "0.75rem", padding: "1rem 1.5rem", marginTop: "0.5rem" }}>
                   <p style={{ color: "#22c55e", fontWeight: 600, fontSize: "0.9rem" }}>Du bist auf der Warteliste! Wir melden uns bei dir.</p>
                 </div>
@@ -526,8 +569,8 @@ export default function Home() {
                   </button>
                 </form>
               )}
-              {waitlistStatus === "error" && <p style={{ color: "#dc2626", fontSize: "0.82rem", marginTop: "0.5rem" }}>Etwas ist schiefgelaufen. Versuche es erneut.</p>}
-              <p className="community-hint">Community-Login wird in Kürze aktiviert – trag dich auf die Warteliste ein.</p>
+              {!isLoggedIn && waitlistStatus === "error" && <p style={{ color: "#dc2626", fontSize: "0.82rem", marginTop: "0.5rem" }}>Etwas ist schiefgelaufen. Versuche es erneut.</p>}
+              {!isLoggedIn && <p className="community-hint">Bereits registriert? <Link href="/login" style={{ color: "var(--accent)" }}>Hier anmelden</Link></p>}
             </div>
           </div>
         </section>
@@ -596,12 +639,20 @@ export default function Home() {
           <div className="container">
             <div className="cta-banner">
               <h2>Bereit, smarter zu reisen?</h2>
-              <p>Folge <strong>@traveling.prof</strong> auf Instagram und hol dir regelmäßig neue Hacks.</p>
+              <p>{isLoggedIn ? "Entdecke deine personalisierten Travel Hacks im Dashboard." : "Erstelle dein kostenloses Konto und starte mit deinen Travel Hacks."}</p>
               <div className="hero-buttons" style={{ justifyContent: "center" }}>
-                <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-                  Jetzt auf Instagram folgen
+                {isLoggedIn ? (
+                  <Link href="/dashboard" className="btn btn-primary">
+                    Zum Dashboard →
+                  </Link>
+                ) : (
+                  <Link href="/register" className="btn btn-primary">
+                    Kostenlos registrieren
+                  </Link>
+                )}
+                <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                  Instagram folgen
                 </a>
-                <a href="#kontakt" className="btn btn-secondary">Fragen stellen</a>
               </div>
             </div>
           </div>
@@ -652,6 +703,11 @@ export default function Home() {
           <div className="footer-row">
             <span>© {year} traveling.prof – Travel Hacks &amp; Luxusreisen</span>
             <div className="footer-links">
+              {isLoggedIn ? (
+                <Link href="/dashboard">Mein Bereich</Link>
+              ) : (
+                <Link href="/login">Anmelden</Link>
+              )}
               <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer">Instagram</a>
               <a href="#kontakt">Kontakt</a>
               <Link href="/impressum">Impressum</Link>
