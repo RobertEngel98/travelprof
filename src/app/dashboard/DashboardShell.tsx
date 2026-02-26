@@ -47,7 +47,7 @@ export default function DashboardShell({ user, profile, children }: DashboardShe
   const isVip = profile?.subscription_status === "active" || profile?.subscription_status === "trial";
 
   return (
-    <div className="page">
+    <div className="page" data-dashboard-shell>
       <header>
         <div className="container">
           <nav className="nav" style={{ justifyContent: "space-between" }}>
@@ -96,7 +96,7 @@ export default function DashboardShell({ user, profile, children }: DashboardShe
 
       <div className="dash-layout container">
         {/* Sidebar (Desktop) */}
-        <aside className="dash-sidebar">
+        <aside className="dash-sidebar" data-sidebar>
           <nav style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href;
@@ -154,7 +154,7 @@ export default function DashboardShell({ user, profile, children }: DashboardShe
       </div>
 
       {/* Mobile Bottom Nav */}
-      <nav className="dash-mobile-nav">
+      <nav className="dash-mobile-nav" data-mobile-nav>
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href;
           return (

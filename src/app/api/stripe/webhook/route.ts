@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/types/database";
+import { sendPurchaseConfirmation } from "@/lib/email";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -71,6 +72,21 @@ export async function POST(request: Request) {
           amount: session.amount_total ?? 0,
           stripe_payment_id: session.payment_intent as string,
         });
+
+        // Send purchase confirmation email
+        const customerEmail = session.customer_details?.email ?? session.customer_email;
+        if (customerEmail) {
+          const { data: profile } = await getSupabaseAdmin()
+            .from("profiles")
+            .select("full_name")
+            .eq("user_id", userId)
+            .single();
+          sendPurchaseConfirmation({
+            email: customerEmail,
+            productId,
+            userName: profile?.full_name ?? undefined,
+          }).catch((err: unknown) => console.error("[Email] Failed to send:", err));
+        }
       }
       break;
     }
