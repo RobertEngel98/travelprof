@@ -3,9 +3,9 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import "./ebook.css";
+import "./product-reader.css";
 
-export default function EbookReader({ content }: { content: string }) {
+export default function ProductReader({ content, title }: { content: string; title: string }) {
   function handlePrint() {
     window.print();
   }
@@ -54,7 +54,7 @@ export default function EbookReader({ content }: { content: string }) {
         </button>
       </div>
 
-      {/* E-Book content */}
+      {/* Product content */}
       <article className="ebook-content">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}

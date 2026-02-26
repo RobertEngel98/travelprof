@@ -1,4 +1,4 @@
-/* E-Book Reader Styles */
+/* Product Reader Styles */
 .ebook-toolbar {
   display: flex;
   justify-content: space-between;
@@ -122,7 +122,6 @@
 
 /* Print styles */
 @media print {
-  /* Hide dashboard shell / navigation */
   .ebook-toolbar,
   nav,
   header,

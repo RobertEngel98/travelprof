@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { PRODUCTS } from "@/lib/stripe";
 
-const PRODUCT_DETAILS: Record<string, { icon: string; description: string; link?: string }> = {
+const PRODUCT_DETAILS: Record<string, { icon: string; description: string; link: string }> = {
   analyse: { icon: "✈️", description: "Deine persönliche Reiseanalyse mit maßgeschneiderten Empfehlungen.", link: "/dashboard/analyse" },
   ebook: { icon: "📖", description: "10 erprobte Buchungs-Hacks für günstige Business Class Flüge.", link: "/dashboard/produkte/ebook" },
-  kreditkarten: { icon: "💳", description: "Der ultimative Vergleich der besten Reise-Kreditkarten 2025." },
-  crashkurs: { icon: "🎓", description: "5-Module Video-Kurs zum Meilen sammeln und einlösen." },
-  masterplan: { icon: "🛋️", description: "Dein kompletter Guide für Lounge-Zugang und Upgrades." },
+  kreditkarten: { icon: "💳", description: "Der ultimative Vergleich der besten Reise-Kreditkarten 2025.", link: "/dashboard/produkte/kreditkarten" },
+  crashkurs: { icon: "🎓", description: "5-Module Video-Kurs zum Meilen sammeln und einlösen.", link: "/dashboard/produkte/crashkurs" },
+  masterplan: { icon: "🛋️", description: "Dein kompletter Guide für Lounge-Zugang und Upgrades.", link: "/dashboard/produkte/masterplan" },
 };
 
 interface Purchase {
@@ -80,28 +80,12 @@ export default function ProduktePage() {
                   {details?.description ?? ""}
                 </p>
                 {owned ? (
-                  <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
-                    {details?.link ? (
-                      <button
-                        onClick={() => router.push(details.link!)}
-                        className="btn btn-primary btn-sm"
-                      >
-                        Öffnen
-                      </button>
-                    ) : (
-                      <span style={{
-                        display: "inline-block",
-                        background: "rgba(34,197,94,0.1)",
-                        color: "#22c55e",
-                        padding: "0.35rem 0.75rem",
-                        borderRadius: "0.5rem",
-                        fontSize: "0.82rem",
-                        fontWeight: 600,
-                      }}>
-                        Gekauft
-                      </span>
-                    )}
-                  </div>
+                  <button
+                    onClick={() => router.push(details?.link ?? "/dashboard/produkte")}
+                    className="btn btn-primary btn-sm"
+                  >
+                    Öffnen
+                  </button>
                 ) : (
                   <button
                     onClick={() => handleBuy(id)}

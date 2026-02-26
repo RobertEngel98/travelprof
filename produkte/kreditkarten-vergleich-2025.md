@@ -2,7 +2,7 @@
 
 **Ein kostenloser Leitfaden von traveling.prof**
 
-> *Hinweis: Einige der in diesem Dokument enthaltenen Links sind Affiliate-Links. Das bedeutet, dass ich eine kleine Provision erhalte, wenn du dich über einen dieser Links anmeldest -- ohne zusätzliche Kosten für dich. Diese Einnahmen helfen mir, weiterhin kostenlose Inhalte wie diesen Vergleich zu erstellen. Ich empfehle ausschliesslich Produkte, die ich selbst nutze und von deren Mehrwert ich überzeugt bin. Vielen Dank für deine Unterstützung!*
+> *Hinweis: Einige der in diesem Dokument enthaltenen Links sind Affiliate-Links. Das bedeutet, dass ich eine kleine Provision erhalte, wenn du dich über einen dieser Links anmeldest -- ohne zusätzliche Kosten für dich. Diese Einnahmen helfen mir, weiterhin kostenlose Inhalte wie diesen Vergleich zu erstellen. Ich empfehle ausschließlich Produkte, die ich selbst nutze und von deren Mehrwert ich überzeugt bin. Vielen Dank für deine Unterstützung!*
 
 ---
 
@@ -26,7 +26,7 @@ Stell dir vor, du fliegst Business Class nach New York, übernachtest in einem 5
 
 **Die richtige Kreditkarte ist das Fundament jeder Travel-Hacking-Strategie.** Sie ist das Werkzeug, mit dem du bei jedem einzelnen Einkauf -- vom Wocheneinkauf bis zur Tankfüllung -- Punkte und Meilen sammelst, die dich deinem nächsten Traumurlaub näherbringen.
 
-Im DACH-Raum (Deutschland, Österreich, Schweiz) haben wir Zugang zu einigen der besten Reise-Kreditkarten weltweit. Doch die Auswahl ist gross und unübersichtlich. Genau deshalb habe ich diesen Vergleich erstellt: **damit du in wenigen Minuten die perfekte Karte -- oder die perfekte Kartenkombination -- für deine Situation findest.**
+Im DACH-Raum (Deutschland, Österreich, Schweiz) haben wir Zugang zu einigen der besten Reise-Kreditkarten weltweit. Doch die Auswahl ist groß und unübersichtlich. Genau deshalb habe ich diesen Vergleich erstellt: **damit du in wenigen Minuten die perfekte Karte -- oder die perfekte Kartenkombination -- für deine Situation findest.**
 
 ### Was du in diesem Guide lernst:
 
@@ -486,7 +486,7 @@ Nach Jahren des Ausprobierens, Rechnens und Optimierens habe ich mein persönlic
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  1. AMEX PLATINUM         →  Premium-Benefits & Lounges     │
-│     Rolle: Hauptkarte für Reisen, Hotels, grosse Ausgaben    │
+│     Rolle: Hauptkarte für Reisen, Hotels, große Ausgaben    │
 │                                                              │
 │  2. PAYBACK AMEX          →  Kostenloses Punkte-Earning     │
 │     Rolle: Alltags-Einkäufe, Payback-Partner, Tankstelle    │
@@ -653,9 +653,9 @@ Alles, was ich empfehle, nutze ich selbst. Jede Karte in diesem Vergleich habe i
 
 ## Rechtliche Hinweise
 
-**Affiliate-Disclosure:** Einige der in diesem Dokument enthaltenen Links sind Affiliate-Links. Wenn du dich über einen solchen Link für ein Produkt anmeldest, erhalte ich eine Provision vom jeweiligen Anbieter. Dies geschieht ohne zusätzliche Kosten für dich und beeinflusst meine Bewertung der Produkte nicht. Meine Empfehlungen basieren ausschliesslich auf meiner persönlichen Erfahrung und objektiven Kriterien. Dieser Hinweis erfolgt gemäss den Vorgaben der DSGVO und des TMG.
+**Affiliate-Disclosure:** Einige der in diesem Dokument enthaltenen Links sind Affiliate-Links. Wenn du dich über einen solchen Link für ein Produkt anmeldest, erhalte ich eine Provision vom jeweiligen Anbieter. Dies geschieht ohne zusätzliche Kosten für dich und beeinflusst meine Bewertung der Produkte nicht. Meine Empfehlungen basieren ausschließlich auf meiner persönlichen Erfahrung und objektiven Kriterien. Dieser Hinweis erfolgt gemäss den Vorgaben der DSGVO und des TMG.
 
-**Keine Finanzberatung:** Die Inhalte dieses Dokuments dienen ausschliesslich der Information und stellen keine Finanzberatung dar. Kreditkartenanträge und finanzielle Entscheidungen sollten stets unter Berücksichtigung deiner individuellen finanziellen Situation getroffen werden. Ich übernehme keine Haftung für finanzielle Entscheidungen, die auf Basis dieses Dokuments getroffen werden.
+**Keine Finanzberatung:** Die Inhalte dieses Dokuments dienen ausschließlich der Information und stellen keine Finanzberatung dar. Kreditkartenanträge und finanzielle Entscheidungen sollten stets unter Berücksichtigung deiner individuellen finanziellen Situation getroffen werden. Ich übernehme keine Haftung für finanzielle Entscheidungen, die auf Basis dieses Dokuments getroffen werden.
 
 **Aktualität:** Alle Angaben entsprechen dem Stand Januar 2025. Konditionen, Gebühren und Benefits können sich jederzeit ändern. Bitte prüfe die aktuellen Bedingungen auf den jeweiligen Anbieterwebsites.
 

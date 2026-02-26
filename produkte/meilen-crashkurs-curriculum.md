@@ -76,7 +76,7 @@ Nach diesem Modul kannst du:
 
 1. **Meilen-Inventur:** Logge dich in alle deine bestehenden Vielfliegerprogramme ein und notiere deine aktuellen Kontostaende.
 2. **Wert-Rechner:** Berechne den Cent-pro-Punkt-Wert fuer drei verschiedene Einloese-Szenarien bei Miles & More (Economy innerhalb Europas, Business Class nach Nordamerika, Upgrade von Economy auf Business).
-3. **Alltagsanalyse:** Schreibe deine monatlichen Fixkosten und regelmaessigen Ausgaben auf. Markiere, welche davon bereits ueber ein Bonusprogramm laufen und welche du noch optimieren kannst.
+3. **Alltagsanalyse:** Schreibe deine monatlichen Fixkosten und regelmäßigen Ausgaben auf. Markiere, welche davon bereits ueber ein Bonusprogramm laufen und welche du noch optimieren kannst.
 
 ### Bonus-Material zu Modul 1
 - PDF-Checkliste: "Deine Meilen-Startaufstellung"
@@ -202,7 +202,7 @@ Nach diesem Modul kannst du:
 
 - **Transferverhaeltnis:** 1 Payback Punkt = 1 Miles & More Meile
 - **Mindest-Transfermenge:** Ab wie vielen Punkten kannst du transferieren?
-- **Transfer-Timing:** Bonus-Aktionen abwarten (regelmaessig 20-30% Bonus)
+- **Transfer-Timing:** Bonus-Aktionen abwarten (regelmäßig 20-30% Bonus)
 - **Strategischer Einsatz:**
   - Payback Punkte im Alltag sammeln (Rewe, dm, Aral, Online-Shops)
   - Gesammelte Punkte geblockt zu Miles & More transferieren
@@ -212,7 +212,7 @@ Nach diesem Modul kannst du:
 
 - **Was sind Airline-Allianzen?**
   - Zusammenschluesse von Airlines mit gemeinsamen Vielfliegerprogrammen
-  - Meilen eines Programms fuer Fluege aller Allianz-Partner einloesen
+  - Meilen eines Programms fuer Flüge aller Allianz-Partner einloesen
 - **Star Alliance:**
   - 26 Airlines, darunter Lufthansa, Swiss, Austrian, Turkish Airlines, Singapore Airlines, United
   - Besonders relevant fuer Miles & More Sammler
@@ -264,7 +264,7 @@ Nach diesem Modul kannst du:
   - Miles & More Business Class innerhalb Europas (nur 30.000-50.000 Meilen)
   - British Airways Avios fuer Kurzstrecken (ab 4.500 Avios one-way innerhalb Europas)
   - Singapore Airlines Saver Awards in der Business/First nach Asien
-  - ANA Mileage Club fuer First-Class-Fluege nach Japan
+  - ANA Mileage Club fuer First-Class-Flüge nach Japan
   - Turkish Miles&Smiles fuer Star Alliance Business Class
   - Emirates Skywards fuer Dubai-Verbindungen
 - **Wert-Berechnung:**
@@ -414,8 +414,8 @@ Nach diesem Modul kannst du:
   - Lufthansa Senator/Business Lounge ueber Miles & More Kreditkarte
   - DragonPass und LoungeKey als Alternativen zu Priority Pass
 - **Geheimtipps:**
-  - Pay-per-use Lounges an bestimmten Flughaefen
-  - Hotel-Lounges an Flughaefen (z.B. Hilton-Lounges)
+  - Pay-per-use Lounges an bestimmten Flughäfen
+  - Hotel-Lounges an Flughäfen (z.B. Hilton-Lounges)
   - Spezielle Angebote bei Buchung ueber bestimmte Portale
 
 #### 5.4 Kostenlose Upgrades (6 Min)
@@ -444,7 +444,7 @@ Nach diesem Modul kannst du:
 3. **Upgrade-Simulation:** Waehle ein konkretes Hotel und einen konkreten Flug. Recherchiere alle Moeglichkeiten, ein Upgrade zu erhalten, und erstelle einen priorisierten Plan.
 
 ### Bonus-Material zu Modul 5
-- PDF: "Lounge-Zugangs-Checkliste nach Flughafen (Top 20 DACH-Flughaefen)"
+- PDF: "Lounge-Zugangs-Checkliste nach Flughafen (Top 20 DACH-Flughäfen)"
 - Vorlage: "Status-Match E-Mail auf Deutsch und Englisch"
 - Infografik: "Der Status-Match-Stammbaum -- von Amex Platinum zu Hotel-Elite-Status"
 

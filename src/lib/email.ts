@@ -36,8 +36,15 @@ export async function sendPurchaseConfirmation({
   const greeting = userName ? `Hallo ${userName}` : "Hallo";
 
   const dashboardLink = `${appUrl}/dashboard/produkte`;
-  const directLink = productId === "ebook"
-    ? `${appUrl}/dashboard/produkte/ebook`
+  const PRODUCT_LINKS: Record<string, string> = {
+    ebook: "/dashboard/produkte/ebook",
+    kreditkarten: "/dashboard/produkte/kreditkarten",
+    crashkurs: "/dashboard/produkte/crashkurs",
+    masterplan: "/dashboard/produkte/masterplan",
+    analyse: "/dashboard/analyse",
+  };
+  const directLink = PRODUCT_LINKS[productId]
+    ? `${appUrl}${PRODUCT_LINKS[productId]}`
     : dashboardLink;
 
   await getResend().emails.send({

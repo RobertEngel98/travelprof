@@ -23,7 +23,7 @@ Nicht jede Lounge ist gleich. Bevor du dich auf die Suche nach Zugang machst, so
 
 ### Airline-Lounges
 
-Airline-Lounges werden von den Fluggesellschaften selbst betrieben und sind in der Regel an deren Hub-Flughaefen zu finden.
+Airline-Lounges werden von den Fluggesellschaften selbst betrieben und sind in der Regel an deren Hub-Flughäfen zu finden.
 
 **Business-Class-Lounges:**
 - Zugang mit Business-Class-Ticket oder Elite-Status
@@ -38,7 +38,7 @@ Airline-Lounges werden von den Fluggesellschaften selbst betrieben und sind in d
 - Die absolute Spitze des Lounge-Erlebnisses
 
 **Regional-Lounges:**
-- Kleinere Lounges an Nicht-Hub-Flughaefen
+- Kleinere Lounges an Nicht-Hub-Flughäfen
 - Oft einfachere Ausstattung: Snacks, Softdrinks, Kaffee, WLAN
 - Trotzdem besser als der Gate-Bereich
 
@@ -60,7 +60,7 @@ Airline-Lounges werden von den Fluggesellschaften selbst betrieben und sind in d
 
 ### Pay-per-use Lounges
 
-- An vielen Flughaefen kannst du Lounge-Zugang einfach kaufen
+- An vielen Flughäfen kannst du Lounge-Zugang einfach kaufen
 - Preise typischerweise 25-60 EUR pro Besuch
 - Buchbar ueber die Lounge direkt, LoungeBuddy oder die Flughafen-Website
 - Lohnt sich besonders bei langen Layovern, wenn du keinen anderen Zugang hast
@@ -144,7 +144,7 @@ Die einfachste und umfassendste Methode fuer DACH-Reisende.
 ### Zusammenfassung: Dein Lounge-Zugangs-Stack
 
 Die optimale Strategie kombiniert mehrere Methoden:
-1. **Basis:** Amex Platinum mit Priority Pass (deckt 80% deiner Fluege ab)
+1. **Basis:** Amex Platinum mit Priority Pass (deckt 80% deiner Flüge ab)
 2. **Ergaenzung:** Airline-Status fuer Zugang zu hochwertigen Airline-Lounges
 3. **Backup:** Day Passes fuer Lounges, die nicht im Priority Pass sind
 4. **Bonus:** Hotel-Status fuer Executive Lounges bei Hotel-Aufenthalten
@@ -158,7 +158,7 @@ Die optimale Strategie kombiniert mehrere Methoden:
 - **Zugang:** Business Class auf Turkish Airlines, Star Alliance Gold, Miles&Smiles Elite
 - **Highlights:** Gigantische Lounge mit ueber 5.000 Quadratmetern, Live-Cooking-Stationen mit tuerkischer und internationaler Kueche, Billardtische, Bibliothek, Kino-Raum, Golfsimulator, Kinderspielbereich
 - **Warum sie besonders ist:** Gilt als eine der besten Business-Class-Lounges der Welt, und Istanbul ist ein idealer Umsteigeort zwischen Europa und Asien
-- **Tipp:** Plane genug Layover-Zeit ein (mindestens 3 Stunden), um die Lounge richtig geniessen zu koennen
+- **Tipp:** Plane genug Layover-Zeit ein (mindestens 3 Stunden), um die Lounge richtig genießen zu koennen
 
 ### 2. Qatar Airways Al Mourjan Business Lounge -- Doha (DOH)
 
@@ -212,7 +212,7 @@ Die optimale Strategie kombiniert mehrere Methoden:
 ### 9. Qantas First Lounge -- Sydney (SYD)
 
 - **Zugang:** Qantas First Class, Oneworld Emerald
-- **Highlights:** Restaurant von Neil Perry (Rockpool), australische Weine, Spa, natuerliches Licht durch grosse Fenster
+- **Highlights:** Restaurant von Neil Perry (Rockpool), australische Weine, Spa, natuerliches Licht durch große Fenster
 - **Warum sie besonders ist:** Verbindet australische Entspanntheit mit Weltklasse-Gastronomie
 - **Tipp:** Bestelle das Steak -- es ist eines der besten Lounge-Gerichte weltweit
 
@@ -220,7 +220,7 @@ Die optimale Strategie kombiniert mehrere Methoden:
 
 - **Zugang:** Business Class auf Korean Air, SkyTeam Elite Plus
 - **Highlights:** Koreanische und internationale Kueche, Bibimbap-Station, Duschen, Ruhebereiche, Nap-Rooms
-- **Warum sie besonders ist:** Seoul Incheon ist einer der besten Flughaefen Asiens, und die Korean Air Lounge ist ein wuerdiger Teil davon
+- **Warum sie besonders ist:** Seoul Incheon ist einer der besten Flughäfen Asiens, und die Korean Air Lounge ist ein wuerdiger Teil davon
 - **Tipp:** Das frisch zubereitete Bibimbap ist ein Highlight -- unbedingt probieren
 
 ### Ehrenwerte Erwaehnung fuer DACH-Reisende
@@ -253,7 +253,7 @@ Ein operatives Upgrade wird von der Airline selbst initiiert, wenn die gebuchte 
 Viele Airlines bieten die Moeglichkeit, ein bestehendes Ticket gegen Meilen in die naechsthoehere Klasse zu upgraden.
 
 **Wie funktioniert es?**
-- Du buchst ein regulaeres Economy-Ticket (bestimmte Buchungsklassen)
+- Du buchst ein reguläres Economy-Ticket (bestimmte Buchungsklassen)
 - Du zahlst eine festgelegte Meilenanzahl fuer das Upgrade
 - Nicht alle Buchungsklassen sind upgrade-berechtigt -- billigste Economy-Tarife oft ausgeschlossen
 
@@ -281,12 +281,12 @@ Viele Airlines bieten ein Auktionssystem, bei dem du auf ein Upgrade bieten kann
 **Strategie fuer erfolgreiche Gebote:**
 - Biete nicht den Mindestbetrag -- die Konkurrenz tut das auch
 - Biete 60-80% des Hoechstbetrags fuer gute Chancen
-- Fluege unter der Woche und in der Nebensaison haben bessere Chancen
+- Flüge unter der Woche und in der Nebensaison haben bessere Chancen
 - Langstreckenfluege bieten mehr Wert fuer dein Gebot als Kurzstrecken
 - Typische erfolgreiche Gebote: 200-500 EUR fuer Europa-Business, 500-1.500 EUR fuer Langstrecke-Business
 
 **Wann sich Bidding lohnt:**
-- Wenn der Preisunterschied zwischen Economy und Business sehr gross ist
+- Wenn der Preisunterschied zwischen Economy und Business sehr groß ist
 - Wenn du einen besonderen Anlass feiern willst
 - Wenn du den Komfort fuer einen langen Nachtflug brauchst
 
@@ -329,7 +329,7 @@ Manche Airlines erlauben es, am selben Tag auf einen anderen Flug umzubuchen. We
 
 ### Was ist ein Status-Match?
 
-Bei einem Status-Match erkennst du deinen bestehenden Elite-Status bei einem Programm an und bittest ein anderes Programm, dir einen vergleichbaren Status zu gewaehren. Das Ziel: Ohne monatelanges Fliegen oder Uebernachten sofort Elite-Vorteile geniessen.
+Bei einem Status-Match erkennst du deinen bestehenden Elite-Status bei einem Programm an und bittest ein anderes Programm, dir einen vergleichbaren Status zu gewaehren. Das Ziel: Ohne monatelanges Fliegen oder Uebernachten sofort Elite-Vorteile genießen.
 
 ### Airline-Status-Matches
 
@@ -346,7 +346,7 @@ Bei einem Status-Match erkennst du deinen bestehenden Elite-Status bei einem Pro
 
 **Status-Challenge:**
 - Statt eines direkten Matches erhaeltst du eine Challenge
-- Du bekommst befristeten Status und musst in 90 Tagen eine bestimmte Anzahl Fluege/Meilen sammeln
+- Du bekommst befristeten Status und musst in 90 Tagen eine bestimmte Anzahl Flüge/Meilen sammeln
 - Schaffst du es: Status bleibt
 - Schaffst du es nicht: Status wird entzogen
 - Vorteil: Du geniesst die Vorteile bereits waehrend der Challenge
@@ -359,7 +359,7 @@ Bei einem Status-Match erkennst du deinen bestehenden Elite-Status bei einem Pro
    - IHG One Rewards Platinum
    - Best Western Rewards Diamond
 3. **Matche Marriott Gold weiter:**
-   - Verschiedene Hotel-Ketten bieten regelmaessig Match-Moeglichkeiten
+   - Verschiedene Hotel-Ketten bieten regelmäßig Match-Moeglichkeiten
 
 **Die Status-Match-Leiter (Schritt fuer Schritt):**
 1. Amex Platinum beantragen (= Hilton Gold + Marriott Gold sofort)
@@ -450,9 +450,9 @@ Bei einem Status-Match erkennst du deinen bestehenden Elite-Status bei einem Pro
 #### Regel 5: Bewertungen und Sichtbarkeit
 
 - Hinterlasse nach jedem Aufenthalt eine positive Bewertung (TripAdvisor, Google, Booking)
-- Hotels bemerken Gaeste, die regelmaessig positives Feedback geben
+- Hotels bemerken Gaeste, die regelmäßig positives Feedback geben
 - Bei Stammgaesten steigt die Upgrade-Wahrscheinlichkeit erheblich
-- Markiere das Hotel auf Social Media (wenn du eine grosse Reichweite hast, kann das zusaetzlich helfen)
+- Markiere das Hotel auf Social Media (wenn du eine große Reichweite hast, kann das zusaetzlich helfen)
 
 ### Zusammenfassung: Dein Upgrade-Stack
 
@@ -494,18 +494,18 @@ Du planst einen Urlaub auf den Malediven und moechtest in der Business Class fli
 **Schritt 4: Lounge-Zugang am Reisetag**
 - Priority Pass (via Amex Platinum) fuer den Abflughafen
 - Business-Class-Ticket = Lounge-Zugang am Umsteigeflughafen
-- Bei Stopover in Singapur: Singapore Airlines SilverKris Lounge geniessen
+- Bei Stopover in Singapur: Singapore Airlines SilverKris Lounge genießen
 
 **Ergebnis:**
-- Business-Class-Fluege: Bezahlt mit Meilen (nur Steuern und Gebuehren in bar)
+- Business-Class-Flüge: Bezahlt mit Meilen (nur Steuern und Gebuehren in bar)
 - Hotel-Upgrade auf bessere Zimmerkategorie dank Elite-Status
 - Lounge-Zugang auf der gesamten Reise
-- Kosteneinsparung gegenueber regulaerer Buchung: 3.000-7.000 EUR
+- Kosteneinsparung gegenueber regulärer Buchung: 3.000-7.000 EUR
 
 ### Szenario 2: Geschaeftsreise nach New York -- Produktiv und komfortabel
 
 **Ausgangslage:**
-Du fliegst regelmaessig geschaeftlich und moechtest deine Reise nach New York maximal komfortabel gestalten -- Lounge, Upgrade, Hotel-Upgrade.
+Du fliegst regelmäßig geschaeftlich und moechtest deine Reise nach New York maximal komfortabel gestalten -- Lounge, Upgrade, Hotel-Upgrade.
 
 **Schritt-fuer-Schritt-Anleitung:**
 
@@ -565,7 +565,7 @@ Du reist mit deiner Familie (2 Erwachsene, 2 Kinder) und moechtest einen Stopove
 - Ergebnis: Zwei Staedte (Istanbul + Japan), ein Praemienflug-Ticket
 
 **Schritt 4: Vor Ort**
-- Istanbul: Turkish Airlines CIP Lounge beim Umstieg geniessen
+- Istanbul: Turkish Airlines CIP Lounge beim Umstieg genießen
 - Hilton Gold fuer Hotels (Hilton Istanbul Bosphorus ist eine gute Wahl)
 - In Japan: Marriott Gold fuer Hotels (Marriott hat viele Properties in Japan)
 - Rueckflug ab Osaka: Japan zwischen Tokio und Osaka per Shinkansen erkunden
@@ -579,7 +579,7 @@ Du reist mit deiner Familie (2 Erwachsene, 2 Kinder) und moechtest einen Stopove
 - Zwei Reiseziele (Istanbul + Japan) mit einem einzigen Praemienflug
 - Open-Jaw ermoeglicht Reise durch Japan ohne Backtracking
 - Lounge-Zugang macht das Reisen mit Kindern entspannter
-- Kosteneinsparung: 4.000-12.000 EUR gegenueber regulaerer Buchung fuer 4 Personen
+- Kosteneinsparung: 4.000-12.000 EUR gegenueber regulärer Buchung fuer 4 Personen
 
 ---
 
@@ -592,7 +592,7 @@ Du reist mit deiner Familie (2 Erwachsene, 2 Kinder) und moechtest einen Stopove
 - [ ] Gib ein Upgrade-Gebot ab (Surprise Upgrade, myUpgrade, etc.)
 - [ ] Pruefe, ob dein Ticket upgrade-berechtigt ist
 - [ ] Buche deinen Sitzplatz in der gebuchten Klasse (falls kein Upgrade moeglich, zumindest den besten Platz sichern)
-- [ ] Recherchiere verfuegbare Lounges an allen Flughaefen deiner Reise (Abflug, Umstieg, Ankunft)
+- [ ] Recherchiere verfuegbare Lounges an allen Flughäfen deiner Reise (Abflug, Umstieg, Ankunft)
 - [ ] Lade die Priority Pass App herunter und pruefe Lounges
 - [ ] Schreibe dein Hotel an und erwaehne deinen Status und ggf. besonderen Anlass
 - [ ] Pruefe, ob Hotel-Upgrades per App oder Chat moeglich sind
@@ -601,7 +601,7 @@ Du reist mit deiner Familie (2 Erwachsene, 2 Kinder) und moechtest einen Stopove
 
 - [ ] Checke frueh online ein (24-48 Stunden vorher)
 - [ ] Pruefe erneut die Upgrade-Verfuegbarkeit (manchmal werden kurzfristig Plaetze frei)
-- [ ] Pruefe Same-Day-Change-Optionen (gibt es Fluege mit freien Business-Plaetzen?)
+- [ ] Pruefe Same-Day-Change-Optionen (gibt es Flüge mit freien Business-Plaetzen?)
 - [ ] Packe Lounge-relevante Dinge ein: Priority Pass Karte/App, Kreditkarten, Vielfliegerkarten
 - [ ] Informiere dich ueber Lounge-Oeffnungszeiten an deinem Abflughafen
 - [ ] Bereite Kleidung vor, die fuer ein Upgrade angemessen ist (Business casual reicht)
