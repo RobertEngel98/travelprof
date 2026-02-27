@@ -12,7 +12,7 @@ function getResend() {
 const PRODUCT_NAMES: Record<string, string> = {
   ebook: "Top 10 Buchungs-Hacks E-Book",
   analyse: "10-Sekunden Reiseanalyse",
-  kreditkarten: "Kreditkarten-Vergleich 2025",
+  kreditkarten: "Kreditkarten-Vergleich 2026",
   crashkurs: "Meilen-Crashkurs",
   masterplan: "Lounge & Upgrade Masterplan",
 };

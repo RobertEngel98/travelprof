@@ -33,7 +33,7 @@ export const PRODUCTS = {
     type: "one_time" as const,
   },
   kreditkarten: {
-    name: "Kreditkarten-Vergleich 2025",
+    name: "Kreditkarten-Vergleich 2026",
     price: 900,
     priceDisplay: "9,00",
     type: "one_time" as const,

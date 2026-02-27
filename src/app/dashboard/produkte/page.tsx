@@ -8,7 +8,7 @@ import { PRODUCTS } from "@/lib/stripe";
 const PRODUCT_DETAILS: Record<string, { icon: string; description: string; link: string }> = {
   analyse: { icon: "✈️", description: "Deine persönliche Reiseanalyse mit maßgeschneiderten Empfehlungen.", link: "/dashboard/analyse" },
   ebook: { icon: "📖", description: "10 erprobte Buchungs-Hacks für günstige Business Class Flüge.", link: "/dashboard/produkte/ebook" },
-  kreditkarten: { icon: "💳", description: "Der ultimative Vergleich der besten Reise-Kreditkarten 2025.", link: "/dashboard/produkte/kreditkarten" },
+  kreditkarten: { icon: "💳", description: "Der ultimative Vergleich der besten Reise-Kreditkarten 2026.", link: "/dashboard/produkte/kreditkarten" },
   crashkurs: { icon: "🎓", description: "5-Module Video-Kurs zum Meilen sammeln und einlösen.", link: "/dashboard/produkte/crashkurs" },
   masterplan: { icon: "🛋️", description: "Dein kompletter Guide für Lounge-Zugang und Upgrades.", link: "/dashboard/produkte/masterplan" },
 };

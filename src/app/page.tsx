@@ -456,7 +456,7 @@ export default function Home() {
                 {[
                   { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Starter-Checkliste", desc: "10 Schritte zum sofortigen Start mit dem Meilensammeln. PDF zum Download.", cta: "Gratis herunterladen", action: "leadmagnet" },
                   { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Quick-Check Kalkulator", desc: "Finde in 60 Sekunden heraus, wie viele Meilen du pro Jahr sammeln kannst.", cta: "Gratis herunterladen", action: "leadmagnet" },
-                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Kreditkarten-Vergleich 2025", desc: "Ehrlicher Vergleich der besten Reise-Kreditkarten im DACH-Raum.", cta: "Gratis herunterladen", action: "leadmagnet" },
+                  { tag: "Kostenlos", cls: "free", price: "0 €", name: "Kreditkarten-Vergleich 2026", desc: "Ehrlicher Vergleich der besten Reise-Kreditkarten im DACH-Raum.", cta: "Gratis herunterladen", action: "leadmagnet" },
                   { tag: "Starter", cls: "starter", price: "14 €", name: "Amex Platinum Lohnt-sich-Rechner", desc: "Interaktiver Excel-Rechner: Trage deine Werte ein und sieh, ob sich die Amex Platinum für dich lohnt.", cta: "Jetzt kaufen", action: "buy" },
                   { tag: "Starter", cls: "starter", price: "19 €", name: "Top 10 Buchungs-Hacks E-Book", desc: "Die 10 besten Buchungsstrategien für günstigere Flüge und bessere Hotels – mit Screenshots.", cta: "Jetzt kaufen", action: "buy" },
                   { tag: "Kurs", cls: "core", price: "39 €", name: "Meilen-Crashkurs (Video)", desc: "5-Modul Videokurs: Sammeln, Optimieren, Einlösen. Inkl. Kalkulator und Templates.", cta: "Zum Kurs", action: "buy" },
@@ -497,7 +497,7 @@ export default function Home() {
               {[
                 { e: "📋", h: "Meilen-Starter-Checkliste", p: "Die wichtigsten 10 Schritte, um sofort mit dem Meilensammeln zu starten." },
                 { e: "🗺️", h: "Top 10 Buchungs-Hacks PDF", p: "Meine 10 besten Buchungstricks für günstigere Flüge und bessere Hotels." },
-                { e: "💳", h: "Kreditkarten-Vergleich 2025", p: "Welche Karte lohnt sich wirklich? Mein ehrlicher Vergleich der besten Optionen." },
+                { e: "💳", h: "Kreditkarten-Vergleich 2026", p: "Welche Karte lohnt sich wirklich? Mein ehrlicher Vergleich der besten Optionen." },
               ].map((f, i) => (
                 <article className="freebie" key={i}>
                   <div className="card-emoji">{f.e}</div>

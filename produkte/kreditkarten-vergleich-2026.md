@@ -1,4 +1,4 @@
-# Kreditkarten-Vergleich 2025: Die besten Reise-Kreditkarten im DACH-Raum
+# Kreditkarten-Vergleich 2026: Die besten Reise-Kreditkarten im DACH-Raum
 
 **Ein kostenloser Leitfaden von traveling.prof**
 
@@ -35,7 +35,7 @@ Im DACH-Raum (Deutschland, Österreich, Schweiz) haben wir Zugang zu einigen der
 - Warum eine einzelne Karte selten die beste Lösung ist
 - Welche Kartenkombination ich selbst nutze und warum
 
-**Wichtig:** Dieser Vergleich basiert auf dem Stand Januar 2025. Konditionen können sich ändern. Aktuelle Informationen findest du immer auf den jeweiligen Anbieterseiten.
+**Wichtig:** Dieser Vergleich basiert auf dem Stand Januar 2026. Konditionen können sich ändern. Aktuelle Informationen findest du immer auf den jeweiligen Anbieterseiten.
 
 ---
 
@@ -657,10 +657,10 @@ Alles, was ich empfehle, nutze ich selbst. Jede Karte in diesem Vergleich habe i
 
 **Keine Finanzberatung:** Die Inhalte dieses Dokuments dienen ausschließlich der Information und stellen keine Finanzberatung dar. Kreditkartenanträge und finanzielle Entscheidungen sollten stets unter Berücksichtigung deiner individuellen finanziellen Situation getroffen werden. Ich übernehme keine Haftung für finanzielle Entscheidungen, die auf Basis dieses Dokuments getroffen werden.
 
-**Aktualität:** Alle Angaben entsprechen dem Stand Januar 2025. Konditionen, Gebühren und Benefits können sich jederzeit ändern. Bitte prüfe die aktuellen Bedingungen auf den jeweiligen Anbieterwebsites.
+**Aktualität:** Alle Angaben entsprechen dem Stand Januar 2026. Konditionen, Gebühren und Benefits können sich jederzeit ändern. Bitte prüfe die aktuellen Bedingungen auf den jeweiligen Anbieterwebsites.
 
 ---
 
-*© 2025 traveling.prof | Alle Rechte vorbehalten*
+*© 2026 traveling.prof | Alle Rechte vorbehalten*
 
 *Erstellt mit Leidenschaft für Travel Hacking im DACH-Raum*

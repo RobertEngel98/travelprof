@@ -6,7 +6,7 @@ import ProductReader from "./ProductReader";
 
 const PRODUCT_FILES: Record<string, { file: string; title: string }> = {
   ebook: { file: "top-10-buchungs-hacks-ebook.md", title: "Top 10 Buchungs-Hacks E-Book" },
-  kreditkarten: { file: "kreditkarten-vergleich-2025.md", title: "Kreditkarten-Vergleich 2025" },
+  kreditkarten: { file: "kreditkarten-vergleich-2026.md", title: "Kreditkarten-Vergleich 2026" },
   crashkurs: { file: "meilen-crashkurs-curriculum.md", title: "Meilen-Crashkurs" },
   masterplan: { file: "lounge-upgrade-masterplan.md", title: "Lounge & Upgrade Masterplan" },
 };
