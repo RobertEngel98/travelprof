@@ -1,6 +1,8 @@
 "use client";
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent, useCallback } from "react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 import "./analyse.css";
 
 const AFF = {
@@ -175,11 +177,18 @@ function ResultsView({result,lead}:{result:SetupResult;lead:LeadData}) {
   </div>;
 }
 
-// Stripe Payment Link - Redirect-URL im Stripe Dashboard auf:
-// https://travelprof.vercel.app/analyse?success=true
+// Stripe Payment Link for guests (no account)
 const STRIPE_LINK = "https://buy.stripe.com/28EcN431x9Ur9nR7X46c00g";
 
-function PaywallScreen({onAlreadyPaid}:{onAlreadyPaid:()=>void}) {
+function PaywallScreen({onAlreadyPaid,onCheckout,isLoggedIn,checkoutLoading}:{onAlreadyPaid:()=>void;onCheckout:()=>void;isLoggedIn:boolean;checkoutLoading:boolean}) {
+  const features = [
+    "Personalisiertes Karten-Setup mit Reihenfolge",
+    "Meilenpotenzial-Berechnung (monatlich + jährlich)",
+    "Individuelle Sammeltipps mit Affiliate-Boni",
+    "Buchungsstrategien für dein Reiseziel",
+    "Hotel- und Lounge-Empfehlungen",
+    "Nächste Schritte mit konkreten Links",
+  ];
   return <div className="a-step a-fadein">
     <div className="a-step-emoji">🔓</div>
     <h2 className="a-step-title">Deine Analyse ist fertig!</h2>
@@ -191,21 +200,20 @@ function PaywallScreen({onAlreadyPaid}:{onAlreadyPaid:()=>void}) {
           <span style={{fontSize:"0.85rem",color:"#78716c",marginLeft:"0.5rem"}}>einmalig</span>
         </div>
         <div style={{display:"grid",gap:"0.5rem"}}>
-          {[
-            "Personalisiertes Karten-Setup mit Reihenfolge",
-            "Meilenpotenzial-Berechnung (monatlich + jährlich)",
-            "Individuelle Sammeltipps mit Affiliate-Boni",
-            "Buchungsstrategien für dein Reiseziel",
-            "Hotel- und Lounge-Empfehlungen",
-            "Nächste Schritte mit konkreten Links",
-          ].map((item,i)=><div key={i} style={{display:"flex",gap:"0.5rem",alignItems:"flex-start",fontSize:"0.85rem",color:"#d6d3d1"}}>
+          {features.map((item,i)=><div key={i} style={{display:"flex",gap:"0.5rem",alignItems:"flex-start",fontSize:"0.85rem",color:"#d6d3d1"}}>
             <span style={{color:"#22c55e",fontWeight:700,flexShrink:0}}>✓</span>{item}
           </div>)}
         </div>
       </div>
-      <a href={STRIPE_LINK} className="a-submit" style={{display:"block",textAlign:"center",textDecoration:"none",marginBottom:"0.75rem"}}>
-        Jetzt für 7 € freischalten
-      </a>
+      {isLoggedIn ? (
+        <button onClick={onCheckout} className="a-submit" style={{display:"block",width:"100%",textAlign:"center",marginBottom:"0.75rem"}} disabled={checkoutLoading}>
+          {checkoutLoading ? "⏳ Weiterleitung..." : "Jetzt für 7 € freischalten"}
+        </button>
+      ) : (
+        <a href={STRIPE_LINK} className="a-submit" style={{display:"block",textAlign:"center",textDecoration:"none",marginBottom:"0.75rem"}}>
+          Jetzt für 7 € freischalten
+        </a>
+      )}
       <div style={{display:"flex",justifyContent:"center",gap:"1rem",marginBottom:"0.75rem"}}>
         {["🔒 SSL-verschlüsselt","💳 Stripe","↩️ Geld-zurück-Garantie"].map((t,i)=><span key={i} style={{fontSize:"0.7rem",color:"#57534e"}}>{t}</span>)}
       </div>
@@ -226,20 +234,109 @@ export default function AnalysePage() {
   const [result,setResult]=useState<SetupResult|null>(null);
   const [loading,setLoading]=useState(false);
   const [paid,setPaid]=useState(false);
+  const [user,setUser]=useState<User|null>(null);
+  const [checkoutLoading,setCheckoutLoading]=useState(false);
+  const supabase = createClient();
 
+  // Check auth status and purchase on mount
   useEffect(()=>{
-    const params=new URLSearchParams(window.location.search);
-    if(params.get("success")==="true"||localStorage.getItem("analyse-paid")==="true"){
-      setPaid(true);
-      localStorage.setItem("analyse-paid","true");
-      if(params.get("success")==="true") window.history.replaceState({},"","/analyse");
+    async function init() {
+      // Check if user is logged in
+      const {data:{user:u}}=await supabase.auth.getUser();
+      setUser(u);
+
+      // Check if user has purchased "analyse"
+      if(u){
+        const {data:purchase}=await supabase
+          .from("purchases")
+          .select("id")
+          .eq("product_id","analyse")
+          .limit(1)
+          .single();
+        if(purchase){
+          setPaid(true);
+          localStorage.setItem("analyse-paid","true");
+        }
+      }
+
+      // Check URL params and localStorage for payment status
+      const params=new URLSearchParams(window.location.search);
+      if(params.get("success")==="true"||params.get("checkout")==="success"){
+        setPaid(true);
+        localStorage.setItem("analyse-paid","true");
+        window.history.replaceState({},"","/analyse");
+        // Restore saved answers from before checkout redirect
+        const saved=localStorage.getItem("analyse-answers");
+        if(saved){
+          try{
+            const parsed=JSON.parse(saved);
+            setAnswers(parsed);
+            setStep(questions.length+1); // Skip to lead form
+          }catch{}
+        }
+      } else if(localStorage.getItem("analyse-paid")==="true"){
+        setPaid(true);
+      }
     }
+    init();
   },[]);
+
+  // Save results to DB after generation (for logged-in users)
+  const saveResults = useCallback(async (a:Answers, r:SetupResult) => {
+    if(!user) return;
+    try {
+      await fetch("/api/analyse/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers: a, result: r }),
+      });
+    } catch(err) {
+      console.error("[Analyse] Save failed:", err);
+    }
+  }, [user]);
 
   const total=questions.length+3;
   const handleAnswer=(qId:string,v:string)=>{setAnswers(p=>({...p,[qId]:v}));setTimeout(()=>setStep(s=>s+1),300);};
   const handlePaid=()=>{setPaid(true);localStorage.setItem("analyse-paid","true");setStep(questions.length+1);};
-  const handleLead=(d:LeadData)=>{setLoading(true);setLead(d);setTimeout(()=>{setResult(generateResult(answers));setLoading(false);setStep(questions.length+2);},2200);};
+
+  // Checkout via API for logged-in users
+  const handleCheckout=async()=>{
+    setCheckoutLoading(true);
+    // Save answers to localStorage so they survive the Stripe redirect
+    localStorage.setItem("analyse-answers",JSON.stringify(answers));
+    try {
+      const res=await fetch("/api/stripe/checkout",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          productId:"analyse",
+          successUrl:`${window.location.origin}/analyse?checkout=success`,
+          cancelUrl:`${window.location.origin}/analyse`,
+        }),
+      });
+      const {url}=await res.json();
+      if(url) window.location.href=url;
+      else setCheckoutLoading(false);
+    } catch {
+      setCheckoutLoading(false);
+    }
+  };
+
+  const handleLead=(d:LeadData)=>{
+    setLoading(true);
+    setLead(d);
+    setTimeout(()=>{
+      const r=generateResult(answers);
+      setResult(r);
+      setLoading(false);
+      setStep(questions.length+2);
+      // Save to DB for logged-in users
+      saveResults(answers, r);
+      // Clean up localStorage
+      localStorage.removeItem("analyse-answers");
+    },2200);
+  };
+
   useEffect(()=>{window.scrollTo({top:0,behavior:"smooth"});},[step]);
 
   const isQuiz=step<questions.length;
@@ -252,7 +349,7 @@ export default function AnalysePage() {
     <div className="a-container">
       {!isResult&&<div className="a-progress"><div className="a-progress-bar" style={{width:`${Math.round(((step+1)/total)*100)}%`}}/><span className="a-progress-label">Schritt {step+1} von {total}</span></div>}
       {isQuiz&&<QuizStep q={questions[step]} onSelect={v=>handleAnswer(questions[step].id,v)} selected={answers[questions[step].id]}/>}
-      {isPaywall&&<PaywallScreen onAlreadyPaid={handlePaid}/>}
+      {isPaywall&&<PaywallScreen onAlreadyPaid={handlePaid} onCheckout={handleCheckout} isLoggedIn={!!user} checkoutLoading={checkoutLoading}/>}
       {isLead&&!loading&&<LeadForm onSubmit={handleLead} loading={loading}/>}
       {isLead&&loading&&<LoadingScreen/>}
       {isResult&&result&&lead&&<ResultsView result={result} lead={lead}/>}

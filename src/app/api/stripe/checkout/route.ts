@@ -13,9 +13,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Nicht angemeldet" }, { status: 401 });
   }
 
-  const { productId, plan } = (await request.json()) as {
+  const { productId, plan, successUrl, cancelUrl } = (await request.json()) as {
     productId?: string;
     plan?: string;
+    successUrl?: string;
+    cancelUrl?: string;
   };
 
   const { data } = await supabase
@@ -57,8 +59,8 @@ export async function POST(request: Request) {
         },
       ],
       metadata: { user_id: user.id, product_id: productId },
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success&product=${productId}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/produkte`,
+      success_url: successUrl || `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success&product=${productId}`,
+      cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/produkte`,
       locale: "de",
     });
     return NextResponse.json({ url: session.url });
