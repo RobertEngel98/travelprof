@@ -34,10 +34,7 @@ export async function POST(request: Request) {
       console.log("[Waitlist] Email already exists:", email);
     } else {
       console.error("[Waitlist] Insert error:", insertError);
-      return NextResponse.json(
-        { error: "Fehler beim Speichern", detail: insertError.message, code: insertError.code },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Fehler beim Speichern" }, { status: 500 });
     }
   }
 
