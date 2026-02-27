@@ -166,6 +166,24 @@ export interface Database {
         };
         Relationships: [];
       };
+      cms_sections: {
+        Row: {
+          id: string;
+          data: Json;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          data?: Json;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          data?: Json;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       products: {
         Row: {
           id: string;
@@ -233,3 +251,4 @@ export type AnalyseResult = Database["public"]["Tables"]["analyse_results"]["Row
 export type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 export type Product = Database["public"]["Tables"]["products"]["Row"];
 export type Waitlist = Database["public"]["Tables"]["waitlist"]["Row"];
+export type CmsSection = Database["public"]["Tables"]["cms_sections"]["Row"];

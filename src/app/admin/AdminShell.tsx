@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: "/admin/abos", label: "Abonnements", icon: "⭐" },
   { href: "/admin/waitlist", label: "Waitlist", icon: "📋" },
   { href: "/admin/produkte", label: "Produkte", icon: "📦" },
+  { href: "/admin/cms", label: "Webseite", icon: "🖊️" },
 ];
 
 interface AdminShellProps {
