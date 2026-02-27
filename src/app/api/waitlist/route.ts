@@ -21,20 +21,24 @@ export async function POST(request: Request) {
   }
 
   const supabase = getSupabaseAdmin();
+  const resolvedSource = source || "community";
 
-  // Try to insert into waitlist table
-  const { error } = await supabase.from("waitlist").upsert(
-    { email, source: source || "community", created_at: new Date().toISOString() },
-    { onConflict: "email" }
-  );
+  // Try insert first, ignore conflict (email already exists)
+  const { error: insertError } = await supabase
+    .from("waitlist")
+    .insert({ email, source: resolvedSource, created_at: new Date().toISOString() });
 
-  if (error) {
-    console.error("Waitlist insert error:", error);
-    return NextResponse.json({ error: "Fehler beim Speichern" }, { status: 500 });
+  if (insertError) {
+    // 23505 = unique_violation (email already exists) → not an error
+    if (insertError.code === "23505") {
+      console.log("[Waitlist] Email already exists:", email);
+    } else {
+      console.error("[Waitlist] Insert error:", insertError);
+      return NextResponse.json({ error: "Fehler beim Speichern" }, { status: 500 });
+    }
   }
 
   // Fire-and-forget email based on source
-  const resolvedSource = source || "community";
   if (resolvedSource === "community") {
     sendWaitlistWelcome({ email }).catch((err) =>
       console.error("[Email] Waitlist welcome failed:", err)
