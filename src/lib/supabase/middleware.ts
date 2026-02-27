@@ -51,5 +51,14 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Admin route protection: only robert@talentsuite.io
+  if (request.nextUrl.pathname.startsWith("/admin")) {
+    if (!user || user.email !== "robert@talentsuite.io") {
+      const url = request.nextUrl.clone();
+      url.pathname = user ? "/dashboard" : "/login";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return supabaseResponse;
 }

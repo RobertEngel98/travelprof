@@ -19,6 +19,7 @@ export const stripe = new Proxy({} as Stripe, {
   },
 });
 
+/** @deprecated Products are now managed in the `products` DB table. This is kept as fallback. */
 export const PRODUCTS = {
   analyse: {
     name: "10-Sekunden Reiseanalyse",

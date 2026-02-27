@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { sendWaitlistWelcome, sendLeadmagnetEmail } from "@/lib/email";
 
 function getSupabaseAdmin() {
   return createClient(
@@ -9,7 +10,11 @@ function getSupabaseAdmin() {
 }
 
 export async function POST(request: Request) {
-  const { email, source } = (await request.json()) as { email?: string; source?: string };
+  const { email, source, name } = (await request.json()) as {
+    email?: string;
+    source?: string;
+    name?: string;
+  };
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "Ungültige E-Mail" }, { status: 400 });
@@ -26,6 +31,19 @@ export async function POST(request: Request) {
   if (error) {
     console.error("Waitlist insert error:", error);
     return NextResponse.json({ error: "Fehler beim Speichern" }, { status: 500 });
+  }
+
+  // Fire-and-forget email based on source
+  const resolvedSource = source || "community";
+  if (resolvedSource === "community") {
+    sendWaitlistWelcome({ email }).catch((err) =>
+      console.error("[Email] Waitlist welcome failed:", err)
+    );
+  } else if (resolvedSource.startsWith("leadmagnet:")) {
+    const produktName = resolvedSource.replace("leadmagnet:", "");
+    sendLeadmagnetEmail({ email, name: name || undefined, productName: produktName }).catch(
+      (err) => console.error("[Email] Leadmagnet email failed:", err)
+    );
   }
 
   return NextResponse.json({ success: true });

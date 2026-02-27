@@ -52,7 +52,7 @@ function LeadmagnetForm({ product, onClose }: { product: string; onClose: () => 
     fetch("/api/waitlist", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, source: `leadmagnet:${product}` }),
+      body: JSON.stringify({ email, name: name || undefined, source: `leadmagnet:${product}` }),
     }).catch(() => {});
     setSubmitted(true);
   };
@@ -64,10 +64,10 @@ function LeadmagnetForm({ product, onClose }: { product: string; onClose: () => 
           <button className="leadmagnet-close" onClick={onClose}>x</button>
           <div style={{ textAlign: "center", padding: "1rem 0" }}>
             <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>✅</div>
-            <h3 style={{ marginBottom: "0.5rem" }}>Fast geschafft!</h3>
+            <h3 style={{ marginBottom: "0.5rem" }}>Geschafft!</h3>
             <p style={{ color: "var(--text-sub)", fontSize: "0.88rem", lineHeight: 1.6 }}>
-              Wir haben dir eine E-Mail an <strong>{email}</strong> gesendet.
-              Bitte bestätige deine E-Mail-Adresse (Double-Opt-In), um den Download-Link zu erhalten.
+              Wir haben dir eine Bestätigung an <strong>{email}</strong> gesendet.
+              Prüfe auch deinen Spam-Ordner.
             </p>
           </div>
         </div>

@@ -1,17 +1,9 @@
 import { NextResponse } from "next/server";
 import { stripe, PRODUCTS } from "@/lib/stripe";
-import { createClient } from "@supabase/supabase-js";
-import type { Database } from "@/types/database";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { sendPurchaseConfirmation, sendSubscriptionConfirmation } from "@/lib/email";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-function getSupabaseAdmin() {
-  return createClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-}
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -28,6 +20,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
+  const admin = getSupabaseAdmin();
+
   switch (event.type) {
     // One-time payment completed
     case "checkout.session.completed": {
@@ -41,7 +35,7 @@ export async function POST(request: Request) {
           session.subscription as string
         ) as any;
 
-        await getSupabaseAdmin().from("subscriptions").upsert({
+        await admin.from("subscriptions").upsert({
           user_id: userId,
           stripe_subscription_id: sub.id,
           stripe_customer_id: sub.customer as string,
@@ -52,7 +46,7 @@ export async function POST(request: Request) {
           cancel_at_period_end: sub.cancel_at_period_end,
         }, { onConflict: "user_id" });
 
-        await getSupabaseAdmin()
+        await admin
           .from("profiles")
           .update({
             subscription_status: sub.status === "trialing" ? "trial" : "active",
@@ -63,7 +57,7 @@ export async function POST(request: Request) {
         // Send subscription confirmation email
         const subEmail = session.customer_details?.email ?? session.customer_email;
         if (subEmail) {
-          const { data: subProfile } = await getSupabaseAdmin()
+          const { data: subProfile } = await admin
             .from("profiles")
             .select("full_name")
             .eq("user_id", userId)
@@ -80,8 +74,21 @@ export async function POST(request: Request) {
       // Handle one-time product purchase
       const productId = session.metadata?.product_id;
       if (productId) {
-        const productName = PRODUCTS[productId as keyof typeof PRODUCTS]?.name ?? productId;
-        await getSupabaseAdmin().from("purchases").insert({
+        // Try to get product name from DB, then fallback to hardcoded
+        let productName = productId;
+        const { data: dbProduct } = await admin
+          .from("products")
+          .select("name")
+          .eq("id", productId)
+          .single();
+
+        if (dbProduct?.name) {
+          productName = dbProduct.name;
+        } else if (PRODUCTS[productId as keyof typeof PRODUCTS]) {
+          productName = PRODUCTS[productId as keyof typeof PRODUCTS].name;
+        }
+
+        await admin.from("purchases").insert({
           user_id: userId,
           product_id: productId,
           product_name: productName,
@@ -93,7 +100,7 @@ export async function POST(request: Request) {
         // Send purchase confirmation email
         const customerEmail = session.customer_details?.email ?? session.customer_email;
         if (customerEmail) {
-          const { data: profile } = await getSupabaseAdmin()
+          const { data: profile } = await admin
             .from("profiles")
             .select("full_name")
             .eq("user_id", userId)
@@ -121,7 +128,7 @@ export async function POST(request: Request) {
         unpaid: "canceled",
       };
 
-      await getSupabaseAdmin().from("subscriptions").upsert({
+      await admin.from("subscriptions").upsert({
         user_id: userId,
         stripe_subscription_id: subscription.id,
         stripe_customer_id: subscription.customer as string,
@@ -132,7 +139,7 @@ export async function POST(request: Request) {
         cancel_at_period_end: subscription.cancel_at_period_end,
       }, { onConflict: "user_id" });
 
-      await getSupabaseAdmin()
+      await admin
         .from("profiles")
         .update({
           subscription_status: statusMap[subscription.status] ?? "free",
@@ -146,12 +153,12 @@ export async function POST(request: Request) {
       const userId = subscription.metadata.user_id;
       if (!userId) break;
 
-      await getSupabaseAdmin()
+      await admin
         .from("profiles")
         .update({ subscription_status: "free", subscription_plan: null })
         .eq("user_id", userId);
 
-      await getSupabaseAdmin()
+      await admin
         .from("subscriptions")
         .update({ status: "canceled" })
         .eq("stripe_subscription_id", subscription.id);

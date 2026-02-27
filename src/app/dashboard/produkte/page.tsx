@@ -3,15 +3,15 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { PRODUCTS } from "@/lib/stripe";
 
-const PRODUCT_DETAILS: Record<string, { icon: string; description: string; link: string }> = {
-  analyse: { icon: "✈️", description: "Deine persönliche Reiseanalyse mit maßgeschneiderten Empfehlungen.", link: "/dashboard/analyse" },
-  ebook: { icon: "📖", description: "10 erprobte Buchungs-Hacks für günstige Business Class Flüge.", link: "/dashboard/produkte/ebook" },
-  kreditkarten: { icon: "💳", description: "Der ultimative Vergleich der besten Reise-Kreditkarten 2026.", link: "/dashboard/produkte/kreditkarten" },
-  crashkurs: { icon: "🎓", description: "5-Module Video-Kurs zum Meilen sammeln und einlösen.", link: "/dashboard/produkte/crashkurs" },
-  masterplan: { icon: "🛋️", description: "Dein kompletter Guide für Lounge-Zugang und Upgrades.", link: "/dashboard/produkte/masterplan" },
-};
+interface Product {
+  id: string;
+  name: string;
+  description: string | null;
+  icon: string;
+  price: number;
+  price_display: string;
+}
 
 interface Purchase {
   id: string;
@@ -22,21 +22,24 @@ interface Purchase {
 }
 
 export default function ProduktePage() {
+  const [products, setProducts] = useState<Product[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
   const router = useRouter();
 
   useEffect(() => {
-    async function loadPurchases() {
-      const { data } = await supabase
-        .from("purchases")
-        .select("*")
-        .order("created_at", { ascending: false });
-      setPurchases(data ?? []);
+    async function load() {
+      // Fetch active products from DB and user purchases in parallel
+      const [productsRes, purchasesRes] = await Promise.all([
+        supabase.from("products").select("id, name, description, icon, price, price_display").eq("active", true).order("sort_order"),
+        supabase.from("purchases").select("*").order("created_at", { ascending: false }),
+      ]);
+      setProducts(productsRes.data ?? []);
+      setPurchases(purchasesRes.data ?? []);
       setLoading(false);
     }
-    loadPurchases();
+    load();
   }, []);
 
   async function handleBuy(productId: string) {
@@ -58,6 +61,12 @@ export default function ProduktePage() {
 
   const ownedProducts = new Set(purchases.map((p) => p.product_id));
 
+  // Product detail links
+  function getProductLink(id: string): string {
+    if (id === "analyse") return "/dashboard/analyse";
+    return `/dashboard/produkte/${id}`;
+  }
+
   return (
     <div>
       <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Meine Produkte</h1>
@@ -69,29 +78,28 @@ export default function ProduktePage() {
         <p style={{ color: "var(--muted)" }}>Wird geladen...</p>
       ) : (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem" }}>
-          {Object.entries(PRODUCTS).map(([id, product]) => {
-            const owned = ownedProducts.has(id);
-            const details = PRODUCT_DETAILS[id];
+          {products.map((product) => {
+            const owned = ownedProducts.has(product.id);
             return (
-              <div key={id} style={{ ...cardStyle, opacity: owned ? 1 : 0.85 }}>
-                <div style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>{details?.icon ?? "📦"}</div>
+              <div key={product.id} style={{ ...cardStyle, opacity: owned ? 1 : 0.85 }}>
+                <div style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>{product.icon}</div>
                 <h3 style={{ fontWeight: 600, marginBottom: "0.375rem" }}>{product.name}</h3>
                 <p style={{ fontSize: "0.85rem", color: "var(--text-sub)", marginBottom: "1rem", lineHeight: 1.6 }}>
-                  {details?.description ?? ""}
+                  {product.description ?? ""}
                 </p>
                 {owned ? (
                   <button
-                    onClick={() => router.push(details?.link ?? "/dashboard/produkte")}
+                    onClick={() => router.push(getProductLink(product.id))}
                     className="btn btn-primary btn-sm"
                   >
                     Öffnen
                   </button>
                 ) : (
                   <button
-                    onClick={() => handleBuy(id)}
+                    onClick={() => handleBuy(product.id)}
                     className="btn btn-primary btn-sm"
                   >
-                    Kaufen – {product.priceDisplay} €
+                    Kaufen – {product.price_display} €
                   </button>
                 )}
               </div>
@@ -115,9 +123,7 @@ export default function ProduktePage() {
               <tbody>
                 {purchases.map((p) => (
                   <tr key={p.id} style={{ borderBottom: "1px solid var(--border-soft)" }}>
-                    <td style={{ padding: "0.75rem 1rem" }}>
-                      {PRODUCTS[p.product_id as keyof typeof PRODUCTS]?.name ?? p.product_name}
-                    </td>
+                    <td style={{ padding: "0.75rem 1rem" }}>{p.product_name}</td>
                     <td style={{ padding: "0.75rem 1rem" }}>
                       {(p.amount / 100).toFixed(2).replace(".", ",")} €
                     </td>

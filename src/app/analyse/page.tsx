@@ -332,6 +332,21 @@ export default function AnalysePage() {
       setStep(questions.length+2);
       // Save to DB for logged-in users
       saveResults(answers, r);
+      // Fire-and-forget: send analyse result email
+      fetch("/api/analyse-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: d.email,
+          vorname: d.vorname,
+          result: {
+            level: r.level,
+            monthlyMiles: r.monthlyMiles,
+            yearlyMiles: r.yearlyMiles,
+            cards: r.cards.map((c) => c.name),
+          },
+        }),
+      }).catch((err) => console.error("[Analyse] Lead email failed:", err));
       // Clean up localStorage
       localStorage.removeItem("analyse-answers");
     },2200);
