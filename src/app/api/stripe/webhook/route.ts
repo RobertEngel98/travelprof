@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { stripe, PRODUCTS } from "@/lib/stripe";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/types/database";
-import { sendPurchaseConfirmation } from "@/lib/email";
+import { sendPurchaseConfirmation, sendSubscriptionConfirmation } from "@/lib/email";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -59,18 +59,35 @@ export async function POST(request: Request) {
             subscription_plan: (sub.metadata.plan as string) ?? "monthly",
           })
           .eq("user_id", userId);
+
+        // Send subscription confirmation email
+        const subEmail = session.customer_details?.email ?? session.customer_email;
+        if (subEmail) {
+          const { data: subProfile } = await getSupabaseAdmin()
+            .from("profiles")
+            .select("full_name")
+            .eq("user_id", userId)
+            .single();
+          sendSubscriptionConfirmation({
+            email: subEmail,
+            plan: (sub.metadata.plan as string) ?? "monthly",
+            userName: subProfile?.full_name ?? undefined,
+          }).catch((err: unknown) => console.error("[Email] Failed to send subscription email:", err));
+        }
         break;
       }
 
       // Handle one-time product purchase
       const productId = session.metadata?.product_id;
       if (productId) {
+        const productName = PRODUCTS[productId as keyof typeof PRODUCTS]?.name ?? productId;
         await getSupabaseAdmin().from("purchases").insert({
           user_id: userId,
           product_id: productId,
-          product_name: productId,
+          product_name: productName,
           amount: session.amount_total ?? 0,
           stripe_payment_id: session.payment_intent as string,
+          status: "completed",
         });
 
         // Send purchase confirmation email
