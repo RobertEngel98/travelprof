@@ -180,16 +180,21 @@ function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const links = [
-    { href: "#hacks", label: "Travel Hacks" },
-    { href: "#about", label: "Über mich" },
-    { href: "#erfolge", label: "Erfolge" },
+  const desktopLinks = [
     { href: "#produkte", label: "Produkte" },
-    { href: "#freebies", label: "Freebies" },
     { href: "#kreditkarten", label: "Kreditkarten" },
     { href: "#community", label: "Community" },
+    { href: "#about", label: "Über mich" },
     { href: "#kontakt", label: "Kontakt" },
   ];
+
+  const mobileOnlyLinks = [
+    { href: "#hacks", label: "Travel Hacks" },
+    { href: "#erfolge", label: "Erfolge" },
+    { href: "#freebies", label: "Freebies" },
+  ];
+
+  const allMobileLinks = [...desktopLinks, ...mobileOnlyLinks];
 
   return (
     <header className={scrolled ? "scrolled" : ""}>
@@ -203,10 +208,10 @@ function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
             </div>
           </Link>
           <div className="nav-links">
-            {links.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
+            {desktopLinks.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
           </div>
           <div className="nav-actions">
-            <div className="nav-cta-desktop" style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <div className="nav-cta-desktop">
               {isLoggedIn ? (
                 <Link href="/dashboard" className="btn btn-primary btn-sm">
                   Mein Bereich →
@@ -229,21 +234,24 @@ function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
         </nav>
       </div>
       <div className={`mobile-nav ${menuOpen ? "open" : ""}`}>
-        {links.map(l => <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>{l.label}</a>)}
-        {isLoggedIn ? (
-          <Link href="/dashboard" className="btn btn-primary" style={{ marginTop: "0.75rem", justifyContent: "center" }} onClick={() => setMenuOpen(false)}>
-            Mein Bereich →
-          </Link>
-        ) : (
-          <>
-            <Link href="/login" className="btn btn-secondary" style={{ marginTop: "0.75rem", justifyContent: "center" }} onClick={() => setMenuOpen(false)}>
-              Anmelden
+        <div className="mobile-nav-auth">
+          {isLoggedIn ? (
+            <Link href="/dashboard" className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => setMenuOpen(false)}>
+              Mein Bereich →
             </Link>
-            <Link href="/register" className="btn btn-primary" style={{ marginTop: "0.5rem", justifyContent: "center" }} onClick={() => setMenuOpen(false)}>
-              Kostenlos starten
-            </Link>
-          </>
-        )}
+          ) : (
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <Link href="/login" className="btn btn-secondary" style={{ flex: 1, justifyContent: "center" }} onClick={() => setMenuOpen(false)}>
+                Anmelden
+              </Link>
+              <Link href="/register" className="btn btn-primary" style={{ flex: 1, justifyContent: "center" }} onClick={() => setMenuOpen(false)}>
+                Kostenlos starten
+              </Link>
+            </div>
+          )}
+        </div>
+        <div className="mobile-nav-divider" />
+        {allMobileLinks.map(l => <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>{l.label}</a>)}
       </div>
     </header>
   );
