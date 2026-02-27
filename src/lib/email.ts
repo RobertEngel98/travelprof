@@ -53,7 +53,7 @@ export async function sendPurchaseConfirmation({
     : dashboardLink;
 
   await getResend().emails.send({
-    from: "traveling.prof <noreply@travelingprof.de>",
+    from: "traveling.prof <noreply@email.travelingprof.de>",
     to: email,
     subject: `Dein Kauf: ${productName}`,
     html: `
@@ -111,7 +111,7 @@ export async function sendSubscriptionConfirmation({
   const settingsLink = `${appUrl}/dashboard/einstellungen`;
 
   await getResend().emails.send({
-    from: "traveling.prof <noreply@travelingprof.de>",
+    from: "traveling.prof <noreply@email.travelingprof.de>",
     to: email,
     subject: "Willkommen in der VIP Community!",
     html: `
