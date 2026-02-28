@@ -42,7 +42,21 @@ export default function ProduktePage() {
     load();
   }, []);
 
-  async function handleBuy(productId: string) {
+  async function handleBuy(productId: string, price: number) {
+    if (price === 0) {
+      // Free product: claim directly
+      const res = await fetch("/api/products/claim-free", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId }),
+      });
+      if (res.ok) {
+        // Reload purchases
+        const { data } = await supabase.from("purchases").select("*").order("created_at", { ascending: false });
+        setPurchases(data ?? []);
+      }
+      return;
+    }
     const res = await fetch("/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -96,10 +110,10 @@ export default function ProduktePage() {
                   </button>
                 ) : (
                   <button
-                    onClick={() => handleBuy(product.id)}
+                    onClick={() => handleBuy(product.id, product.price)}
                     className="btn btn-primary btn-sm"
                   >
-                    Kaufen – {product.price_display} €
+                    {product.price === 0 ? "Gratis freischalten" : `Kaufen – ${product.price_display} €`}
                   </button>
                 )}
               </div>

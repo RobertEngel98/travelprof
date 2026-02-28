@@ -2,6 +2,7 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import CookieConsent from "./components/CookieConsent";
 import { createClient } from "@/lib/supabase/client";
 import type { CmsData } from "@/lib/cms";
@@ -251,7 +252,9 @@ function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
 /* ═══ LANDING PAGE ═══ */
 export default function LandingPage({ cms }: { cms: CmsData }) {
   const year = new Date().getFullYear();
+  const router = useRouter();
   const [leadmagnet, setLeadmagnet] = useState<string | null>(null);
+  const [claimingProduct, setClaimingProduct] = useState<string | null>(null);
   const [waitlistEmail, setWaitlistEmail] = useState("");
   const [waitlistStatus, setWaitlistStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -264,6 +267,25 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
       setIsLoggedIn(!!user);
     });
   }, []);
+
+  async function claimFreeProduct(productId: string) {
+    setClaimingProduct(productId);
+    try {
+      const res = await fetch("/api/products/claim-free", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId }),
+      });
+      if (res.ok) {
+        router.push(`/dashboard/produkte/${productId}`);
+      }
+    } catch {
+      // Fallback: redirect to dashboard
+      router.push("/dashboard/produkte");
+    } finally {
+      setClaimingProduct(null);
+    }
+  }
 
   const handleWaitlist = async (e: FormEvent) => {
     e.preventDefault();
@@ -444,7 +466,17 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
                     <h3>{p.name}</h3>
                     <p>{p.desc}</p>
                     {p.action === "leadmagnet" ? (
-                      <button onClick={() => setLeadmagnet(p.name)} className="btn btn-sm btn-secondary">{p.cta}</button>
+                      isLoggedIn && p.product_id ? (
+                        <button
+                          onClick={() => claimFreeProduct(p.product_id!)}
+                          className="btn btn-sm btn-secondary"
+                          disabled={claimingProduct === p.product_id}
+                        >
+                          {claimingProduct === p.product_id ? "Wird freigeschaltet..." : p.cta}
+                        </button>
+                      ) : (
+                        <button onClick={() => setLeadmagnet(p.name)} className="btn btn-sm btn-secondary">{p.cta}</button>
+                      )
                     ) : p.action === "termin" ? (
                       <a href="#termin" className="btn btn-sm btn-primary">{p.cta}</a>
                     ) : p.action === "vip" ? (

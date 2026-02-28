@@ -43,7 +43,7 @@ export interface ProductsDisplayData {
   eyebrow: string;
   title: string;
   subtitle: string;
-  items: { tag: string; cls: string; price: string; name: string; desc: string; cta: string; action: string }[];
+  items: { tag: string; cls: string; price: string; name: string; desc: string; cta: string; action: string; product_id?: string }[];
 }
 
 export interface FreebiesData {
@@ -170,9 +170,9 @@ export const CMS_DEFAULTS: CmsData = {
     title: 'Dein Weg zum <em>smarten Traveller</em>',
     subtitle: "Von kostenlos bis Premium – für jedes Level das passende Angebot.",
     items: [
-      { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Starter-Checkliste", desc: "10 Schritte zum sofortigen Start mit dem Meilensammeln. PDF zum Download.", cta: "Gratis herunterladen", action: "leadmagnet" },
-      { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Quick-Check Kalkulator", desc: "Finde in 60 Sekunden heraus, wie viele Meilen du pro Jahr sammeln kannst.", cta: "Gratis herunterladen", action: "leadmagnet" },
-      { tag: "Kostenlos", cls: "free", price: "0 €", name: "Kreditkarten-Vergleich 2026", desc: "Ehrlicher Vergleich der besten Reise-Kreditkarten im DACH-Raum.", cta: "Gratis herunterladen", action: "leadmagnet" },
+      { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Starter-Checkliste", desc: "10 Schritte zum sofortigen Start mit dem Meilensammeln. PDF zum Download.", cta: "Gratis herunterladen", action: "leadmagnet", product_id: "meilen-checkliste" },
+      { tag: "Kostenlos", cls: "free", price: "0 €", name: "Meilen-Quick-Check Kalkulator", desc: "Finde in 60 Sekunden heraus, wie viele Meilen du pro Jahr sammeln kannst.", cta: "Gratis herunterladen", action: "leadmagnet", product_id: "meilen-kalkulator" },
+      { tag: "Kostenlos", cls: "free", price: "0 €", name: "Kreditkarten-Vergleich 2026", desc: "Ehrlicher Vergleich der besten Reise-Kreditkarten im DACH-Raum.", cta: "Gratis herunterladen", action: "leadmagnet", product_id: "kreditkarten-gratis" },
       { tag: "Starter", cls: "starter", price: "14 €", name: "Amex Platinum Lohnt-sich-Rechner", desc: "Interaktiver Excel-Rechner: Trage deine Werte ein und sieh, ob sich die Amex Platinum für dich lohnt.", cta: "Jetzt kaufen", action: "buy" },
       { tag: "Starter", cls: "starter", price: "19 €", name: "Top 10 Buchungs-Hacks E-Book", desc: "Die 10 besten Buchungsstrategien für günstigere Flüge und bessere Hotels – mit Screenshots.", cta: "Jetzt kaufen", action: "buy" },
       { tag: "Kurs", cls: "core", price: "39 €", name: "Meilen-Crashkurs (Video)", desc: "5-Modul Videokurs: Sammeln, Optimieren, Einlösen. Inkl. Kalkulator und Templates.", cta: "Zum Kurs", action: "buy" },

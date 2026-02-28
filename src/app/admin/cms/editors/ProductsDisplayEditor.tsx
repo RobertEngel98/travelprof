@@ -29,7 +29,7 @@ export default function ProductsDisplayEditor({ data, onChange }: Props) {
         label="Produkte"
         items={data.items}
         onChange={items => update({ items })}
-        createItem={() => ({ tag: "Starter", cls: "starter", price: "0 €", name: "Neues Produkt", desc: "", cta: "Jetzt kaufen", action: "buy" })}
+        createItem={() => ({ tag: "Starter", cls: "starter", price: "0 €", name: "Neues Produkt", desc: "", cta: "Jetzt kaufen", action: "buy", product_id: "" })}
         renderItem={(item, _, upd) => (
           <div>
             <div className="admin-form-row">
@@ -70,9 +70,15 @@ export default function ProductsDisplayEditor({ data, onChange }: Props) {
               <label className="admin-form-label">Beschreibung</label>
               <textarea className="admin-form-input" rows={2} value={item.desc} onChange={e => upd({ ...item, desc: e.target.value })} />
             </div>
-            <div className="admin-form-group">
-              <label className="admin-form-label">CTA-Text</label>
-              <input className="admin-form-input" value={item.cta} onChange={e => upd({ ...item, cta: e.target.value })} />
+            <div className="admin-form-row">
+              <div className="admin-form-group">
+                <label className="admin-form-label">CTA-Text</label>
+                <input className="admin-form-input" value={item.cta} onChange={e => upd({ ...item, cta: e.target.value })} />
+              </div>
+              <div className="admin-form-group">
+                <label className="admin-form-label">Produkt-ID (für Freischaltung)</label>
+                <input className="admin-form-input" value={item.product_id ?? ""} onChange={e => upd({ ...item, product_id: e.target.value || undefined })} placeholder="z.B. meilen-checkliste" />
+              </div>
             </div>
           </div>
         )}
