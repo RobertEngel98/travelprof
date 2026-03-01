@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { sendWaitlistWelcome, sendLeadmagnetEmail } from "@/lib/email";
+import { rateLimit } from "@/lib/rate-limit";
 
 function getSupabaseAdmin() {
   return createClient(
@@ -10,6 +11,17 @@ function getSupabaseAdmin() {
 }
 
 export async function POST(request: Request) {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    || request.headers.get("x-real-ip")
+    || "unknown";
+
+  if (!rateLimit(ip).allowed) {
+    return NextResponse.json(
+      { error: "Zu viele Anfragen. Bitte versuche es später erneut." },
+      { status: 429 }
+    );
+  }
+
   const { email, source, name } = (await request.json()) as {
     email?: string;
     source?: string;

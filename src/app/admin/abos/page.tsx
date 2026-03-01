@@ -35,25 +35,10 @@ export default function AbosPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // We'll compute from stats + subscriptions
     async function load() {
-      const res = await fetch("/api/admin/stats");
-      const stats = await res.json();
-
-      // Fetch all subscriptions via supabase (using admin endpoint we'll adapt)
-      // For now, use the stats data and build a simplified view
-      setData({
-        subscriptions: [],
-        kpis: {
-          active: stats.kpis.activeSubs,
-          canceled: 0,
-          monthly: 0,
-          yearly: 0,
-          mrr: stats.kpis.mrr,
-          arr: stats.kpis.mrr * 12,
-          churnRate: 0,
-        },
-      });
+      const res = await fetch("/api/admin/subscriptions");
+      const json = await res.json();
+      setData(json);
       setLoading(false);
     }
     load();
@@ -75,11 +60,52 @@ export default function AbosPage() {
   }
 
   if (!data) return null;
-  const { kpis } = data;
+  const { kpis, subscriptions } = data;
 
   const planBreakdown = [
     { name: "Monatlich", count: kpis.monthly },
     { name: "Jährlich", count: kpis.yearly },
+  ];
+
+  const subColumns = [
+    { key: "email", label: "E-Mail" },
+    { key: "name", label: "Name" },
+    {
+      key: "plan",
+      label: "Plan",
+      render: (row: Sub) => (
+        <span className={`admin-badge ${row.plan === "yearly" ? "admin-badge-blue" : "admin-badge-gray"}`}>
+          {row.plan === "yearly" ? "Jährlich" : "Monatlich"}
+        </span>
+      ),
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (row: Sub) => (
+        <span className={`admin-badge ${row.status === "active" || row.status === "trialing" ? "admin-badge-green" : "admin-badge-red"}`}>
+          {row.status === "active" ? "Aktiv" : row.status === "trialing" ? "Testphase" : row.status === "canceled" ? "Gekündigt" : row.status}
+        </span>
+      ),
+    },
+    {
+      key: "current_period_end",
+      label: "Laufzeit bis",
+      render: (row: Sub) =>
+        row.current_period_end
+          ? new Date(row.current_period_end).toLocaleDateString("de-DE")
+          : "—",
+    },
+    {
+      key: "cancel_at_period_end",
+      label: "Kündigung",
+      render: (row: Sub) =>
+        row.cancel_at_period_end ? (
+          <span className="admin-badge admin-badge-red">Zum Ende</span>
+        ) : (
+          "—"
+        ),
+    },
   ];
 
   return (
@@ -96,7 +122,13 @@ export default function AbosPage() {
         <KpiCard label="Churn-Rate" value={`${kpis.churnRate.toFixed(1)}%`} sub="Kündigungsrate" />
       </div>
 
-      <div className="admin-chart-grid">
+      <DataTable
+        title="Alle Abonnements"
+        columns={subColumns}
+        data={subscriptions}
+      />
+
+      <div className="admin-chart-grid" style={{ marginTop: "1.5rem" }}>
         <div className="admin-chart-card">
           <div className="admin-chart-title">Plan-Verteilung</div>
           <ResponsiveContainer width="100%" height={200}>

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { ADMIN_EMAIL } from "@/lib/admin";
+import { PLANS } from "@/lib/stripe";
 import type { Purchase, Subscription } from "@/types/database";
 
 export async function GET(request: Request) {
@@ -73,8 +74,8 @@ export async function GET(request: Request) {
   // MRR/ARR
   const activeSubs = subscriptions.filter((s) => s.status === "active" || s.status === "trialing");
   const mrr = activeSubs.reduce((sum, s) => {
-    if (s.plan === "yearly") return sum + Math.round(9900 / 12);
-    return sum + 990;
+    if (s.plan === "yearly") return sum + Math.round(PLANS.yearly.price / 12);
+    return sum + PLANS.monthly.price;
   }, 0);
   const arr = mrr * 12;
 
