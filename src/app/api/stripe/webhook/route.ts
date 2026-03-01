@@ -91,6 +91,16 @@ export async function POST(request: Request) {
       // Handle one-time product purchase
       const productId = session.metadata?.product_id;
       if (productId) {
+        // Skip if already purchased (prevents duplicates from webhook retries)
+        const { data: existingPurchase } = await admin
+          .from("purchases")
+          .select("id")
+          .eq("user_id", userId)
+          .eq("product_id", productId)
+          .maybeSingle();
+
+        if (existingPurchase) break;
+
         // Try to get product name from DB, then fallback to hardcoded
         let productName = productId;
         const { data: dbProduct } = await admin
