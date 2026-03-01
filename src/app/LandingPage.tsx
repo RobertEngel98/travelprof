@@ -258,6 +258,7 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
   const [waitlistEmail, setWaitlistEmail] = useState("");
   const [waitlistStatus, setWaitlistStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [buyingProduct, setBuyingProduct] = useState<string | null>(null);
 
   useEffect(() => {
     window.history.scrollRestoration = "manual";
@@ -284,6 +285,29 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
       router.push("/dashboard/produkte");
     } finally {
       setClaimingProduct(null);
+    }
+  }
+
+  async function handleBuyProduct(productId: string) {
+    setBuyingProduct(productId);
+    try {
+      const endpoint = isLoggedIn ? "/api/stripe/checkout" : "/api/stripe/guest-checkout";
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch {
+      // Fallback
+      if (!isLoggedIn) {
+        router.push(`/register`);
+      }
+    } finally {
+      setBuyingProduct(null);
     }
   }
 
@@ -458,7 +482,13 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
                       ) : p.action === "vip" ? (
                         <Link href="/register" className="btn btn-sm btn-primary">{p.cta}</Link>
                       ) : (
-                        <Link href="/login?redirect=/dashboard/produkte" className="btn btn-sm btn-primary">{p.cta}</Link>
+                        <button
+                          onClick={() => handleBuyProduct(p.product_id!)}
+                          className="btn btn-sm btn-primary"
+                          disabled={buyingProduct !== null}
+                        >
+                          {buyingProduct === p.product_id ? "Wird geladen..." : p.cta}
+                        </button>
                       )}
                     </article>
                   );

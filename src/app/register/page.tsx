@@ -21,7 +21,11 @@ function RegisterForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
+
+  const fromCheckout = searchParams.get("from") === "checkout";
+  const sessionId = searchParams.get("session_id");
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
@@ -34,12 +38,17 @@ function RegisterForm() {
       return;
     }
 
+    // If coming from guest checkout, pass session_id through to auth callback
+    const callbackUrl = sessionId
+      ? `${window.location.origin}/auth/callback?redirect=/dashboard?claim_session=${sessionId}`
+      : `${window.location.origin}/auth/callback`;
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: { full_name: fullName },
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: callbackUrl,
       },
     });
 
@@ -53,11 +62,13 @@ function RegisterForm() {
   }
 
   async function handleGoogleLogin() {
+    const redirectTo = sessionId
+      ? `${window.location.origin}/auth/callback?redirect=/dashboard?claim_session=${sessionId}`
+      : `${window.location.origin}/auth/callback`;
+
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
+      options: { redirectTo },
     });
   }
 
@@ -65,6 +76,11 @@ function RegisterForm() {
     return (
       <div className="page" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center", maxWidth: 420, padding: "0 1.5rem" }}>
+          {fromCheckout && (
+            <div style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: "0.75rem", padding: "0.75rem 1rem", marginBottom: "1.5rem" }}>
+              <p style={{ color: "#16a34a", fontWeight: 600, fontSize: "0.88rem" }}>Dein Kauf war erfolgreich! Bestätige jetzt deine E-Mail, um auf dein Produkt zuzugreifen.</p>
+            </div>
+          )}
           <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>✉️</div>
           <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.75rem" }}>Bestätige deine E-Mail</h1>
           <p style={{ color: "var(--text-sub)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
@@ -85,8 +101,17 @@ function RegisterForm() {
             <div className="nav-brand-mark">TP</div>
             <span style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-main)" }}>traveling.prof</span>
           </Link>
-          <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Konto erstellen</h1>
-          <p style={{ color: "var(--text-sub)" }}>Starte jetzt mit deinen Travel Hacks</p>
+          {fromCheckout && (
+            <div style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: "0.75rem", padding: "0.75rem 1rem", marginBottom: "1rem" }}>
+              <p style={{ color: "#16a34a", fontWeight: 600, fontSize: "0.88rem" }}>Kauf erfolgreich! Erstelle jetzt dein Konto, um auf dein Produkt zuzugreifen.</p>
+            </div>
+          )}
+          <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>
+            {fromCheckout ? "Konto erstellen & Produkt freischalten" : "Konto erstellen"}
+          </h1>
+          <p style={{ color: "var(--text-sub)" }}>
+            {fromCheckout ? "Nur noch ein Schritt – registriere dich, um dein gekauftes Produkt zu nutzen." : "Starte jetzt mit deinen Travel Hacks"}
+          </p>
         </div>
 
         <button

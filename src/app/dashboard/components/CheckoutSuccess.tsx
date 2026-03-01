@@ -9,11 +9,38 @@ export default function CheckoutSuccess() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    // Claim guest purchase if session_id is present
+    const claimSession = searchParams.get("claim_session");
+    if (claimSession) {
+      fetch("/api/products/claim-purchases", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId: claimSession }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setMessage(
+              data.already_claimed
+                ? "Dein Produkt ist bereits freigeschaltet! Du findest es unter Meine Produkte."
+                : "Produkt erfolgreich freigeschaltet! Du findest es unter Meine Produkte."
+            );
+            setVisible(true);
+          }
+        })
+        .catch(() => {});
+      window.history.replaceState({}, "", "/dashboard");
+      return;
+    }
+
     const checkout = searchParams.get("checkout");
     if (checkout !== "success") return;
 
     const product = searchParams.get("product");
-    if (product) {
+    const upsell = searchParams.get("upsell");
+    if (upsell) {
+      setMessage("Upsell erfolgreich! Alle Produkte findest du unter Meine Produkte.");
+    } else if (product) {
       setMessage("Produkt erfolgreich gekauft! Du findest es unter Meine Produkte.");
     } else {
       setMessage("Willkommen im VIP-Club!");

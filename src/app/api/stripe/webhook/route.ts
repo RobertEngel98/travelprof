@@ -26,7 +26,24 @@ export async function POST(request: Request) {
     // One-time payment completed
     case "checkout.session.completed": {
       const session = event.data.object;
-      const userId = session.metadata?.user_id;
+      let userId = session.metadata?.user_id;
+
+      // Guest checkout: try to find user by email
+      if (!userId && session.metadata?.source === "guest") {
+        const customerEmail = session.customer_details?.email ?? session.customer_email;
+        if (customerEmail) {
+          const { data: profileByEmail } = await admin
+            .from("profiles")
+            .select("user_id")
+            .eq("email", customerEmail)
+            .single();
+          if (profileByEmail?.user_id) {
+            userId = profileByEmail.user_id;
+          }
+        }
+        // If still no userId, skip – purchase will be claimed after registration
+        if (!userId) break;
+      }
       if (!userId) break;
 
       // Handle subscription checkout
