@@ -40,7 +40,7 @@ export const UPSELL_MAP: Record<string, UpsellEntry> = {
       timerMinutes: 15,
     },
     downsell: {
-      productId: "analyse",
+      productId: "amex-rechner",
       headline: "Kein Problem – wie wäre es damit?",
       subline:
         "Der Amex Platinum Lohnt-sich-Rechner zum reduzierten Preis. Finde heraus, ob sich die Karte für dich lohnt.",
@@ -58,7 +58,7 @@ export const UPSELL_MAP: Record<string, UpsellEntry> = {
     },
   },
 
-  analyse: {
+  "amex-rechner": {
     upsell: {
       productId: "ebook",
       headline: "Exklusives Angebot: E-Book zum Sonderpreis",
@@ -123,8 +123,13 @@ export const UPSELL_MAP: Record<string, UpsellEntry> = {
  */
 export const PRODUCT_NAMES: Record<string, string> = {
   ebook: "Top 10 Buchungs-Hacks E-Book",
-  analyse: "Amex Platinum Lohnt-sich-Rechner",
+  analyse: "10-Sekunden Reiseanalyse",
+  "amex-rechner": "Amex Platinum Lohnt-sich-Rechner",
+  kreditkarten: "Kreditkarten-Vergleich 2026",
   crashkurs: "Meilen-Crashkurs",
   masterclass: "Meilen-Masterclass",
   masterplan: "Lounge & Upgrade Masterplan",
+  "meilen-call": "1:1 Meilen-Call",
+  "strategie-call": "1:1 Strategie-Call",
+  "vip-community": "VIP-Community",
 };

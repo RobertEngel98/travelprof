@@ -41,8 +41,8 @@ export const PRODUCTS = {
   },
   crashkurs: {
     name: "Meilen-Crashkurs",
-    price: 4900,
-    priceDisplay: "49,00",
+    price: 7900,
+    priceDisplay: "79,00",
     type: "one_time" as const,
   },
   masterplan: {
