@@ -18,13 +18,42 @@ interface Product {
 export default function ProduktePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState<string | null>(null);
 
-  useEffect(() => {
+  function fetchProducts() {
     fetch("/api/admin/products")
       .then((r) => r.json())
       .then((data) => setProducts(data.products ?? []))
       .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    fetchProducts();
   }, []);
+
+  async function syncStripe() {
+    setSyncing(true);
+    setSyncResult(null);
+    try {
+      const res = await fetch("/api/admin/stripe-sync-products", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        setSyncResult(`Fehler: ${data.error}`);
+        return;
+      }
+      const parts: string[] = [];
+      if (data.synced > 0) parts.push(`${data.synced} synchronisiert`);
+      if (data.skipped > 0) parts.push(`${data.skipped} übersprungen`);
+      if (data.errors?.length > 0) parts.push(`${data.errors.length} Fehler`);
+      setSyncResult(parts.join(", ") || "Nichts zu tun");
+      fetchProducts();
+    } catch {
+      setSyncResult("Netzwerkfehler");
+    } finally {
+      setSyncing(false);
+    }
+  }
 
   async function toggleActive(id: string, active: boolean) {
     await fetch(`/api/admin/products/${id}`, {
@@ -44,10 +73,25 @@ export default function ProduktePage() {
           <h1 className="admin-page-title">Produkte</h1>
           <p className="admin-page-sub">Produkte verwalten und bearbeiten</p>
         </div>
-        <Link href="/admin/produkte/neu" className="admin-btn admin-btn-primary" style={{ textDecoration: "none" }}>
-          + Neues Produkt
-        </Link>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          <button
+            className="admin-btn admin-btn-secondary"
+            onClick={syncStripe}
+            disabled={syncing}
+          >
+            {syncing ? "Synchronisiere..." : "Mit Stripe synchronisieren"}
+          </button>
+          <Link href="/admin/produkte/neu" className="admin-btn admin-btn-primary" style={{ textDecoration: "none" }}>
+            + Neues Produkt
+          </Link>
+        </div>
       </div>
+
+      {syncResult && (
+        <p style={{ color: syncResult.startsWith("Fehler") ? "#dc2626" : "#16a34a", marginBottom: "1rem", fontSize: "0.875rem" }}>
+          {syncResult}
+        </p>
+      )}
 
       {loading ? (
         <p style={{ color: "#78716c" }}>Wird geladen...</p>
