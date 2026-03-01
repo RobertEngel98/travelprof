@@ -87,6 +87,7 @@ export async function POST(request: Request) {
         payment_intent_data: {
           setup_future_usage: "off_session",
         },
+        allow_promotion_codes: true,
         success_url: finalSuccessUrl,
         cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/produkte`,
         locale: "de",
@@ -122,6 +123,7 @@ export async function POST(request: Request) {
         subscription_data: {
           metadata: { user_id: user.id, plan },
         },
+        allow_promotion_codes: true,
         success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success`,
         cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/einstellungen`,
         locale: "de",

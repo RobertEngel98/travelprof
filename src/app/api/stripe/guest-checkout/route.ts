@@ -50,6 +50,7 @@ export async function POST(request: Request) {
       payment_intent_data: {
         setup_future_usage: "off_session",
       },
+      allow_promotion_codes: true,
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/register?from=checkout&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/#produkte`,
       locale: "de",
