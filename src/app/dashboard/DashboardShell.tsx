@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { useState, useEffect } from "react";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Übersicht", icon: "🏠" },
@@ -26,18 +25,6 @@ export default function DashboardShell({ user, profile, children }: DashboardShe
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
-  const [showCheckoutSuccess, setShowCheckoutSuccess] = useState(false);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("checkout") === "success") {
-      setShowCheckoutSuccess(true);
-      window.history.replaceState({}, "", pathname);
-      const timer = setTimeout(() => setShowCheckoutSuccess(false), 6000);
-      return () => clearTimeout(timer);
-    }
-  }, [pathname]);
-
   async function handleLogout() {
     await supabase.auth.signOut();
     router.push("/");
@@ -128,27 +115,6 @@ export default function DashboardShell({ user, profile, children }: DashboardShe
 
         {/* Main Content */}
         <main style={{ flex: 1, minWidth: 0 }}>
-          {showCheckoutSuccess && (
-            <div style={{
-              background: "rgba(34,197,94,0.08)",
-              border: "1px solid rgba(34,197,94,0.3)",
-              borderRadius: "0.75rem",
-              padding: "1rem 1.25rem",
-              marginBottom: "1.5rem",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                <span style={{ fontSize: "1.25rem" }}>✅</span>
-                <div>
-                  <div style={{ fontWeight: 600, fontSize: "0.95rem", color: "#22c55e" }}>Zahlung erfolgreich!</div>
-                  <div style={{ fontSize: "0.85rem", color: "var(--text-sub)" }}>Dein Kauf wurde abgeschlossen. Viel Spaß mit deinem Produkt!</div>
-                </div>
-              </div>
-              <button onClick={() => setShowCheckoutSuccess(false)} style={{ background: "none", border: "none", color: "var(--muted)", cursor: "pointer", fontSize: "1.2rem" }}>×</button>
-            </div>
-          )}
           {children}
         </main>
       </div>

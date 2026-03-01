@@ -53,32 +53,15 @@ export const PRODUCTS = {
   },
 } as const;
 
-export const PLANS: Record<
-  "monthly" | "yearly",
-  {
-    name: string;
-    price: number;
-    priceDisplay: string;
-    priceMonthly?: string;
-    interval: "month" | "year";
-    savings?: string;
-    stripePriceId?: string;
-  }
-> = {
+// Re-export shared PLANS for backward compat
+export { PLANS } from "./plans";
+
+/** Server-side PLANS with Stripe Price IDs (requires env vars) */
+export const PLANS_WITH_PRICE_IDS = {
   monthly: {
-    name: "Monatlich",
-    price: 990,
-    priceDisplay: "9,90",
-    interval: "month",
     stripePriceId: process.env.STRIPE_VIP_MONTHLY_PRICE_ID || undefined,
   },
   yearly: {
-    name: "Jährlich",
-    price: 9900,
-    priceDisplay: "99,00",
-    priceMonthly: "8,25",
-    interval: "year",
-    savings: "17%",
     stripePriceId: process.env.STRIPE_VIP_YEARLY_PRICE_ID || undefined,
   },
 };

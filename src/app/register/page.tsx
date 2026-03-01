@@ -40,7 +40,7 @@ function RegisterForm() {
 
     // If coming from guest checkout, pass session_id through to auth callback
     const callbackUrl = sessionId
-      ? `${window.location.origin}/auth/callback?redirect=/dashboard?claim_session=${sessionId}`
+      ? `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(`/dashboard?claim_session=${sessionId}`)}`
       : `${window.location.origin}/auth/callback`;
 
     const { error } = await supabase.auth.signUp({
@@ -63,7 +63,7 @@ function RegisterForm() {
 
   async function handleGoogleLogin() {
     const redirectTo = sessionId
-      ? `${window.location.origin}/auth/callback?redirect=/dashboard?claim_session=${sessionId}`
+      ? `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(`/dashboard?claim_session=${sessionId}`)}`
       : `${window.location.origin}/auth/callback`;
 
     await supabase.auth.signInWithOAuth({

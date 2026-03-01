@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { stripe, PRODUCTS, PLANS } from "@/lib/stripe";
+import { stripe, PRODUCTS, PLANS_WITH_PRICE_IDS } from "@/lib/stripe";
+import { PLANS } from "@/lib/plans";
 import { getProduct } from "@/lib/products";
 import { UPSELL_MAP } from "@/lib/upsell-config";
 import type { Profile } from "@/types/database";
@@ -98,10 +99,11 @@ export async function POST(request: Request) {
     // Subscription purchase (VIP Community)
     if (plan && (plan === "monthly" || plan === "yearly")) {
       const selectedPlan = PLANS[plan];
+      const stripePriceIdForPlan = PLANS_WITH_PRICE_IDS[plan]?.stripePriceId;
 
       // Use stored Stripe Price ID if available, otherwise inline price_data
-      const lineItem = selectedPlan.stripePriceId
-        ? { price: selectedPlan.stripePriceId, quantity: 1 }
+      const lineItem = stripePriceIdForPlan
+        ? { price: stripePriceIdForPlan, quantity: 1 }
         : {
             price_data: {
               currency: "eur" as const,
