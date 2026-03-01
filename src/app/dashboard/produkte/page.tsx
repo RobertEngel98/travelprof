@@ -62,8 +62,12 @@ export default function ProduktePage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ productId }),
     });
-    const { url } = await res.json();
-    if (url) window.location.href = url;
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert(data.error || "Checkout fehlgeschlagen");
+    }
   }
 
   const cardStyle = {
