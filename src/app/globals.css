@@ -600,11 +600,24 @@ footer {
   font-weight: 700;
 }
 
+/* Dashboard responsive grids */
+.dash-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.dash-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.dash-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
 /* Mobile: hide sidebar, show bottom nav */
 @media (max-width: 767px) {
   .dash-sidebar { display: none; }
   .dash-mobile-nav { display: flex; }
-  .dash-layout { padding-bottom: 5rem; }
+  .dash-layout { gap: 0; padding-top: 1rem; padding-bottom: 5rem; }
+  .dash-mobile-nav-item { font-size: 0.7rem; }
+  .dash-grid-3 { grid-template-columns: 1fr; }
+  .dash-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Tablet: 2-col for 3-col grids */
+@media (min-width: 480px) and (max-width: 767px) {
+  .dash-grid-3 { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ── Mobile Nav Auth & Divider ── */

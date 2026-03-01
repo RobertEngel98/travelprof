@@ -80,7 +80,7 @@ export default async function DashboardPage() {
       </p>
 
       {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
+      <div className="dash-grid-3" style={{ marginBottom: "2rem" }}>
         <div style={cardStyle}>
           <div style={{ fontSize: "0.78rem", color: "var(--muted)", marginBottom: "0.5rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Status</div>
           <div style={{ fontSize: "1.25rem", fontWeight: 700, color: isVip ? "var(--accent)" : "var(--text-main)" }}>
@@ -99,7 +99,7 @@ export default async function DashboardPage() {
 
       {/* Quick Actions */}
       <h2 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "1rem" }}>Schnellzugriff</h2>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
+      <div className="dash-grid-2" style={{ marginBottom: "2rem" }}>
         <Link href="/analyse" style={{ ...cardStyle, textDecoration: "none", color: "inherit", display: "block" }}>
           <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>✈️</div>
           <div style={{ fontWeight: 600, marginBottom: "0.25rem" }}>Neue Reiseanalyse</div>

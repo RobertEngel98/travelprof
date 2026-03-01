@@ -91,7 +91,7 @@ export default function ProduktePage() {
       {loading ? (
         <p style={{ color: "var(--muted)" }}>Wird geladen...</p>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem" }}>
+        <div className="dash-grid-2">
           {products.map((product) => {
             const owned = ownedProducts.has(product.id);
             return (
@@ -125,7 +125,7 @@ export default function ProduktePage() {
       {purchases.length > 0 && (
         <div style={{ marginTop: "2.5rem" }}>
           <h2 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "1rem" }}>Kaufhistorie</h2>
-          <div style={{ ...cardStyle, padding: 0, overflow: "hidden" }}>
+          <div className="dash-table-wrap" style={{ ...cardStyle, padding: 0, overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.88rem" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border-soft)" }}>
@@ -138,10 +138,10 @@ export default function ProduktePage() {
                 {purchases.map((p) => (
                   <tr key={p.id} style={{ borderBottom: "1px solid var(--border-soft)" }}>
                     <td style={{ padding: "0.75rem 1rem" }}>{p.product_name}</td>
-                    <td style={{ padding: "0.75rem 1rem" }}>
+                    <td style={{ padding: "0.6rem 0.75rem", whiteSpace: "nowrap" }}>
                       {(p.amount / 100).toFixed(2).replace(".", ",")} €
                     </td>
-                    <td style={{ padding: "0.75rem 1rem", color: "var(--muted)" }}>
+                    <td style={{ padding: "0.6rem 0.75rem", color: "var(--muted)", whiteSpace: "nowrap" }}>
                       {new Date(p.created_at).toLocaleDateString("de-DE")}
                     </td>
                   </tr>

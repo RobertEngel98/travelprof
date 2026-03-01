@@ -67,7 +67,7 @@ export default function AnalysePage() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem", flexWrap: "wrap", gap: "0.75rem" }}>
         <div>
           <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Meine Analysen</h1>
           <p style={{ color: "var(--text-sub)" }}>Alle gespeicherten Reiseanalysen.</p>
@@ -98,10 +98,10 @@ export default function AnalysePage() {
             return (
               <div key={r.id} style={cardStyle}>
                 <div
-                  style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
+                  style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", flexWrap: "wrap", gap: "0.5rem" }}
                   onClick={() => setExpanded(isOpen ? null : r.id)}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
                     <span style={{ fontSize: "1.5rem" }}>{res.levelEmoji || "📊"}</span>
                     <div>
                       <span style={{ fontWeight: 600 }}>{res.level || "Reiseanalyse"}</span>
@@ -130,7 +130,7 @@ export default function AnalysePage() {
                   <div style={{ marginTop: "1.25rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border-soft)" }}>
                     {/* Meilen-Potenzial */}
                     {res.monthlyMiles && (
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginBottom: "1.5rem" }}>
+                      <div className="dash-grid-3" style={{ marginBottom: "1.5rem" }}>
                         <div style={{ background: "var(--bg-main)", borderRadius: "0.75rem", padding: "1rem", textAlign: "center" }}>
                           <div style={{ fontSize: "0.72rem", color: "var(--muted)", textTransform: "uppercase", marginBottom: "0.25rem" }}>Monatlich</div>
                           <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--accent)" }}>{res.monthlyMiles}</div>
@@ -150,7 +150,7 @@ export default function AnalysePage() {
 
                     {/* Antworten */}
                     <h4 style={{ fontSize: "0.88rem", fontWeight: 600, marginBottom: "0.75rem", color: "var(--muted)" }}>Dein Profil</h4>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0.5rem", marginBottom: "1.25rem" }}>
+                    <div className="dash-grid-2" style={{ gap: "0.5rem", marginBottom: "1.25rem" }}>
                       {Object.entries(r.answers).map(([key, value]) => (
                         <div key={key} style={{ background: "var(--bg-main)", borderRadius: "0.5rem", padding: "0.6rem 0.875rem", fontSize: "0.85rem" }}>
                           <span style={{ color: "var(--muted)" }}>{QUESTION_LABELS[key] || key}: </span>
@@ -165,7 +165,7 @@ export default function AnalysePage() {
                         <h4 style={{ fontSize: "0.88rem", fontWeight: 600, marginBottom: "0.75rem", color: "var(--muted)" }}>Empfohlene Karten</h4>
                         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.25rem" }}>
                           {res.cards.map((card, i) => (
-                            <div key={i} style={{ background: "var(--bg-main)", borderRadius: "0.5rem", padding: "0.75rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <div key={i} style={{ background: "var(--bg-main)", borderRadius: "0.5rem", padding: "0.75rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.375rem" }}>
                               <div>
                                 <span style={{ fontWeight: 600, fontSize: "0.9rem" }}>{card.name}</span>
                                 <span style={{ marginLeft: "0.5rem", fontSize: "0.72rem", background: "rgba(232,114,12,0.1)", color: "var(--accent)", padding: "0.15rem 0.5rem", borderRadius: "0.25rem" }}>{card.tag}</span>

@@ -83,7 +83,7 @@ export default function EinstellungenPage() {
             onChange={(e) => setFullName(e.target.value)}
             style={{
               width: "100%",
-              maxWidth: 400,
+              maxWidth: "100%",
               padding: "0.65rem 1rem",
               borderRadius: "0.625rem",
               border: "1px solid var(--border-soft)",
@@ -127,7 +127,7 @@ export default function EinstellungenPage() {
             Abo verwalten
           </a>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem" }}>
+          <div className="dash-grid-2">
             {Object.entries(PLANS).map(([key, plan]) => (
               <div
                 key={key}
