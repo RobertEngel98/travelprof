@@ -235,7 +235,7 @@ export const CMS_DEFAULTS: CmsData = {
     subtitle: "Fragen zu Reels, Buchungsstrategien oder Kooperationen? Schreib mir.",
     items: [
       { title: "Via Instagram", description: "Der schnellste Weg – schreib mir einfach eine DM.", link_text: "DM auf Instagram →", link_url: "https://www.instagram.com/traveling.prof", link_type: "button" },
-      { title: "Per E-Mail", description: "Kooperationen, Business-Anfragen oder größere Reiseplanung?", link_text: "traveling.prof@outlook.de", link_url: "mailto:traveling.prof@outlook.de", link_type: "link" },
+      { title: "Per E-Mail", description: "Kooperationen, Business-Anfragen oder größere Reiseplanung?", link_text: "info@travelingprof.de", link_url: "mailto:info@travelingprof.de", link_type: "link" },
     ],
   },
 };

@@ -34,7 +34,7 @@ export default function AGB() {
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>§ 2 Vertragspartner</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>
-              Anbieter ist Robert Engel, Iserlohn, Deutschland. Kontakt: traveling.prof@outlook.de.
+              Anbieter ist Robert Engel, Iserlohn, Deutschland. Kontakt: info@travelingprof.de.
             </p>
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>§ 3 Vertragsgegenstand</h2>
@@ -76,7 +76,7 @@ export default function AGB() {
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>§ 10 Community-Mitgliedschaft</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>
-              Die VIP Community Jahresmitgliedschaft hat eine Laufzeit von 12 Monaten und verlängert sich automatisch um weitere 12 Monate, sofern nicht mindestens 30 Tage vor Ablauf gekündigt wird. Die Kündigung kann per E-Mail an traveling.prof@outlook.de erfolgen.
+              Die VIP Community Jahresmitgliedschaft hat eine Laufzeit von 12 Monaten und verlängert sich automatisch um weitere 12 Monate, sofern nicht mindestens 30 Tage vor Ablauf gekündigt wird. Die Kündigung kann per E-Mail an info@travelingprof.de erfolgen.
             </p>
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>§ 11 Datenschutz</h2>

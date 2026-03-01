@@ -196,7 +196,7 @@ export default function EinstellungenPage() {
             fontWeight: 500,
             cursor: "pointer",
           }}
-          onClick={() => alert("Bitte kontaktiere traveling.prof@outlook.de um dein Konto zu löschen.")}
+          onClick={() => alert("Bitte kontaktiere info@travelingprof.de um dein Konto zu löschen.")}
         >
           Konto löschen
         </button>

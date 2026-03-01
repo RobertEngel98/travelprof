@@ -600,15 +600,15 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
             <p className="section-sub" style={{ margin: "0.5rem auto 1.5rem" }}>Fragen zu Strategien, Kooperationen oder individuelle Beratung? Buche direkt einen Slot.</p>
             <div className="calendly-box">
               <iframe
-                src="https://calendar.app.google/QFoADWcRwwuYUoky8"
-                style={{ border: "none", width: "100%", minHeight: "500px", borderRadius: "var(--r-xl)" }}
+                src="https://calendly.com/travelingprof/30min"
+                style={{ border: "none", width: "100%", minHeight: "660px", borderRadius: "var(--r-xl)" }}
                 title="Termin buchen"
               />
               <p style={{ color: "var(--muted)", fontSize: "0.72rem", marginTop: "0.75rem" }}>
                 Kein passender Termin? Schreib mir direkt per{" "}
                 <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>Instagram DM</a>{" "}
                 oder an{" "}
-                <a href="mailto:traveling.prof@outlook.de" style={{ color: "var(--accent)" }}>traveling.prof@outlook.de</a>.
+                <a href="mailto:info@travelingprof.de" style={{ color: "var(--accent)" }}>info@travelingprof.de</a>.
               </p>
             </div>
           </div>

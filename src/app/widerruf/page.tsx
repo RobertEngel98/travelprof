@@ -29,7 +29,7 @@ export default function Widerruf() {
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>Widerrufsrecht</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>
-              Du hast das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsschlusses. Um dein Widerrufsrecht auszuüben, musst du uns (Robert Engel, Iserlohn, Deutschland, E-Mail: traveling.prof@outlook.de) mittels einer eindeutigen Erklärung (z.B. per E-Mail) über deinen Entschluss, diesen Vertrag zu widerrufen, informieren.
+              Du hast das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsschlusses. Um dein Widerrufsrecht auszuüben, musst du uns (Robert Engel, Iserlohn, Deutschland, E-Mail: info@travelingprof.de) mittels einer eindeutigen Erklärung (z.B. per E-Mail) über deinen Entschluss, diesen Vertrag zu widerrufen, informieren.
             </p>
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>Folgen des Widerrufs</h2>
@@ -48,7 +48,7 @@ export default function Widerruf() {
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>Muster-Widerrufsformular</h2>
             <div style={{ background: "var(--bg-warm)", border: "1px solid var(--border-soft)", borderRadius: "0.75rem", padding: "1.25rem", marginBottom: "1.5rem" }}>
               <p style={{ color: "var(--text-sub)", lineHeight: 1.7, fontSize: "0.88rem" }}>
-                An: Robert Engel, Iserlohn, Deutschland, traveling.prof@outlook.de<br /><br />
+                An: Robert Engel, Iserlohn, Deutschland, info@travelingprof.de<br /><br />
                 Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*)/die Erbringung der folgenden Dienstleistung (*):<br /><br />
                 Bestellt am (*)/erhalten am (*):<br />
                 Name des/der Verbraucher(s):<br />

@@ -32,7 +32,7 @@ export default function Impressum() {
             </p>
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>Kontakt</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>
-              E-Mail: traveling.prof@outlook.de<br />Instagram: <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>@traveling.prof</a>
+              E-Mail: info@travelingprof.de<br />Instagram: <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>@traveling.prof</a>
             </p>
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>Robert Engel<br />Iserlohn, Deutschland</p>

@@ -34,7 +34,7 @@ export default function Datenschutz() {
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>2. Verantwortliche Stelle</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "1.5rem", lineHeight: 1.7 }}>
-              Robert Engel<br />Iserlohn, Nordrhein-Westfalen<br />Deutschland<br />E-Mail: traveling.prof@outlook.de
+              Robert Engel<br />Iserlohn, Nordrhein-Westfalen<br />Deutschland<br />E-Mail: info@travelingprof.de
             </p>
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>3. Hosting</h2>
@@ -59,7 +59,7 @@ export default function Datenschutz() {
 
             <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>7. Deine Rechte</h2>
             <p style={{ color: "var(--text-sub)", marginBottom: "2rem", lineHeight: 1.7 }}>
-              Du hast jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner personenbezogenen Daten. Kontakt: traveling.prof@outlook.de
+              Du hast jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner personenbezogenen Daten. Kontakt: info@travelingprof.de
             </p>
 
             <Link href="/" className="btn btn-secondary btn-sm">← Zurück zur Startseite</Link>
