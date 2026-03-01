@@ -316,7 +316,7 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
       {leadmagnet && <LeadmagnetForm product={leadmagnet} onClose={() => setLeadmagnet(null)} />}
 
       <main>
-        {/* ═══ Hero ═══ */}
+        {/* ═══ 1. Hero ═══ */}
         <section className="hero" aria-label="Hero">
           <div className="container">
             <div className="hero-grid">
@@ -356,26 +356,41 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
           </div>
         </section>
 
-        {/* ═══ Video ═══ */}
-        <section style={{ paddingTop: 0, paddingBottom: "2rem" }} aria-label="Video">
+        {/* ═══ 2. Social Proof Bar ═══ */}
+        <div className="social-proof-strip">
           <div className="container">
-            <div className="video-banner">
-              <img src="/banner.jpg" alt="Traumstrand – smarter reisen mit traveling.prof" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              <div className="video-overlay"><span>📍 Nächstes Abenteuer lädt...</span></div>
+            <div className="proof-row">
+              <div className="proof-item"><strong>500+</strong> Follower</div>
+              <div className="proof-item"><strong>30+</strong> Länder</div>
+              <div className="proof-item"><strong>50.000€+</strong> gespart</div>
+              <div className="proof-item"><strong>4.9/5</strong> Bewertung</div>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ 3. Erfolgsgeschichten ═══ */}
+        <section id="erfolge" aria-label="Erfolgsgeschichten">
+          <div className="container">
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.testimonials.eyebrow}</div>
+            <h2 className="section-title" dangerouslySetInnerHTML={{ __html: cms.testimonials.title }} />
+            <p className="section-sub">{cms.testimonials.subtitle}</p>
+            <div className="testimonials-row">
+              {cms.testimonials.items.map((t, i) => (
+                <article className="testimonial" key={i}>
+                  <blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
+                  <div className="testimonial-author">
+                    <div className="testimonial-avatar">{t.initials}</div>
+                    <div className="testimonial-meta"><div className="name">{t.name}</div><div className="detail">{t.detail}</div></div>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
         <hr className="divider" />
 
-        {/* ═══ Hack Finder ═══ */}
-        <section id="tool" aria-label="Travel Hack Finder">
-          <div className="container"><HackFinder hacks={cms.hack_finder.hacks} /></div>
-        </section>
-
-        <hr className="divider" />
-
-        {/* ═══ Travel Hacks ═══ */}
+        {/* ═══ 4. Travel Hacks ═══ */}
         <section id="hacks" aria-label="Travel Hacks">
           <div className="container">
             <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.cards.eyebrow}</div>
@@ -395,7 +410,96 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
 
         <hr className="divider" />
 
-        {/* ═══ Über mich ═══ */}
+        {/* ═══ 5. Video ═══ */}
+        <section style={{ paddingTop: 0, paddingBottom: "2rem" }} aria-label="Video">
+          <div className="container">
+            <div className="video-banner">
+              <img src="/banner.jpg" alt="Traumstrand – smarter reisen mit traveling.prof" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div className="video-overlay"><span>📍 Nächstes Abenteuer lädt...</span></div>
+            </div>
+          </div>
+        </section>
+
+        <hr className="divider" />
+
+        {/* ═══ 6. Produkte (Stripe) ═══ */}
+        <section id="produkte" aria-label="Produkte">
+          <div className="container">
+            <div className="products-section">
+              <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+                <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.products_display.eyebrow}</div>
+                <h2 className="section-title" dangerouslySetInnerHTML={{ __html: cms.products_display.title }} />
+                <p className="section-sub" style={{ margin: "0.5rem auto 0", maxWidth: "32rem" }}>{cms.products_display.subtitle}</p>
+              </div>
+              <div className="products-grid">
+                {cms.products_display.items.map((p, i) => {
+                  const isPopular = p.name === "Meilen-Crashkurs (Video)";
+                  return (
+                    <article className={`product-card${isPopular ? " product-popular" : ""}`} key={i} data-popular={isPopular || undefined}>
+                      {isPopular && <div className="popular-badge">Beliebteste Wahl</div>}
+                      <div className={`product-tag ${p.cls}`}>{p.tag}</div>
+                      <div className="product-price">{p.price}</div>
+                      <h3>{p.name}</h3>
+                      <p>{p.desc}</p>
+                      {p.action === "leadmagnet" ? (
+                        isLoggedIn && p.product_id ? (
+                          <button
+                            onClick={() => claimFreeProduct(p.product_id!)}
+                            className="btn btn-sm btn-secondary"
+                            disabled={claimingProduct === p.product_id}
+                          >
+                            {claimingProduct === p.product_id ? "Wird freigeschaltet..." : p.cta}
+                          </button>
+                        ) : (
+                          <button onClick={() => setLeadmagnet(p.name)} className="btn btn-sm btn-secondary">{p.cta}</button>
+                        )
+                      ) : p.action === "termin" ? (
+                        <a href="#termin" className="btn btn-sm btn-primary">{p.cta}</a>
+                      ) : p.action === "vip" ? (
+                        <Link href="/register" className="btn btn-sm btn-primary">{p.cta}</Link>
+                      ) : (
+                        <Link href="/login?redirect=/dashboard/produkte" className="btn btn-sm btn-primary">{p.cta}</Link>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <hr className="divider" />
+
+        {/* ═══ 7. Hack Finder ═══ */}
+        <section id="tool" aria-label="Travel Hack Finder">
+          <div className="container"><HackFinder hacks={cms.hack_finder.hacks} /></div>
+        </section>
+
+        <hr className="divider" />
+
+        {/* ═══ 8. Freebies ═══ */}
+        <section id="freebies" aria-label="Freebies">
+          <div className="container">
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.freebies.eyebrow}</div>
+            <h2 className="section-title" dangerouslySetInnerHTML={{ __html: cms.freebies.title }} />
+            <p className="section-sub">{cms.freebies.subtitle}</p>
+            <div className="freebies-row">
+              {cms.freebies.items.map((f, i) => (
+                <article className="freebie" key={i}>
+                  <div className="card-emoji">{f.emoji}</div>
+                  <div className="freebie-tag">Gratis</div>
+                  <h3>{f.title}</h3>
+                  <p>{f.description}</p>
+                  <button onClick={() => setLeadmagnet(f.title)} className="btn btn-secondary btn-sm">Jetzt herunterladen →</button>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <hr className="divider" />
+
+        {/* ═══ 9. Über mich ═══ */}
         <section id="about" aria-label="Über mich">
           <div className="container">
             <div className="split">
@@ -427,95 +531,7 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
 
         <hr className="divider" />
 
-        {/* ═══ Erfolgsgeschichten ═══ */}
-        <section id="erfolge" aria-label="Erfolgsgeschichten">
-          <div className="container">
-            <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.testimonials.eyebrow}</div>
-            <h2 className="section-title" dangerouslySetInnerHTML={{ __html: cms.testimonials.title }} />
-            <p className="section-sub">{cms.testimonials.subtitle}</p>
-            <div className="testimonials-row">
-              {cms.testimonials.items.map((t, i) => (
-                <article className="testimonial" key={i}>
-                  <blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
-                  <div className="testimonial-author">
-                    <div className="testimonial-avatar">{t.initials}</div>
-                    <div className="testimonial-meta"><div className="name">{t.name}</div><div className="detail">{t.detail}</div></div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <hr className="divider" />
-
-        {/* ═══ Produkte (Alfima / Stripe) ═══ */}
-        <section id="produkte" aria-label="Produkte">
-          <div className="container">
-            <div className="products-section">
-              <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-                <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.products_display.eyebrow}</div>
-                <h2 className="section-title" dangerouslySetInnerHTML={{ __html: cms.products_display.title }} />
-                <p className="section-sub" style={{ margin: "0.5rem auto 0", maxWidth: "32rem" }}>{cms.products_display.subtitle}</p>
-              </div>
-              <div className="products-grid">
-                {cms.products_display.items.map((p, i) => (
-                  <article className="product-card" key={i}>
-                    <div className={`product-tag ${p.cls}`}>{p.tag}</div>
-                    <div className="product-price">{p.price}</div>
-                    <h3>{p.name}</h3>
-                    <p>{p.desc}</p>
-                    {p.action === "leadmagnet" ? (
-                      isLoggedIn && p.product_id ? (
-                        <button
-                          onClick={() => claimFreeProduct(p.product_id!)}
-                          className="btn btn-sm btn-secondary"
-                          disabled={claimingProduct === p.product_id}
-                        >
-                          {claimingProduct === p.product_id ? "Wird freigeschaltet..." : p.cta}
-                        </button>
-                      ) : (
-                        <button onClick={() => setLeadmagnet(p.name)} className="btn btn-sm btn-secondary">{p.cta}</button>
-                      )
-                    ) : p.action === "termin" ? (
-                      <a href="#termin" className="btn btn-sm btn-primary">{p.cta}</a>
-                    ) : p.action === "vip" ? (
-                      <Link href="/register" className="btn btn-sm btn-primary">{p.cta}</Link>
-                    ) : (
-                      <Link href="/login?redirect=/dashboard/produkte" className="btn btn-sm btn-primary">{p.cta}</Link>
-                    )}
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <hr className="divider" />
-
-        {/* ═══ Freebies ═══ */}
-        <section id="freebies" aria-label="Freebies">
-          <div className="container">
-            <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.freebies.eyebrow}</div>
-            <h2 className="section-title" dangerouslySetInnerHTML={{ __html: cms.freebies.title }} />
-            <p className="section-sub">{cms.freebies.subtitle}</p>
-            <div className="freebies-row">
-              {cms.freebies.items.map((f, i) => (
-                <article className="freebie" key={i}>
-                  <div className="card-emoji">{f.emoji}</div>
-                  <div className="freebie-tag">Gratis</div>
-                  <h3>{f.title}</h3>
-                  <p>{f.description}</p>
-                  <button onClick={() => setLeadmagnet(f.title)} className="btn btn-secondary btn-sm">Jetzt herunterladen →</button>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <hr className="divider" />
-
-        {/* ═══ Kreditkarten Referral ═══ */}
+        {/* ═══ 10. Kreditkarten Referral ═══ */}
         <section id="kreditkarten" aria-label="Kreditkarten Empfehlungen">
           <div className="container">
             <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.credit_cards.eyebrow}</div>
@@ -538,7 +554,7 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
 
         <hr className="divider" />
 
-        {/* ═══ Community ═══ */}
+        {/* ═══ 11. Community ═══ */}
         <section id="community" aria-label="Community">
           <div className="container">
             <div className="community-dark">
@@ -574,7 +590,7 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
           </div>
         </section>
 
-        {/* ═══ Reels ═══ */}
+        {/* ═══ 12. Reels ═══ */}
         <section aria-label="Reels und Content">
           <div className="container">
             <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.gallery.eyebrow}</div>
@@ -592,43 +608,7 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
           </div>
         </section>
 
-        {/* ═══ Calendly ═══ */}
-        <section id="termin" aria-label="Termin buchen">
-          <div className="container" style={{ textAlign: "center" }}>
-            <div className="section-eyebrow"><div className="section-eyebrow-dot" />Termin</div>
-            <h2 className="section-title">Persönliches Gespräch <em>vereinbaren</em></h2>
-            <p className="section-sub" style={{ margin: "0.5rem auto 1.5rem" }}>Fragen zu Strategien, Kooperationen oder individuelle Beratung? Buche direkt einen Slot.</p>
-            <div className="calendly-box">
-              <iframe
-                src="https://calendly.com/travelingprof/30min"
-                style={{ border: "none", width: "100%", minHeight: "660px", borderRadius: "var(--r-xl)" }}
-                title="Termin buchen"
-              />
-              <p style={{ color: "var(--muted)", fontSize: "0.72rem", marginTop: "0.75rem" }}>
-                Kein passender Termin? Schreib mir direkt per{" "}
-                <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>Instagram DM</a>{" "}
-                oder an{" "}
-                <a href="mailto:info@travelingprof.de" style={{ color: "var(--accent)" }}>info@travelingprof.de</a>.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══ Zahlungen ═══ */}
-        <section aria-label="Integrationen" style={{ paddingTop: "1rem" }}>
-          <div className="container" style={{ textAlign: "center" }}>
-            <div className="section-eyebrow">Zahlungen</div>
-            <h2 className="section-title" style={{ fontSize: "1.3rem", marginBottom: "0.75rem" }}>Sicher bezahlen &amp; verwalten</h2>
-            <div className="integrations">
-              {["💳 Stripe", "🅿️ PayPal", "🛒 Stan Store", "📅 Calendly", "🎓 Alfima"].map((b, i) => (
-                <div className="int-badge" key={i}>{b}</div>
-              ))}
-            </div>
-            <p style={{ fontSize: "0.72rem", color: "var(--muted)", marginTop: "0.75rem" }}>Integrationen werden bei Bedarf aktiviert.</p>
-          </div>
-        </section>
-
-        {/* ═══ CTA ═══ */}
+        {/* ═══ 13. CTA ═══ */}
         <section aria-label="Call to Action">
           <div className="container">
             <div className="cta-banner">
@@ -652,7 +632,7 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
           </div>
         </section>
 
-        {/* ═══ FAQ ═══ */}
+        {/* ═══ 14. FAQ ═══ */}
         <section aria-label="FAQ">
           <div className="container">
             <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.faq.eyebrow}</div>
@@ -663,7 +643,29 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
           </div>
         </section>
 
-        {/* ═══ Kontakt ═══ */}
+        {/* ═══ 15. Calendly ═══ */}
+        <section id="termin" aria-label="Termin buchen">
+          <div className="container" style={{ textAlign: "center" }}>
+            <div className="section-eyebrow"><div className="section-eyebrow-dot" />Termin</div>
+            <h2 className="section-title">Persönliches Gespräch <em>vereinbaren</em></h2>
+            <p className="section-sub" style={{ margin: "0.5rem auto 1.5rem" }}>Fragen zu Strategien, Kooperationen oder individuelle Beratung? Buche direkt einen Slot.</p>
+            <div className="calendly-box">
+              <iframe
+                src="https://calendly.com/travelingprof/30min"
+                style={{ border: "none", width: "100%", minHeight: "660px", borderRadius: "var(--r-xl)" }}
+                title="Termin buchen"
+              />
+              <p style={{ color: "var(--muted)", fontSize: "0.72rem", marginTop: "0.75rem" }}>
+                Kein passender Termin? Schreib mir direkt per{" "}
+                <a href="https://www.instagram.com/traveling.prof" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>Instagram DM</a>{" "}
+                oder an{" "}
+                <a href="mailto:info@travelingprof.de" style={{ color: "var(--accent)" }}>info@travelingprof.de</a>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ 16. Kontakt ═══ */}
         <section id="kontakt" aria-label="Kontakt">
           <div className="container">
             <div className="section-eyebrow"><div className="section-eyebrow-dot" />{cms.contact.eyebrow}</div>
@@ -686,9 +688,16 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
         </section>
       </main>
 
-      {/* ═══ Footer ═══ */}
+      {/* ═══ Footer + Zahlungen ═══ */}
       <footer>
         <div className="container">
+          <div style={{ textAlign: "center", marginBottom: "1.25rem" }}>
+            <div className="integrations">
+              {["💳 Stripe", "🅿️ PayPal", "🛒 Stan Store", "📅 Calendly", "🎓 Alfima"].map((b, i) => (
+                <div className="int-badge" key={i}>{b}</div>
+              ))}
+            </div>
+          </div>
           <div className="footer-row">
             <span>© {year} traveling.prof – Travel Hacks &amp; Luxusreisen</span>
             <div className="footer-links">
@@ -707,6 +716,13 @@ export default function LandingPage({ cms }: { cms: CmsData }) {
           </div>
         </div>
       </footer>
+
+      {/* ═══ Sticky Mobile CTA ═══ */}
+      <div className="sticky-mobile-cta">
+        <a href="#freebies" className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }}>
+          Gratis-Checkliste sichern
+        </a>
+      </div>
     </div>
   );
 }

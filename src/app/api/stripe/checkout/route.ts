@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { stripe, PRODUCTS, PLANS } from "@/lib/stripe";
 import { getProduct } from "@/lib/products";
+import { UPSELL_MAP } from "@/lib/upsell-config";
 import type { Profile } from "@/types/database";
 
 export async function POST(request: Request) {
@@ -69,13 +70,24 @@ export async function POST(request: Request) {
             quantity: 1,
           };
 
+      // Determine success URL: if upsell exists for this product, redirect to upsell page
+      const hasUpsell = !!UPSELL_MAP[productId];
+      const finalSuccessUrl = successUrl
+        ? successUrl
+        : hasUpsell
+          ? `${process.env.NEXT_PUBLIC_APP_URL}/checkout/upsell?session_id={CHECKOUT_SESSION_ID}&product=${productId}`
+          : `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success&product=${productId}`;
+
       const session = await stripe.checkout.sessions.create({
         customer: customerId,
         mode: "payment",
         payment_method_types: ["card"],
         line_items: [lineItem],
         metadata: { user_id: user.id, product_id: productId },
-        success_url: successUrl || `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success&product=${productId}`,
+        payment_intent_data: {
+          setup_future_usage: "off_session",
+        },
+        success_url: finalSuccessUrl,
         cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/produkte`,
         locale: "de",
       });
