@@ -148,6 +148,58 @@ export async function POST(request: Request) {
       break;
     }
 
+    // Invoice payment failed → mark subscription as past_due
+    case "invoice.payment_failed": {
+      const invoice = event.data.object as any;
+      const customerId = invoice.customer as string;
+      if (!customerId) break;
+
+      const { data: profile } = await admin
+        .from("profiles")
+        .select("user_id")
+        .eq("stripe_customer_id", customerId)
+        .single();
+
+      if (profile?.user_id) {
+        await admin
+          .from("profiles")
+          .update({ subscription_status: "past_due" })
+          .eq("user_id", profile.user_id);
+
+        await admin
+          .from("subscriptions")
+          .update({ status: "past_due" })
+          .eq("stripe_customer_id", customerId);
+      }
+      break;
+    }
+
+    // Invoice paid (e.g. successful retry) → restore active status
+    case "invoice.paid": {
+      const invoice = event.data.object as any;
+      const customerId = invoice.customer as string;
+      if (!customerId || !invoice.subscription) break;
+
+      const { data: profile } = await admin
+        .from("profiles")
+        .select("user_id, subscription_status")
+        .eq("stripe_customer_id", customerId)
+        .single();
+
+      if (profile?.user_id && profile.subscription_status === "past_due") {
+        await admin
+          .from("profiles")
+          .update({ subscription_status: "active" })
+          .eq("user_id", profile.user_id);
+
+        await admin
+          .from("subscriptions")
+          .update({ status: "active" })
+          .eq("stripe_customer_id", customerId);
+      }
+      break;
+    }
+
     case "customer.subscription.deleted": {
       const subscription = event.data.object as any;
       const userId = subscription.metadata.user_id;

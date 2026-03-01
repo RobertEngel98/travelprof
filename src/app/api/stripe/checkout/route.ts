@@ -83,15 +83,14 @@ export async function POST(request: Request) {
 
   // Subscription purchase (VIP Community)
   if (plan && (plan === "monthly" || plan === "yearly")) {
-    const selectedPlan = PLANS[plan as keyof typeof PLANS];
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      mode: "subscription",
-      payment_method_types: ["card"],
-      line_items: [
-        {
+    const selectedPlan = PLANS[plan];
+
+    // Use stored Stripe Price ID if available, otherwise inline price_data
+    const lineItem = selectedPlan.stripePriceId
+      ? { price: selectedPlan.stripePriceId, quantity: 1 }
+      : {
           price_data: {
-            currency: "eur",
+            currency: "eur" as const,
             product_data: {
               name: `traveling.prof VIP Community - ${selectedPlan.name}`,
               description: "Exklusive Travel Hacks, Community-Zugang, monatliche Calls",
@@ -100,8 +99,13 @@ export async function POST(request: Request) {
             recurring: { interval: selectedPlan.interval },
           },
           quantity: 1,
-        },
-      ],
+        };
+
+    const session = await stripe.checkout.sessions.create({
+      customer: customerId,
+      mode: "subscription",
+      payment_method_types: ["card"],
+      line_items: [lineItem],
       subscription_data: {
         metadata: { user_id: user.id, plan },
       },

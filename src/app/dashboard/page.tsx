@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import type { Profile, Purchase, AnalyseResult } from "@/types/database";
+import CheckoutSuccess from "./components/CheckoutSuccess";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -42,11 +44,39 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>
-        Willkommen zurück, {profile?.full_name || "Reisender"}!
-      </h1>
+      <Suspense fallback={null}>
+        <CheckoutSuccess />
+      </Suspense>
+
+      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem", flexWrap: "wrap" }}>
+        <h1 style={{ fontSize: "1.5rem", fontWeight: 700, margin: 0 }}>
+          Willkommen zurück, {profile?.full_name || "Reisender"}!
+        </h1>
+        {isVip && (
+          <span style={{
+            background: "linear-gradient(135deg, #f59e0b, #d97706)",
+            color: "#000",
+            fontSize: "0.7rem",
+            fontWeight: 700,
+            padding: "0.2rem 0.6rem",
+            borderRadius: "1rem",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}>
+            VIP
+          </span>
+        )}
+      </div>
       <p style={{ color: "var(--text-sub)", marginBottom: "2rem" }}>
         Dein persönlicher Travel Hacking Bereich.
+        {isVip && (
+          <>
+            {" "}
+            <a href="/api/stripe/portal" style={{ color: "var(--accent)", fontSize: "0.85rem" }}>
+              Abo verwalten
+            </a>
+          </>
+        )}
       </p>
 
       {/* Stats */}

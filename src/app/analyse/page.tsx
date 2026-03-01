@@ -25,8 +25,8 @@ const AFF = {
   wunschgutschein: "#DEIN-WUNSCHGUTSCHEIN-LINK",
   cadooz: "#DEIN-CADOOZ-LINK",
   instagram: "https://www.instagram.com/traveling.prof",
-  crashkurs: "https://travelprof.vercel.app/#produkte",
-  community: "https://travelprof.vercel.app/#community",
+  crashkurs: "https://travelingprof.de/#produkte",
+  community: "https://travelingprof.de/#community",
 };
 
 interface Q { id:string; title:string; subtitle:string; emoji:string; options:{label:string;value:string;emoji:string;desc?:string}[] }
@@ -156,7 +156,7 @@ function LoadingScreen() {
   return <div className="a-loading a-fadein"><div className="a-loading-spinner"/><h2>Dein Plan wird erstellt</h2><p>Nur wenige Sekunden...</p><div className="a-loading-steps">{steps.map((s,i)=><div key={i} className={`a-loading-step ${done[i]?"done":i===done.filter(Boolean).length?"active":""}`}>{done[i]?"✓":"○"} {s}</div>)}</div></div>;
 }
 
-function ResultsView({result,lead}:{result:SetupResult;lead:LeadData}) {
+function ResultsView({result,lead,isLoggedIn}:{result:SetupResult;lead:LeadData;isLoggedIn:boolean}) {
   return <div className="a-results a-fadein">
     <div className="a-result-header"><span className="a-result-level-emoji">{result.levelEmoji}</span><div><h2>Hallo {lead.vorname}, hier ist dein Setup</h2><div className="a-result-level">Dein Level: <strong>{result.level}</strong></div></div></div>
     <div className="a-miles-box"><div className="a-miles-item"><span className="a-miles-num">{result.monthlyMiles}</span><span className="a-miles-label">Meilen / Monat</span></div><div className="a-miles-divider"/><div className="a-miles-item"><span className="a-miles-num">{result.yearlyMiles}</span><span className="a-miles-label">Meilen / Jahr</span></div></div>
@@ -174,6 +174,21 @@ function ResultsView({result,lead}:{result:SetupResult;lead:LeadData}) {
     <div className="a-section"><h3>🚀 Nächste Schritte</h3><div className="a-next-steps">{result.nextSteps.map((s,i)=><a key={i} href={s.link} target="_blank" rel="noopener noreferrer" className="a-next-step"><span>{s.step}</span><span className="a-next-cta">{s.label} →</span></a>)}</div></div>
 
     <div className="a-final-cta"><h3>Du willst den vollen Plan?</h3><p>Im Meilen-Crashkurs zeige ich dir in 15 Videos alles Schritt für Schritt.</p><div style={{display:"flex",gap:"0.5rem",flexWrap:"wrap",justifyContent:"center"}}><a href={AFF.crashkurs} className="a-submit" style={{maxWidth:280,textAlign:"center"}}>Zum Meilen-Crashkurs →</a><a href={AFF.instagram} target="_blank" rel="noopener noreferrer" className="a-btn-outline">@traveling.prof folgen</a></div></div>
+
+    {!isLoggedIn && (
+      <div style={{marginTop:"2rem",background:"#1c1917",border:"1px solid #292524",borderRadius:"1rem",padding:"1.5rem",textAlign:"center"}}>
+        <h3 style={{fontSize:"1.1rem",fontWeight:700,marginBottom:"0.5rem",color:"#fafaf9"}}>Ergebnis speichern</h3>
+        <p style={{fontSize:"0.88rem",color:"#a8a29e",marginBottom:"1rem",lineHeight:1.6}}>
+          Erstelle jetzt dein kostenloses Konto, um dein Ergebnis zu speichern und jederzeit darauf zuzugreifen.
+        </p>
+        <a
+          href="/register?redirect=/analyse&save=true"
+          style={{display:"inline-block",background:"#e8793b",color:"#fff",padding:"0.7rem 1.5rem",borderRadius:"0.625rem",fontWeight:600,fontSize:"0.9rem",textDecoration:"none"}}
+        >
+          Kostenloses Konto erstellen
+        </a>
+      </div>
+    )}
   </div>;
 }
 
@@ -236,6 +251,7 @@ export default function AnalysePage() {
   const [paid,setPaid]=useState(false);
   const [user,setUser]=useState<User|null>(null);
   const [checkoutLoading,setCheckoutLoading]=useState(false);
+  const [savedNotice,setSavedNotice]=useState(false);
   const supabase = createClient();
 
   // Check auth status and purchase on mount
@@ -276,6 +292,28 @@ export default function AnalysePage() {
         }
       } else if(localStorage.getItem("analyse-paid")==="true"){
         setPaid(true);
+      }
+
+      // Auto-save from localStorage after account creation
+      if(u && params.get("save")==="true"){
+        const savedResult=localStorage.getItem("analyse-result");
+        const savedAnswersData=localStorage.getItem("analyse-answers-data");
+        if(savedResult && savedAnswersData){
+          try{
+            const parsedResult=JSON.parse(savedResult);
+            const parsedAnswers=JSON.parse(savedAnswersData);
+            await fetch("/api/analyse/save",{
+              method:"POST",
+              headers:{"Content-Type":"application/json"},
+              body:JSON.stringify({answers:parsedAnswers,result:parsedResult}),
+            });
+            localStorage.removeItem("analyse-result");
+            localStorage.removeItem("analyse-answers-data");
+            setSavedNotice(true);
+            setTimeout(()=>setSavedNotice(false),4000);
+          }catch{}
+        }
+        window.history.replaceState({},"","/analyse");
       }
     }
     init();
@@ -330,6 +368,11 @@ export default function AnalysePage() {
       setResult(r);
       setLoading(false);
       setStep(questions.length+2);
+      // Save to localStorage for guest account-creation flow
+      try {
+        localStorage.setItem("analyse-result", JSON.stringify(r));
+        localStorage.setItem("analyse-answers-data", JSON.stringify(answers));
+      } catch {}
       // Save to DB for logged-in users
       saveResults(answers, r);
       // Fire-and-forget: send analyse result email
@@ -362,12 +405,13 @@ export default function AnalysePage() {
   return <div className="a-page">
     <div className="a-header"><Link href="/" className="a-header-brand"><div className="a-header-mark">TP</div><div><div className="a-header-name">traveling.prof</div><div className="a-header-tag">Travel Hacking Analyse</div></div></Link>{step>0&&!isResult&&<button onClick={()=>setStep(s=>s-1)} style={{background:"none",border:"1px solid #292524",borderRadius:8,padding:"0.35rem 0.75rem",color:"#78716c",cursor:"pointer",fontSize:"0.78rem",fontFamily:"inherit"}}>← Zurück</button>}</div>
     <div className="a-container">
+      {savedNotice&&<div style={{background:"#052e16",border:"1px solid #166534",borderRadius:"0.75rem",padding:"0.75rem 1rem",marginBottom:"1rem",color:"#bbf7d0",fontSize:"0.88rem",textAlign:"center"}}>Dein Analyse-Ergebnis wurde in deinem Konto gespeichert!</div>}
       {!isResult&&<div className="a-progress"><div className="a-progress-bar" style={{width:`${Math.round(((step+1)/total)*100)}%`}}/><span className="a-progress-label">Schritt {step+1} von {total}</span></div>}
       {isQuiz&&<QuizStep q={questions[step]} onSelect={v=>handleAnswer(questions[step].id,v)} selected={answers[questions[step].id]}/>}
       {isPaywall&&<PaywallScreen onAlreadyPaid={handlePaid} onCheckout={handleCheckout} isLoggedIn={!!user} checkoutLoading={checkoutLoading}/>}
       {isLead&&!loading&&<LeadForm onSubmit={handleLead} loading={loading}/>}
       {isLead&&loading&&<LoadingScreen/>}
-      {isResult&&result&&lead&&<ResultsView result={result} lead={lead}/>}
+      {isResult&&result&&lead&&<ResultsView result={result} lead={lead} isLoggedIn={!!user}/>}
     </div>
   </div>;
 }

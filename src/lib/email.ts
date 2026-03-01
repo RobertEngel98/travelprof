@@ -37,7 +37,7 @@ export async function sendPurchaseConfirmation({
   }
 
   const productName = PRODUCT_NAMES[productId] ?? productId;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelprof.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelingprof.de";
   const greeting = userName ? `Hallo ${userName}` : "Hallo";
 
   const dashboardLink = `${appUrl}/dashboard/produkte`;
@@ -104,7 +104,7 @@ export async function sendLeadmagnetEmail({
     return;
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelprof.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelingprof.de";
   const greeting = name ? `Hallo ${name}` : "Hallo";
 
   await getResend().emails.send({
@@ -151,7 +151,7 @@ export async function sendWaitlistWelcome({ email }: { email: string }) {
     return;
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelprof.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelingprof.de";
 
   await getResend().emails.send({
     from: "traveling.prof <noreply@email.travelingprof.de>",
@@ -206,7 +206,7 @@ export async function sendAnalyseResultEmail({
     return;
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelprof.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelingprof.de";
   const cardsHtml = result.cards
     .slice(0, 3)
     .map((c) => `<li>${c}</li>`)
@@ -276,7 +276,7 @@ export async function sendSubscriptionConfirmation({
   }
 
   const planName = PLAN_NAMES[plan] ?? plan;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelprof.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://travelingprof.de";
   const greeting = userName ? `Hallo ${userName}` : "Hallo";
   const dashboardLink = `${appUrl}/dashboard`;
   const settingsLink = `${appUrl}/dashboard/einstellungen`;

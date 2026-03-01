@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "de_DE",
-    url: "https://travelprof.vercel.app",
+    url: "https://travelingprof.de",
     siteName: "traveling.prof",
     title: "traveling.prof – Business Class zum Economy-Preis",
     description: "Meilen & Travel Hacks für den DACH-Raum. Lerne, wie du smarter reist.",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: "traveling.prof – Meilen & Travel Hacks",
     description: "Business Class zum Economy-Preis. Meilen sammeln, Lounges nutzen, smarter reisen.",
   },
-  alternates: { canonical: "https://travelprof.vercel.app" },
+  alternates: { canonical: "https://travelingprof.de" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "@context": "https://schema.org",
     "@type": "Person",
     name: "traveling.prof",
-    url: "https://travelprof.vercel.app",
+    url: "https://travelingprof.de",
     sameAs: ["https://www.instagram.com/traveling.prof"],
     jobTitle: "Travel Hacking Expert",
     description: "Experte für Meilen, Punkte & clevere Buchungsstrategien im DACH-Raum.",
