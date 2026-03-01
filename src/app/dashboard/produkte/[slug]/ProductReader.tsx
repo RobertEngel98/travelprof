@@ -95,7 +95,9 @@ export default function ProductReader({ content, title }: { content: string; tit
               </a>
             ),
           }}
-        />
+        >
+          {content}
+        </ReactMarkdown>
       </article>
     </>
   );
