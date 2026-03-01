@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { stripe, PRODUCTS } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { sendPurchaseConfirmation, sendSubscriptionConfirmation } from "@/lib/email";
+import { PRODUCT_NAMES } from "@/lib/upsell-config";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -113,6 +114,8 @@ export async function POST(request: Request) {
           productName = dbProduct.name;
         } else if (PRODUCTS[productId as keyof typeof PRODUCTS]) {
           productName = PRODUCTS[productId as keyof typeof PRODUCTS].name;
+        } else if (PRODUCT_NAMES[productId]) {
+          productName = PRODUCT_NAMES[productId];
         }
 
         await admin.from("purchases").insert({

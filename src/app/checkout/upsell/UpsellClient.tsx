@@ -59,6 +59,12 @@ export default function UpsellClient({
         return;
       }
 
+      // Fallback: no saved card → redirect to regular Stripe Checkout
+      if (data.fallback && data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
+
       if (data.requiresAuth) {
         setError(data.error);
       } else {

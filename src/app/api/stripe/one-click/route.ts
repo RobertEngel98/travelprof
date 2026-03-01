@@ -58,10 +58,31 @@ export async function POST(request: Request) {
     });
 
     if (!paymentMethods.data.length) {
-      return NextResponse.json(
-        { error: "Keine gespeicherte Zahlungsmethode gefunden" },
-        { status: 400 }
-      );
+      // No saved card (e.g. 100% promo code purchase) → fallback to regular checkout
+      const productName = PRODUCT_NAMES[productId] || productId;
+      const fallbackSession = await stripe.checkout.sessions.create({
+        customer: profile.stripe_customer_id,
+        mode: "payment",
+        payment_method_types: ["card"],
+        line_items: [{
+          price_data: {
+            currency: "eur",
+            product_data: { name: productName },
+            unit_amount: amount,
+          },
+          quantity: 1,
+        }],
+        metadata: { user_id: user.id, product_id: productId, type: "upsell" },
+        payment_intent_data: {
+          setup_future_usage: "off_session",
+        },
+        allow_promotion_codes: true,
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success&upsell=true`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success&product=true`,
+        locale: "de",
+      });
+
+      return NextResponse.json({ fallback: true, checkoutUrl: fallbackSession.url });
     }
 
     const defaultPM = paymentMethods.data[0];
