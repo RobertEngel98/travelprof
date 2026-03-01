@@ -43,7 +43,7 @@ export default function CheckoutSuccess() {
     } else if (product) {
       setMessage("Produkt erfolgreich gekauft! Du findest es unter Meine Produkte.");
     } else {
-      setMessage("Willkommen im VIP-Club!");
+      setMessage("Kauf erfolgreich! Du findest deine Produkte unter Meine Produkte.");
     }
     setVisible(true);
 

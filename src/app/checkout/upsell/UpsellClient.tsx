@@ -26,7 +26,7 @@ export default function UpsellClient({
   // Countdown timer
   useEffect(() => {
     if (secondsLeft <= 0) {
-      router.push("/dashboard?checkout=success");
+      router.push("/dashboard?checkout=success&product=true");
       return;
     }
     const interval = setInterval(() => {
@@ -77,7 +77,7 @@ export default function UpsellClient({
       setSecondsLeft(downsell.timerMinutes * 60);
       setError("");
     } else {
-      router.push("/dashboard?checkout=success");
+      router.push("/dashboard?checkout=success&product=true");
     }
   }, [phase, downsell, router]);
 
